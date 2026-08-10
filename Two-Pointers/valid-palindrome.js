@@ -1,0 +1,37 @@
+/**
+ * Problem: Valid Palindrome
+ * Topic: Two Pointers
+ *
+ * Description:
+ * Given a string, ignore non-alphanumeric characters and letter case, then determine whether it reads the same forward and backward.
+ *
+ * Example:
+ * Input: s = "A man, a plan, a canal: Panama"
+ * Output: true
+ *
+ * Before coding:
+ * - Identify the exact value or structure that must be returned.
+ * - Consider empty, smallest, duplicate, and boundary inputs when valid.
+ * - Do not fill in the notes below until you finish your first attempt.
+ */
+
+function solve(...args) {
+  // Write your solution here.
+  return args;
+}
+
+/*
+ * Complete only after solving:
+ *
+ * Approach:
+ *
+ * Time complexity:
+ *
+ * Space complexity:
+ *
+ * Mistakes or lessons:
+ */
+
+// Add test cases after solving.
+
+module.exports = solve;
