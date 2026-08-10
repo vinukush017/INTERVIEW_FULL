@@ -15,9 +15,17 @@
  * - Do not fill in the notes below until you finish your first attempt.
  */
 
-function solve(...args) {
-  // Write your solution here.
-  return args;
+function solve(arr, target) {
+  const dict = new Map()
+   for (let i =0 ; i < arr.length; i++){
+       let req = target - arr[i]
+       if(dict.has(req)){
+           return [dict.get(req),i]
+       }
+       dict.set(arr[i],i)
+   }
+  return [];
+
 }
 
 /*

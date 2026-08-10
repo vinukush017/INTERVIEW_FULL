@@ -32,7 +32,7 @@ If you needed the solution, leave it unchecked and repeat it after 1, 3, 7, and 
 
 ### HashMap
 
-- [ ] [Two Sum](./HashMap/two-sum.js)
+- [x] [Two Sum](./HashMap/two-sum.js)
 - [ ] [Contains Duplicate](./HashMap/contains-duplicate.js)
 - [ ] [Valid Anagram](./HashMap/valid-anagram.js)
 - [ ] [Group Anagrams](./HashMap/group-anagrams.js)
