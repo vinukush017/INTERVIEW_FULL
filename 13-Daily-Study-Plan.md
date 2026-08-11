@@ -4,19 +4,35 @@ Use this file every day. The plan assumes 90 minutes to 3 hours daily. If you mi
 
 ## Daily rules
 
-1. Start with the DSA problem before reading any solution.
-2. Spend at most 35 minutes on one problem before studying a hint or approach.
+1. Complete only one new **core problem** per day. A second problem marked **optional stretch** is only for days when you have extra time and the core problem felt comfortable.
+2. Try the problem for 25 minutes. Then read one hint, try for 10 more minutes, and only then study the full approach.
 3. Write the approach, time complexity, space complexity, and test cases in the JavaScript file.
 4. Mark a problem complete only in [01-DSA-Questions.md](./01-DSA-Questions.md).
 5. End the session by explaining one concept aloud for five minutes.
 6. Repeat difficult problems after 1, 3, 7, and 14 days.
+7. A calendar day never overrides prerequisites. If its problem is still locked, solve the next unlocked problem in the [dependency-ordered practice queue](./01-DSA-Questions.md#dependency-ordered-practice-queue) and shift the calendar forward.
+8. Skip a problem marked **challenge** on your first pass if it feels overwhelming. Complete the easier questions in the next level, then return with more pattern experience.
+9. Optional stretch problems are never prerequisites for the next day's core problem. Skipping them does not put you behind.
 
 ## Standard session
 
-- 45-90 minutes: new DSA problems
-- 20-30 minutes: repeat an older problem
-- 30-45 minutes: full-stack study
-- 10-15 minutes: notes or interview explanation
+- 35 minutes: learn one pattern and solve its core problem
+- 15 minutes: repeat one older problem
+- 30 minutes: full-stack study
+- 10 minutes: tests, notes, complexity, and spoken explanation
+
+If you have three hours and the core problem was comfortable, use the remaining time for the optional stretch problem. Speed comes from recognizing patterns and remembering them, not from rushing through more new questions.
+
+## Readiness gate
+
+Move to the next pattern only when you can:
+
+- explain when the current pattern should be used;
+- solve its easiest core problem again without notes;
+- state the time and space complexity; and
+- describe one common mistake or edge case.
+
+If any item is missing, repeat the current pattern tomorrow. This changes the calendar date, not the learning order.
 
 ## DSA topic order
 
@@ -51,23 +67,25 @@ Arrays and Strings come first because nearly every later pattern uses their trav
 - [ ] Study array methods: `map`, `filter`, `reduce`, `sort`, and `find`.
 - [ ] Explain when a `Map` is preferable to an object.
 
-### Day 4 — Prefix and suffix technique
+### Day 4 — Two-pointer foundation
 
-- [ ] Solve [Product of Array Except Self](./Arrays/product-of-array-except-self.js).
+- [ ] Solve [Valid Palindrome](./Two-Pointers/valid-palindrome.js) as today's core problem.
+- [ ] Optional stretch: [Product of Array Except Self](./Arrays/product-of-array-except-self.js).
 - [ ] Repeat Contains Duplicate and Valid Anagram.
 - [ ] Study functions, arrow functions, and the `this` keyword.
 - [ ] Add edge-case tests to the problems completed this week.
 
-### Day 5 — Set-based array reasoning
+### Day 5 — Two pointers on a sorted array
 
-- [ ] Solve [Longest Consecutive Sequence](./Arrays/longest-consecutive-sequence.js).
+- [ ] Solve [Two Sum II](./Two-Pointers/two-sum-ii-input-array-is-sorted.js) as today's core problem.
+- [ ] Optional stretch: [Longest Consecutive Sequence](./Arrays/longest-consecutive-sequence.js).
 - [ ] Repeat Group Anagrams.
 - [ ] Study closures with two small code examples.
 - [ ] Explain the brute-force and optimized approaches aloud.
 
 ### Day 6 — JavaScript practice day
 
-- [ ] Re-solve Two Sum and Product of Array Except Self under a timer.
+- [ ] Re-solve Two Sum and Valid Palindrome under a timer.
 - [ ] Implement a simple `map` or `filter` polyfill.
 - [ ] Review shallow copy, deep copy, destructuring, spread, and rest.
 - [ ] Review one project using [Projects](./10-Projects.md).
@@ -86,45 +104,45 @@ Arrays and Strings come first because nearly every later pattern uses their trav
 
 ### Day 8 — Two pointers basics
 
-- [ ] Solve [Valid Palindrome](./Two-Pointers/valid-palindrome.js).
-- [ ] Solve [Two Sum II](./Two-Pointers/two-sum-ii-input-array-is-sorted.js).
+- [ ] Solve [Valid Palindrome II](./Two-Pointers/valid-palindrome-ii.js).
+- [ ] Optional stretch: [String Compression](./String/string-compression.js).
 - [ ] Study promises in [JavaScript](./02-JavaScript.md).
-- [ ] Repeat Longest Consecutive Sequence.
+- [ ] Repeat Two Sum II.
 
 ### Day 9 — Moving two boundaries
 
 - [ ] Solve [Container With Most Water](./Two-Pointers/container-with-most-water.js).
-- [ ] Attempt [3Sum](./Two-Pointers/3sum.js).
+- [ ] Optional stretch: attempt [3Sum](./Two-Pointers/3sum.js).
 - [ ] Study `async`/`await` and promise error handling.
 - [ ] Explain why sorting helps the 3Sum approach.
 
 ### Day 10 — Sliding-window basics
 
 - [ ] Solve [Best Time to Buy and Sell Stock](./Sliding-Window/best-time-to-buy-and-sell-stock.js).
-- [ ] Solve [Longest Substring Without Repeating Characters](./Sliding-Window/longest-substring-without-repeating-characters.js).
+- [ ] Optional stretch: [Longest Substring Without Repeating Characters](./Sliding-Window/longest-substring-without-repeating-characters.js).
 - [ ] Study the call stack and event loop.
 - [ ] Repeat Valid Palindrome.
 
 ### Day 11 — Variable windows
 
-- [ ] Solve [Longest Repeating Character Replacement](./Sliding-Window/longest-repeating-character-replacement.js).
-- [ ] Attempt [Permutation in String](./Sliding-Window/permutation-in-string.js).
+- [ ] Solve [Longest Substring Without Repeating Characters](./Sliding-Window/longest-substring-without-repeating-characters.js).
+- [ ] Optional stretch: [Permutation in String](./Sliding-Window/permutation-in-string.js).
 - [ ] Study microtasks versus macrotasks.
 - [ ] Predict the output of three event-loop examples.
 
 ### Day 12 — Stack patterns
 
 - [ ] Solve [Valid Parentheses](./Stack/valid-parentheses.js).
-- [ ] Solve [Min Stack](./Stack/min-stack.js).
+- [ ] Optional stretch: [Evaluate Reverse Polish Notation](./Stack/evaluate-reverse-polish-notation.js).
 - [ ] Begin [React](./03-React.md): components, props, state, and rendering.
 - [ ] Repeat Container With Most Water.
 
 ### Day 13 — Stack and queue practice
 
-- [ ] Solve [Daily Temperatures](./Stack/daily-temperatures.js).
-- [ ] Solve [Implement Queue Using Stacks](./Queue/implement-queue-using-stacks.js).
+- [ ] Solve [Min Stack](./Stack/min-stack.js).
+- [ ] Optional stretch: [Number of Recent Calls](./Queue/number-of-recent-calls.js).
 - [ ] Study React controlled and uncontrolled inputs.
-- [ ] Review 3Sum and write the approach without code.
+- [ ] Review Container With Most Water and write the approach without code.
 
 ### Day 14 — Weekly review
 
@@ -140,42 +158,42 @@ Arrays and Strings come first because nearly every later pattern uses their trav
 ### Day 15 — Binary-search template
 
 - [ ] Solve [Binary Search](./Binary-Search/binary-search.js).
-- [ ] Solve [Search Insert Position](./Binary-Search/search-insert-position.js).
+- [ ] Optional stretch: [Search Insert Position](./Binary-Search/search-insert-position.js).
 - [ ] Study React reconciliation and keys.
 - [ ] Repeat Longest Substring Without Repeating Characters.
 
 ### Day 16 — Rotated arrays
 
-- [ ] Solve [Search in Rotated Sorted Array](./Binary-Search/search-in-rotated-sorted-array.js).
 - [ ] Solve [Find Minimum in Rotated Sorted Array](./Binary-Search/find-minimum-in-rotated-sorted-array.js).
+- [ ] Optional stretch: [Search in Rotated Sorted Array](./Binary-Search/search-in-rotated-sorted-array.js).
 - [ ] Study `useState` and state update behavior.
 - [ ] Explain the binary-search invariants aloud.
 
 ### Day 17 — Search on the answer
 
 - [ ] Solve [Koko Eating Bananas](./Binary-Search/koko-eating-bananas.js).
-- [ ] Attempt [Time Based Key-Value Store](./Binary-Search/time-based-key-value-store.js).
+- [ ] Optional stretch: [Time Based Key-Value Store](./Binary-Search/time-based-key-value-store.js).
 - [ ] Study `useEffect`, dependencies, and cleanup.
 - [ ] Repeat Binary Search from memory.
 
 ### Day 18 — Linked-list basics
 
 - [ ] Solve [Reverse Linked List](./LinkedList/reverse-linked-list.js).
-- [ ] Solve [Merge Two Sorted Lists](./LinkedList/merge-two-sorted-lists.js).
+- [ ] Optional stretch: [Merge Two Sorted Lists](./LinkedList/merge-two-sorted-lists.js).
 - [ ] Study `useRef` and DOM references.
 - [ ] Draw pointer changes before writing code.
 
 ### Day 19 — Fast and slow pointers
 
 - [ ] Solve [Linked List Cycle](./LinkedList/linked-list-cycle.js).
-- [ ] Solve [Remove Nth Node From End](./LinkedList/remove-nth-node-from-end-of-list.js).
+- [ ] Optional stretch: [Remove Nth Node From End](./LinkedList/remove-nth-node-from-end-of-list.js).
 - [ ] Study `useMemo` and `useCallback` trade-offs.
 - [ ] Repeat Reverse Linked List.
 
 ### Day 20 — Linked-list transformations
 
-- [ ] Attempt [Reorder List](./LinkedList/reorder-list.js).
 - [ ] Solve [Add Two Numbers](./LinkedList/add-two-numbers.js).
+- [ ] Optional stretch: attempt [Reorder List](./LinkedList/reorder-list.js).
 - [ ] Study React Context and reducers.
 - [ ] Explain a React component from one of your projects.
 
@@ -193,43 +211,43 @@ Arrays and Strings come first because nearly every later pattern uses their trav
 ### Day 22 — Tree recursion
 
 - [ ] Learn the recursion base case, recursive case, call stack, and return value.
-- [ ] Solve [Invert Binary Tree](./Trees/invert-binary-tree.js).
 - [ ] Solve [Maximum Depth of Binary Tree](./Trees/maximum-depth-of-binary-tree.js).
+- [ ] Optional stretch: [Invert Binary Tree](./Trees/invert-binary-tree.js).
 - [ ] Begin [Next.js](./04-NextJS.md): routing, layouts, and rendering.
 - [ ] Repeat Search in Rotated Sorted Array.
 
-### Day 23 — Tree properties
+### Day 23 — Comparing trees
 
-- [ ] Solve [Diameter of Binary Tree](./Trees/diameter-of-binary-tree.js).
-- [ ] Solve [Balanced Binary Tree](./Trees/balanced-binary-tree.js).
+- [ ] Solve [Same Tree](./Trees/same-tree.js).
+- [ ] Optional stretch: [Diameter of Binary Tree](./Trees/diameter-of-binary-tree.js).
 - [ ] Study Server Components versus Client Components.
 - [ ] Draw the recursion tree for one solution.
 
-### Day 24 — Comparing trees
+### Day 24 — Returning tree properties
 
-- [ ] Solve [Same Tree](./Trees/same-tree.js).
-- [ ] Solve [Subtree of Another Tree](./Trees/subtree-of-another-tree.js).
+- [ ] Solve [Balanced Binary Tree](./Trees/balanced-binary-tree.js).
+- [ ] Optional stretch: [Binary Tree Level Order Traversal](./Trees/binary-tree-level-order-traversal.js).
 - [ ] Study static rendering, dynamic rendering, SSR, and ISR.
 - [ ] Repeat Maximum Depth of Binary Tree.
 
 ### Day 25 — BST patterns
 
 - [ ] Solve [Lowest Common Ancestor of BST](./Trees/lowest-common-ancestor-of-bst.js).
-- [ ] Solve [Validate Binary Search Tree](./Trees/validate-binary-search-tree.js).
+- [ ] Optional stretch: [Validate Binary Search Tree](./Trees/validate-binary-search-tree.js).
 - [ ] Study Next.js caching and revalidation.
 - [ ] Explain BST ordering and boundary handling.
 
 ### Day 26 — Breadth-first traversal
 
-- [ ] Solve [Binary Tree Level Order Traversal](./Trees/binary-tree-level-order-traversal.js).
 - [ ] Solve [Binary Tree Right Side View](./Trees/binary-tree-right-side-view.js).
+- [ ] Optional stretch: [Count Good Nodes in Binary Tree](./Trees/count-good-nodes-in-binary-tree.js).
 - [ ] Study frontend performance: memoization, lazy loading, images, and bundle size.
-- [ ] Repeat Diameter of Binary Tree.
+- [ ] Repeat Same Tree.
 
 ### Day 27 — Heap fundamentals
 
-- [ ] Solve [Kth Largest Element](./Heap/kth-largest-element-in-an-array.js).
 - [ ] Solve [Last Stone Weight](./Heap/last-stone-weight.js).
+- [ ] Optional stretch: [Kth Largest Element](./Heap/kth-largest-element-in-an-array.js).
 - [ ] Study route handlers, middleware, loading, and error states in Next.js.
 - [ ] Explain when a heap is preferable to sorting.
 
@@ -247,20 +265,21 @@ Arrays and Strings come first because nearly every later pattern uses their trav
 ### Day 29 — Backtracking template
 
 - [ ] Solve [Subsets](./Backtracking/subsets.js).
-- [ ] Solve [Permutations](./Backtracking/permutations.js).
+- [ ] Optional stretch: [Permutations](./Backtracking/permutations.js).
 - [ ] Begin [Node.js](./05-NodeJS.md): runtime, modules, and event loop.
 - [ ] Repeat Binary Tree Level Order Traversal.
 
 ### Day 30 — Backtracking choices and pruning
 
 - [ ] Solve [Combination Sum](./Backtracking/combination-sum.js).
-- [ ] Solve [Combination Sum II](./Backtracking/combination-sum-ii.js).
+- [ ] Optional stretch: [Combination Sum II](./Backtracking/combination-sum-ii.js).
 - [ ] Study Node.js events, buffers, and streams.
 - [ ] Repeat Subsets and draw its decision tree.
 
-### Day 31 — Backtracking on a grid
+### Day 31 — Duplicate choices and grid backtracking
 
-- [ ] Attempt [Word Search](./Backtracking/word-search.js).
+- [ ] Solve [Subsets II](./Backtracking/subsets-ii.js).
+- [ ] Optional stretch: attempt [Word Search](./Backtracking/word-search.js).
 - [ ] Review choose, explore, undo, and pruning.
 - [ ] Begin [Express](./06-Express.md): routing and middleware order.
 - [ ] Repeat Permutations.
@@ -268,21 +287,21 @@ Arrays and Strings come first because nearly every later pattern uses their trav
 ### Day 32 — Graph grid traversal
 
 - [ ] Solve [Number of Islands](./Graph/number-of-islands.js).
-- [ ] Solve [Max Area of Island](./Graph/max-area-of-island.js).
+- [ ] Optional stretch: [Max Area of Island](./Graph/max-area-of-island.js).
 - [ ] Study Express validation and centralized error handling.
 - [ ] Explain DFS versus BFS and their complexity.
 
 ### Day 33 — Graph representation and BFS
 
 - [ ] Solve [Clone Graph](./Graph/clone-graph.js).
-- [ ] Solve [Rotting Oranges](./Graph/rotting-oranges.js).
+- [ ] Optional stretch: [Rotting Oranges](./Graph/rotting-oranges.js).
 - [ ] Study authentication versus authorization.
 - [ ] Repeat Number of Islands.
 
 ### Day 34 — Graph dependencies and cycles
 
 - [ ] Solve [Course Schedule](./Graph/course-schedule.js).
-- [ ] Attempt [Course Schedule II](./Graph/course-schedule-ii.js).
+- [ ] Optional stretch: attempt [Course Schedule II](./Graph/course-schedule-ii.js).
 - [ ] Study CORS, secure cookies, rate limiting, Helmet, and input sanitization.
 - [ ] Explain an API from one of your projects, including errors and security.
 
@@ -300,42 +319,42 @@ Arrays and Strings come first because nearly every later pattern uses their trav
 ### Day 36 — One-dimensional DP
 
 - [ ] Solve [Climbing Stairs](./Dynamic-Programming/climbing-stairs.js).
-- [ ] Solve [Min Cost Climbing Stairs](./Dynamic-Programming/min-cost-climbing-stairs.js).
+- [ ] Optional stretch: [Min Cost Climbing Stairs](./Dynamic-Programming/min-cost-climbing-stairs.js).
 - [ ] Begin [SQL](./07-SQL.md): SELECT, filtering, sorting, and grouping.
 - [ ] Repeat Subsets.
 
 ### Day 37 — Recurrence decisions
 
 - [ ] Solve [House Robber](./Dynamic-Programming/house-robber.js).
-- [ ] Solve [House Robber II](./Dynamic-Programming/house-robber-ii.js).
+- [ ] Optional stretch: [House Robber II](./Dynamic-Programming/house-robber-ii.js).
 - [ ] Study INNER JOIN and LEFT JOIN.
 - [ ] Write the recurrence before writing code.
 
 ### Day 38 — Unbounded choices
 
 - [ ] Solve [Coin Change](./Dynamic-Programming/coin-change.js).
-- [ ] Solve [Word Break](./Dynamic-Programming/word-break.js).
+- [ ] Optional stretch: [Word Break](./Dynamic-Programming/word-break.js).
 - [ ] Practise GROUP BY, HAVING, and aggregate queries.
 - [ ] Repeat Climbing Stairs and explain the space optimization.
 
 ### Day 39 — Sequence DP
 
 - [ ] Solve [Longest Increasing Subsequence](./Dynamic-Programming/longest-increasing-subsequence.js).
-- [ ] Attempt [Longest Common Subsequence](./Dynamic-Programming/longest-common-subsequence.js).
+- [ ] Optional stretch: attempt [Longest Common Subsequence](./Dynamic-Programming/longest-common-subsequence.js).
 - [ ] Study CTEs and subqueries.
 - [ ] Draw the DP state and transitions.
 
 ### Day 40 — Greedy decisions
 
 - [ ] Solve [Jump Game](./Greedy/jump-game.js).
-- [ ] Solve [Partition Labels](./Greedy/partition-labels.js).
+- [ ] Optional stretch: [Partition Labels](./Greedy/partition-labels.js).
 - [ ] Study indexes and query plans.
 - [ ] Explain why the greedy choice is safe.
 
 ### Day 41 — More greedy practice
 
 - [ ] Solve [Jump Game II](./Greedy/jump-game-ii.js).
-- [ ] Attempt [Gas Station](./Greedy/gas-station.js).
+- [ ] Optional stretch: attempt [Gas Station](./Greedy/gas-station.js).
 - [ ] Study transactions, isolation, and ACID.
 - [ ] Repeat House Robber.
 
@@ -352,42 +371,42 @@ Arrays and Strings come first because nearly every later pattern uses their trav
 
 ### Day 43 — Interval patterns
 
-- [ ] Solve [Merge Intervals](./Intervals/merge-intervals.js).
-- [ ] Solve [Insert Interval](./Intervals/insert-interval.js).
+- [ ] Solve [Meeting Rooms](./Intervals/meeting-rooms.js).
+- [ ] Optional stretch: [Merge Intervals](./Intervals/merge-intervals.js).
 - [ ] Begin [System Design](./08-System-Design.md): requirements and estimations.
 - [ ] Repeat Coin Change.
 
 ### Day 44 — Scheduling intervals
 
 - [ ] Solve [Non-overlapping Intervals](./Intervals/non-overlapping-intervals.js).
-- [ ] Solve [Meeting Rooms](./Intervals/meeting-rooms.js).
+- [ ] Optional stretch: [Insert Interval](./Intervals/insert-interval.js).
 - [ ] Study APIs, data models, and high-level components.
 - [ ] Explain why sorting is used in interval problems.
 
-### Day 45 — String patterns
+### Day 45 — Advanced string pattern: palindrome expansion
 
-- [ ] Solve [Longest Palindromic Substring](./String/longest-palindromic-substring.js).
 - [ ] Solve [Palindromic Substrings](./String/palindromic-substrings.js).
+- [ ] Optional stretch: [Longest Palindromic Substring](./String/longest-palindromic-substring.js).
 - [ ] Study load balancing, caching, CDNs, and queues.
-- [ ] Repeat Merge Intervals.
+- [ ] Repeat Meeting Rooms.
 
 ### Day 46 — Matrix and number problems
 
-- [ ] Solve [Happy Number](./Math/happy-number.js).
-- [ ] Solve [Rotate Image](./Math/rotate-image.js).
+- [ ] Solve [Plus One](./Math/plus-one.js).
+- [ ] Optional stretch: [Happy Number](./Math/happy-number.js).
 - [ ] Study SQL versus NoSQL and database partitioning.
 - [ ] Explain all matrix boundaries before coding.
 
 ### Day 47 — Bit manipulation
 
 - [ ] Solve [Single Number](./Bit-Manipulation/single-number.js).
-- [ ] Solve [Counting Bits](./Bit-Manipulation/counting-bits.js).
+- [ ] Optional stretch: [Missing Number](./Bit-Manipulation/missing-number.js).
 - [ ] Study replication, consistency, and availability.
 - [ ] Review XOR and common bit operations.
 
 ### Day 48 — Design practice
 
-- [ ] Solve [Missing Number](./Bit-Manipulation/missing-number.js).
+- [ ] Solve [Counting Bits](./Bit-Manipulation/counting-bits.js).
 - [ ] Repeat one weak interval or string problem.
 - [ ] Design a URL shortener using the order in [System Design](./08-System-Design.md).
 - [ ] Record requirements, APIs, schema, components, and trade-offs.
