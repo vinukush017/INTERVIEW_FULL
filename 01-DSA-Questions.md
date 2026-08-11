@@ -33,8 +33,8 @@ If you needed the solution, leave it unchecked and repeat it after 1, 3, 7, and 
 ### HashMap
 
 - [x] [Two Sum](./HashMap/two-sum.js)
-- [ ] [Contains Duplicate](./HashMap/contains-duplicate.js)
-- [ ] [Valid Anagram](./HashMap/valid-anagram.js)
+- [x] [Contains Duplicate](./HashMap/contains-duplicate.js)
+- [x] [Valid Anagram](./HashMap/valid-anagram.js)
 - [ ] [Group Anagrams](./HashMap/group-anagrams.js)
 - [x] [Top K Frequent Elements](./HashMap/top-k-frequent-elements.js)
 

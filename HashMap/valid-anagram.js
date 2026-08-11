@@ -15,9 +15,25 @@
  * - Do not fill in the notes below until you finish your first attempt.
  */
 
-function solve(...args) {
+function solve(string1, string2) {
   // Write your solution here.
-  return args;
+  if (string1.length !== string2.length) {
+    return false;
+  }
+
+  const count = new Map();
+  for (let i = 0; i < string1.length; i++) {
+    count.set(string1[i], (count.get(string1[i]) || 0) + 1);
+  }
+
+  for (let j = 0; j < string2.length; j++) {
+    if (count.get(string2[j]) > 0) {
+      count.set(string2[j], count.get(string2[j]) - 1);
+    } else {
+      return false;
+    }
+  }
+  return true;
 }
 
 /*

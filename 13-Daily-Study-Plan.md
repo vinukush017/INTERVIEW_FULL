@@ -25,14 +25,14 @@ Use this file every day. The plan assumes 90 minutes to 3 hours daily. If you mi
 ### Day 1 — Setup and baseline
 
 - [ ] Read [README.md](./README.md) and [00-Roadmap.md](./00-Roadmap.md).
-- [ ] Solve [Two Sum](./HashMap/two-sum.js).
+- [x] Solve [Two Sum](./HashMap/two-sum.js).
 - [ ] Study scope, `var`, `let`, `const`, and hoisting in [JavaScript](./02-JavaScript.md).
 - [ ] Write and practise your 60-90 second introduction.
 
 ### Day 2 — Frequency counting
 
-- [ ] Solve [Contains Duplicate](./HashMap/contains-duplicate.js).
-- [ ] Solve [Valid Anagram](./HashMap/valid-anagram.js).
+- [x] Solve [Contains Duplicate](./HashMap/contains-duplicate.js).
+- [x] Solve [Valid Anagram](./HashMap/valid-anagram.js).
 - [ ] Review JavaScript objects, `Map`, and `Set`.
 - [ ] Repeat Two Sum without looking at yesterday's code.
 

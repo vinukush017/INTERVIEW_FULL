@@ -15,9 +15,17 @@
  * - Do not fill in the notes below until you finish your first attempt.
  */
 
-function solve(...args) {
-  // Write your solution here.
-  return args;
+function solve(arr) {
+  const seen = new Map()
+    
+    for(let i = 0; i < arr.length ; i++){
+        if(seen.has(arr[i])){
+            return true
+        }else{
+            seen.set(arr[i], 0)
+        }
+    }
+    return false
 }
 
 /*
