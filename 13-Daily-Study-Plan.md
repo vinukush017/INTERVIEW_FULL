@@ -38,8 +38,8 @@ Use this file every day. The plan assumes 90 minutes to 3 hours daily. If you mi
 
 ### Day 3 — HashMap patterns
 
-- [ ] Solve [Group Anagrams](./HashMap/group-anagrams.js).
-- [ ] Review your completed [Top K Frequent Elements](./HashMap/top-k-frequent-elements.js) solution.
+- [x] Solve [Group Anagrams](./HashMap/group-anagrams.js).
+- [x] Review your completed [Top K Frequent Elements](./HashMap/top-k-frequent-elements.js) solution.
 - [ ] Study array methods: `map`, `filter`, `reduce`, `sort`, and `find`.
 - [ ] Explain when a `Map` is preferable to an object.
 

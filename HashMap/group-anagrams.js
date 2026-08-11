@@ -15,9 +15,25 @@
  * - Do not fill in the notes below until you finish your first attempt.
  */
 
-function solve(...args) {
-  // Write your solution here.
-  return args;
+function solve(array) {
+  const labelMap = new Map();
+
+  for (let word of array) {
+    let label = [];
+    for (let char of word) {
+      label.push(char);
+    }
+
+    const labelKey = label.sort().join("");
+    const existing = labelMap.get(labelKey);
+
+    if (existing) {
+      labelMap.set(labelKey, [...existing, word]);
+    } else {
+      labelMap.set(labelKey, [word]);
+    }
+  }
+  return [...labelMap.values()];
 }
 
 /*
