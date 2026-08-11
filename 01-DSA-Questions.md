@@ -13,16 +13,38 @@ Mark a problem `[x]` only when you can:
 
 If you needed the solution, leave it unchecked and repeat it after 1, 3, 7, and 14 days. The topic-folder READMEs are navigation pages; update progress only here.
 
-## Recommended order
+## Concept-first learning order
 
-1. Arrays, HashMap, two pointers, and sliding window
-2. Stack, queue, binary search, and linked lists
-3. Trees and heap
-4. Graphs and backtracking
-5. Dynamic programming and greedy
-6. Intervals, strings, math, and bit manipulation
+Do not choose topics randomly. Learn them in the following dependency order. A later topic intentionally reuses concepts and data structures from earlier topics.
+
+| Stage | Learn first | Then practise | Why it comes here |
+| --- | --- | --- | --- |
+| 0 | JavaScript basics, loops, functions, and Big-O | Very small coding exercises | These are prerequisites for all DSA practice. |
+| 1 | Indexes, traversal, mutation, and sorting | Arrays | Arrays are the base for most interview patterns. |
+| 2 | Character traversal, comparison, and counting | Strings | Strings use the same traversal skills as arrays. |
+| 3 | `Set`, `Map`, lookup, and frequency counting | HashMap | Hashing improves many array and string solutions. |
+| 4 | Left/right pointers and pointer invariants | Two Pointers | This builds on array/string traversal and sorting. |
+| 5 | Fixed and variable windows with frequency maps | Sliding Window | This combines arrays, two pointers, and HashMaps. |
+| 6 | LIFO, FIFO, and monotonic structures | Stack, then Queue | Stacks model nested work; queues are needed for BFS. |
+| 7 | Sorted-search invariants and boundary handling | Binary Search | This requires confident array indexing. |
+| 8 | Nodes, references, and fast/slow pointers | LinkedList | This introduces pointer-based structures. |
+| 9 | Base cases, recursive calls, and the call stack | Recursion exercises | Recursion must be comfortable before recursive structures. |
+| 10 | DFS, BFS, and BST ordering | Trees | Trees apply recursion, stacks, and queues. |
+| 11 | Priority queues and retaining the best `k` values | Heap | Heaps support ranking, scheduling, and graph algorithms. |
+| 12 | Choose, explore, undo, and pruning | Backtracking | Backtracking extends recursion by managing choices. |
+| 13 | Adjacency lists, visited sets, DFS, BFS, and topological sort | Graph | Graphs reuse HashMaps, Sets, recursion, and queues. |
+| 14 | State, recurrence, memoization, and tabulation | Dynamic Programming | DP builds on recursion and repeated subproblems. |
+| 15 | Local choices and proof of correctness | Greedy | Comparing greedy with DP clarifies when local choices work. |
+| 16 | Sorting by start/end and overlap rules | Intervals | Interval problems reuse sorting, greedy, heaps, and arrays. |
+| 17 | XOR, bit operations, and numeric simulation | Bit Manipulation, then Math | Learn these independent techniques after the core patterns. |
+
+The short version is:
+
+**Arrays → Strings → HashMap → Two Pointers → Sliding Window → Stack/Queue → Binary Search → LinkedList → Recursion → Trees → Heap → Backtracking → Graph → Dynamic Programming → Greedy → Intervals → Bits/Math**
 
 ## Problems
+
+The sections below are topic checklists. Use the concept-first order above when deciding which section to practise next.
 
 ### Arrays
 

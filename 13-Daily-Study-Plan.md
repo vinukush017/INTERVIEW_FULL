@@ -18,23 +18,31 @@ Use this file every day. The plan assumes 90 minutes to 3 hours daily. If you mi
 - 30-45 minutes: full-stack study
 - 10-15 minutes: notes or interview explanation
 
+## DSA topic order
+
+Before following the daily problem schedule, be comfortable with JavaScript variables, loops, functions, arrays, strings, and basic Big-O. The recommended DSA topic path is:
+
+**Arrays → Strings → HashMap → Two Pointers → Sliding Window → Stack/Queue → Binary Search → LinkedList → Recursion → Trees → Heap → Backtracking → Graph → Dynamic Programming → Greedy → Intervals → Bits/Math**
+
+Arrays and Strings come first because nearly every later pattern uses their traversal skills. Advanced string patterns such as palindrome expansion can still be practised later. Do not begin with Recursion; study it after the linear data structures and immediately before Trees, Backtracking, Graphs, and Dynamic Programming. See [01-DSA-Questions.md](./01-DSA-Questions.md#concept-first-learning-order) for what each stage teaches and why it comes in that position.
+
 ---
 
-## Week 1 — Arrays, HashMap, and JavaScript Foundations
+## Week 1 — Arrays, Strings, HashMap, and JavaScript Foundations
 
-### Day 1 — Setup and baseline
+### Day 1 — Array traversal and Set lookup
 
 - [ ] Read [README.md](./README.md) and [00-Roadmap.md](./00-Roadmap.md).
-- [x] Solve [Two Sum](./HashMap/two-sum.js).
+- [x] Solve [Contains Duplicate](./HashMap/contains-duplicate.js).
 - [ ] Study scope, `var`, `let`, `const`, and hoisting in [JavaScript](./02-JavaScript.md).
 - [ ] Write and practise your 60-90 second introduction.
 
-### Day 2 — Frequency counting
+### Day 2 — String traversal and frequency counting
 
-- [x] Solve [Contains Duplicate](./HashMap/contains-duplicate.js).
 - [x] Solve [Valid Anagram](./HashMap/valid-anagram.js).
+- [x] Solve [Two Sum](./HashMap/two-sum.js).
 - [ ] Review JavaScript objects, `Map`, and `Set`.
-- [ ] Repeat Two Sum without looking at yesterday's code.
+- [ ] Repeat Contains Duplicate without looking at yesterday's code.
 
 ### Day 3 — HashMap patterns
 
@@ -184,6 +192,7 @@ Use this file every day. The plan assumes 90 minutes to 3 hours daily. If you mi
 
 ### Day 22 — Tree recursion
 
+- [ ] Learn the recursion base case, recursive case, call stack, and return value.
 - [ ] Solve [Invert Binary Tree](./Trees/invert-binary-tree.js).
 - [ ] Solve [Maximum Depth of Binary Tree](./Trees/maximum-depth-of-binary-tree.js).
 - [ ] Begin [Next.js](./04-NextJS.md): routing, layouts, and rendering.
@@ -233,47 +242,47 @@ Use this file every day. The plan assumes 90 minutes to 3 hours daily. If you mi
 
 ---
 
-## Week 5 — Graphs, Backtracking, Node.js, and Express
+## Week 5 — Backtracking, Graphs, Node.js, and Express
 
-### Day 29 — Grid traversal
-
-- [ ] Solve [Number of Islands](./Graph/number-of-islands.js).
-- [ ] Solve [Max Area of Island](./Graph/max-area-of-island.js).
-- [ ] Begin [Node.js](./05-NodeJS.md): runtime, modules, and event loop.
-- [ ] Repeat Binary Tree Level Order Traversal.
-
-### Day 30 — Graph representation
-
-- [ ] Solve [Clone Graph](./Graph/clone-graph.js).
-- [ ] Solve [Rotting Oranges](./Graph/rotting-oranges.js).
-- [ ] Study Node.js events, buffers, and streams.
-- [ ] Explain BFS versus DFS and their complexity.
-
-### Day 31 — Dependencies and cycles
-
-- [ ] Solve [Course Schedule](./Graph/course-schedule.js).
-- [ ] Attempt [Course Schedule II](./Graph/course-schedule-ii.js).
-- [ ] Begin [Express](./06-Express.md): routing and middleware order.
-- [ ] Repeat Number of Islands.
-
-### Day 32 — Backtracking template
+### Day 29 — Backtracking template
 
 - [ ] Solve [Subsets](./Backtracking/subsets.js).
 - [ ] Solve [Permutations](./Backtracking/permutations.js).
-- [ ] Study Express validation and centralized error handling.
-- [ ] Draw the decision tree before coding.
+- [ ] Begin [Node.js](./05-NodeJS.md): runtime, modules, and event loop.
+- [ ] Repeat Binary Tree Level Order Traversal.
 
-### Day 33 — Choice and pruning
+### Day 30 — Backtracking choices and pruning
 
 - [ ] Solve [Combination Sum](./Backtracking/combination-sum.js).
 - [ ] Solve [Combination Sum II](./Backtracking/combination-sum-ii.js).
-- [ ] Study authentication versus authorization.
-- [ ] Repeat Clone Graph.
+- [ ] Study Node.js events, buffers, and streams.
+- [ ] Repeat Subsets and draw its decision tree.
 
-### Day 34 — Backend interview practice
+### Day 31 — Backtracking on a grid
 
 - [ ] Attempt [Word Search](./Backtracking/word-search.js).
-- [ ] Review one unfinished graph problem.
+- [ ] Review choose, explore, undo, and pruning.
+- [ ] Begin [Express](./06-Express.md): routing and middleware order.
+- [ ] Repeat Permutations.
+
+### Day 32 — Graph grid traversal
+
+- [ ] Solve [Number of Islands](./Graph/number-of-islands.js).
+- [ ] Solve [Max Area of Island](./Graph/max-area-of-island.js).
+- [ ] Study Express validation and centralized error handling.
+- [ ] Explain DFS versus BFS and their complexity.
+
+### Day 33 — Graph representation and BFS
+
+- [ ] Solve [Clone Graph](./Graph/clone-graph.js).
+- [ ] Solve [Rotting Oranges](./Graph/rotting-oranges.js).
+- [ ] Study authentication versus authorization.
+- [ ] Repeat Number of Islands.
+
+### Day 34 — Graph dependencies and cycles
+
+- [ ] Solve [Course Schedule](./Graph/course-schedule.js).
+- [ ] Attempt [Course Schedule II](./Graph/course-schedule-ii.js).
 - [ ] Study CORS, secure cookies, rate limiting, Helmet, and input sanitization.
 - [ ] Explain an API from one of your projects, including errors and security.
 
