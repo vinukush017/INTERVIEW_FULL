@@ -253,8 +253,8 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 
 ### Two Pointers
 
-- [ ] [Valid Palindrome](./Two-Pointers/valid-palindrome.js)
-- [ ] [Two Sum II - Input Array Is Sorted](./Two-Pointers/two-sum-ii-input-array-is-sorted.js)
+- [x] [Valid Palindrome](./Two-Pointers/valid-palindrome.js)
+- [x] [Two Sum II - Input Array Is Sorted](./Two-Pointers/two-sum-ii-input-array-is-sorted.js)
 - [ ] [3Sum](./Two-Pointers/3sum.js)
 - [ ] [Container With Most Water](./Two-Pointers/container-with-most-water.js)
 - [ ] [Trapping Rain Water](./Two-Pointers/trapping-rain-water.js)

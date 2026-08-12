@@ -15,9 +15,21 @@
  * - Do not fill in the notes below until you finish your first attempt.
  */
 
-function solve(...args) {
+function solve(arr, target) {
   // Write your solution here.
-  return args;
+  let left = 0;
+  let right = arr.length - 1;
+  while (left < right) {
+    let sum = arr[left] + arr[right];
+    if (sum > target) {
+      right--;
+    } else if (sum < target) {
+      left++;
+    } else {
+      return [left + 1, right + 1];
+    }
+  }
+  return false;
 }
 
 /*

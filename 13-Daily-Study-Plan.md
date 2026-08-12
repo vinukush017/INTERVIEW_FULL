@@ -77,7 +77,7 @@ Arrays and Strings come first because nearly every later pattern uses their trav
 
 ### Day 5 — Two pointers on a sorted array
 
-- [ ] Solve [Two Sum II](./Two-Pointers/two-sum-ii-input-array-is-sorted.js) as today's core problem.
+- [x] Solve [Two Sum II](./Two-Pointers/two-sum-ii-input-array-is-sorted.js) as today's core problem.
 - [ ] Optional stretch: [Longest Consecutive Sequence](./Arrays/longest-consecutive-sequence.js).
 - [ ] Repeat Group Anagrams.
 - [ ] Study closures with two small code examples.
