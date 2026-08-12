@@ -69,7 +69,7 @@ Arrays and Strings come first because nearly every later pattern uses their trav
 
 ### Day 4 — Two-pointer foundation
 
-- [ ] Solve [Valid Palindrome](./Two-Pointers/valid-palindrome.js) as today's core problem.
+- [x] Solve [Valid Palindrome](./Two-Pointers/valid-palindrome.js) as today's core problem.
 - [ ] Optional stretch: [Product of Array Except Self](./Arrays/product-of-array-except-self.js).
 - [ ] Repeat Contains Duplicate and Valid Anagram.
 - [ ] Study functions, arrow functions, and the `this` keyword.

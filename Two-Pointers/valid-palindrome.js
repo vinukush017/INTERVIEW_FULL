@@ -15,9 +15,29 @@
  * - Do not fill in the notes below until you finish your first attempt.
  */
 
-function solve(...args) {
+function solve(string) {
   // Write your solution here.
-  return args;
+  let left = 0;
+  let right = string.length - 1;
+
+  const checkChar = (char) => /[^a-zA-Z0-9]/.test(char);
+
+  while (left < right) {
+    while (checkChar(string[left])) {
+      left++;
+    }
+    while (checkChar(string[right])) {
+      right--;
+    }
+
+    if (string[left].toUpperCase() === string[right].toUpperCase()) {
+      left++;
+      right--;
+    } else {
+      return false;
+    }
+  }
+  return true;
 }
 
 /*
