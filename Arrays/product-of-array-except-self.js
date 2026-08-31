@@ -15,9 +15,11 @@
  * - Do not fill in the notes below until you finish your first attempt.
  */
 
-function solve(...args) {
+function solve(arr) {
+
+
   // Write your solution here.
-  return args;
+  return arr;
 }
 
 /*
