@@ -1,6 +1,7 @@
 /**
  * Problem: Number of 1 Bits
  * Topic: Bit Manipulation
+ * LeetCode search: https://leetcode.com/search/?q=Number%20of%201%20Bits
  *
  * Description:
  * Given a positive integer, return the number of set bits in its binary representation.

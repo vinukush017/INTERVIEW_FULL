@@ -1,6 +1,7 @@
 /**
  * Problem: Combination Sum II
  * Topic: Backtracking
+ * LeetCode search: https://leetcode.com/search/?q=Combination%20Sum%20II
  *
  * Description:
  * Given candidate values and a target, return unique combinations summing to the target. Each input position may be used at most once.

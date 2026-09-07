@@ -1,6 +1,7 @@
 /**
  * Problem: Find Minimum in Rotated Sorted Array
  * Topic: Binary Search
+ * LeetCode search: https://leetcode.com/search/?q=Find%20Minimum%20in%20Rotated%20Sorted%20Array
  *
  * Description:
  * Given a rotated sorted array of unique values, return its smallest element.

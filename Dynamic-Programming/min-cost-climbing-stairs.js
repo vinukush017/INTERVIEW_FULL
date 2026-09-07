@@ -1,6 +1,7 @@
 /**
  * Problem: Min Cost Climbing Stairs
  * Topic: Dynamic Programming
+ * LeetCode search: https://leetcode.com/search/?q=Min%20Cost%20Climbing%20Stairs
  *
  * Description:
  * Each step has a cost paid when stepped on. Starting at index zero or one, return the minimum cost needed to move beyond the last step.

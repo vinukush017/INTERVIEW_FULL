@@ -1,6 +1,7 @@
 /**
  * Problem: Top K Frequent Words
  * Topic: Heap
+ * LeetCode search: https://leetcode.com/search/?q=Top%20K%20Frequent%20Words
  *
  * Description:
  * Return the k most frequent words, ordered by decreasing frequency and then alphabetically for ties.

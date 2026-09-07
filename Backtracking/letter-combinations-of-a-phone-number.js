@@ -1,6 +1,7 @@
 /**
  * Problem: Letter Combinations of a Phone Number
  * Topic: Backtracking
+ * LeetCode search: https://leetcode.com/search/?q=Letter%20Combinations%20of%20a%20Phone%20Number
  *
  * Description:
  * Given digits from 2 through 9, return every letter string represented by their telephone keypad mappings. Return an empty array for empty input.

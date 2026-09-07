@@ -1,6 +1,7 @@
 /**
  * Problem: Maximum Depth of Binary Tree
  * Topic: Trees
+ * LeetCode search: https://leetcode.com/search/?q=Maximum%20Depth%20of%20Binary%20Tree
  *
  * Description:
  * Return the number of nodes along the longest path from a binary-tree root to a leaf. An empty tree has depth zero.

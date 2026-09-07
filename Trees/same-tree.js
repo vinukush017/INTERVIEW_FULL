@@ -1,6 +1,7 @@
 /**
  * Problem: Same Tree
  * Topic: Trees
+ * LeetCode search: https://leetcode.com/search/?q=Same%20Tree
  *
  * Description:
  * Given two binary-tree roots, return true when their structures and corresponding node values are identical.

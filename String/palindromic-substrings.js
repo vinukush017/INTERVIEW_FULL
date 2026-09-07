@@ -1,6 +1,7 @@
 /**
  * Problem: Palindromic Substrings
  * Topic: String
+ * LeetCode search: https://leetcode.com/search/?q=Palindromic%20Substrings
  *
  * Description:
  * Given a string, count all contiguous substrings that are palindromes. Identical text at different positions counts separately.

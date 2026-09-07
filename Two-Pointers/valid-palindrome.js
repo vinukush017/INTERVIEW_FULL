@@ -1,6 +1,7 @@
 /**
  * Problem: Valid Palindrome
  * Topic: Two Pointers
+ * LeetCode search: https://leetcode.com/search/?q=Valid%20Palindrome
  *
  * Description:
  * Given a string, ignore non-alphanumeric characters and letter case, then determine whether it reads the same forward and backward.

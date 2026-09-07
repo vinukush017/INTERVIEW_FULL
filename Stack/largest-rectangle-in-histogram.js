@@ -1,6 +1,7 @@
 /**
  * Problem: Largest Rectangle in Histogram
  * Topic: Stack
+ * LeetCode search: https://leetcode.com/search/?q=Largest%20Rectangle%20in%20Histogram
  *
  * Description:
  * Given histogram bar heights with width one, return the largest rectangular area that can be formed from consecutive bars.

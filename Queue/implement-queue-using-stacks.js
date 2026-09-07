@@ -1,6 +1,7 @@
 /**
  * Problem: Implement Queue Using Stacks
  * Topic: Queue
+ * LeetCode search: https://leetcode.com/search/?q=Implement%20Queue%20Using%20Stacks
  *
  * Description:
  * Design a first-in-first-out queue using only standard stack operations. Support push, peek, pop, and empty.

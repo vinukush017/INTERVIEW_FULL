@@ -1,6 +1,7 @@
 /**
  * Problem: Course Schedule II
  * Topic: Graph
+ * LeetCode search: https://leetcode.com/search/?q=Course%20Schedule%20II
  *
  * Description:
  * Given courses and prerequisites, return any valid completion order, or an empty array when a cycle makes completion impossible.

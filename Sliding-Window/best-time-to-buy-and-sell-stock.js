@@ -1,6 +1,7 @@
 /**
  * Problem: Best Time to Buy and Sell Stock
  * Topic: Sliding Window
+ * LeetCode search: https://leetcode.com/search/?q=Best%20Time%20to%20Buy%20and%20Sell%20Stock
  *
  * Description:
  * Given daily stock prices, choose one day to buy and a later day to sell. Return the greatest possible profit, or zero if none exists.

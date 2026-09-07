@@ -1,6 +1,7 @@
 /**
  * Problem: Contains Duplicate
  * Topic: HashMap
+ * LeetCode search: https://leetcode.com/search/?q=Contains%20Duplicate
  *
  * Description:
  * Given an integer array, return true when any value appears more than once; otherwise return false.

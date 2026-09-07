@@ -1,6 +1,7 @@
 /**
  * Problem: Rotting Oranges
  * Topic: Graph
+ * LeetCode search: https://leetcode.com/search/?q=Rotting%20Oranges
  *
  * Description:
  * Each minute, rotten oranges infect adjacent fresh oranges. Return the minutes until none are fresh, or -1 when some can never rot.

@@ -1,6 +1,7 @@
 /**
  * Problem: Pow(x, n)
  * Topic: Math
+ * LeetCode search: https://leetcode.com/search/?q=Pow(x%2C%20n)
  *
  * Description:
  * Given a number x and integer exponent n, calculate x raised to n. Support positive, zero, and negative exponents.

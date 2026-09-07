@@ -1,6 +1,7 @@
 /**
  * Problem: Dota2 Senate
  * Topic: Queue
+ * LeetCode search: https://leetcode.com/search/?q=Dota2%20Senate
  *
  * Description:
  * Senators from two parties act in order and may ban an opposing senator. Return the party that will eventually have voting rights remaining.

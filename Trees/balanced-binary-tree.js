@@ -1,6 +1,7 @@
 /**
  * Problem: Balanced Binary Tree
  * Topic: Trees
+ * LeetCode search: https://leetcode.com/search/?q=Balanced%20Binary%20Tree
  *
  * Description:
  * Return true when the left and right subtree heights differ by at most one at every node.

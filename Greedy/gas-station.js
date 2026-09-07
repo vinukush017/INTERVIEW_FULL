@@ -1,6 +1,7 @@
 /**
  * Problem: Gas Station
  * Topic: Greedy
+ * LeetCode search: https://leetcode.com/search/?q=Gas%20Station
  *
  * Description:
  * Stations form a circle with available gas and travel costs. Return a starting index that completes the circuit, or -1 when impossible.

@@ -1,6 +1,7 @@
 /**
  * Problem: Maximum Product Subarray
  * Topic: Arrays
+ * LeetCode search: https://leetcode.com/search/?q=Maximum%20Product%20Subarray
  *
  * Description:
  * Given an integer array, find the contiguous non-empty subarray having the largest product and return that product.

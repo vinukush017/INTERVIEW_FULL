@@ -1,6 +1,7 @@
 /**
  * Problem: Minimum Window Substring
  * Topic: Sliding Window
+ * LeetCode search: https://leetcode.com/search/?q=Minimum%20Window%20Substring
  *
  * Description:
  * Given strings s and t, return the shortest substring of s containing every character of t with the required frequency. Return an empty string if impossible.

@@ -1,6 +1,7 @@
 /**
  * Problem: Meeting Rooms II
  * Topic: Intervals
+ * LeetCode search: https://leetcode.com/search/?q=Meeting%20Rooms%20II
  *
  * Description:
  * Given meeting intervals, return the minimum number of rooms required so every meeting can occur.

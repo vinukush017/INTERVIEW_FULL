@@ -1,6 +1,7 @@
 /**
  * Problem: Climbing Stairs
  * Topic: Dynamic Programming
+ * LeetCode search: https://leetcode.com/search/?q=Climbing%20Stairs
  *
  * Description:
  * A staircase has n steps and each move climbs one or two steps. Return the number of distinct ways to reach the top.

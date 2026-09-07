@@ -1,6 +1,7 @@
 /**
  * Problem: Search in Rotated Sorted Array
  * Topic: Binary Search
+ * LeetCode search: https://leetcode.com/search/?q=Search%20in%20Rotated%20Sorted%20Array
  *
  * Description:
  * A distinct sorted array was rotated at an unknown position. Return the index of a target value or -1 if absent.

@@ -1,6 +1,7 @@
 /**
  * Problem: Jump Game
  * Topic: Greedy
+ * LeetCode search: https://leetcode.com/search/?q=Jump%20Game
  *
  * Description:
  * Each array value is the maximum forward jump from that position. Return true when the last index is reachable from the first.

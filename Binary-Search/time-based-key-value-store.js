@@ -1,6 +1,7 @@
 /**
  * Problem: Time Based Key-Value Store
  * Topic: Binary Search
+ * LeetCode search: https://leetcode.com/search/?q=Time%20Based%20Key-Value%20Store
  *
  * Description:
  * Design a store that saves string values with timestamps and returns the value having the greatest timestamp not exceeding a requested time.

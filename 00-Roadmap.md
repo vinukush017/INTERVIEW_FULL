@@ -23,7 +23,20 @@ This plan combines DSA, JavaScript, frontend, backend, SQL, system design, proje
 | 7 | Intervals, strings, math, and bit manipulation | System design | Design two common systems |
 | 8 | Weak areas and mixed sets | Resume, HR, and behavioral review | Two complete mock interviews |
 
+This 8-week block builds the skill. From Week 9 the same
+[Daily Study Plan](./13-Daily-Study-Plan.md) continues into an 8-week
+job-search phase — applications, referrals, live interview loops, and
+negotiation — using [Job Search and Negotiation](./14-Job-Search-and-Negotiation.md).
+Total span is roughly 3-4 months; weeks 9-16 repeat with a wider net if an
+offer hasn't landed yet.
+
 ## Daily plan
+
+The plan below assumes you're mid-stride. If you're just starting, the first
+two weeks run lighter — about 60 minutes/day — specifically to rebuild the
+habit before adding load. Run `npm run today` each day rather than tracking
+this manually; see the [README](./README.md#daily-commands) for the full
+command list.
 
 ### If you have 90 minutes
 

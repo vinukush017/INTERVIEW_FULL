@@ -1,6 +1,7 @@
 /**
  * Problem: Search Insert Position
  * Topic: Binary Search
+ * LeetCode search: https://leetcode.com/search/?q=Search%20Insert%20Position
  *
  * Description:
  * Given a sorted array of distinct integers and a target, return its index or the index where it should be inserted to preserve order.

@@ -1,6 +1,7 @@
 /**
  * Problem: Two Sum
  * Topic: HashMap
+ * LeetCode search: https://leetcode.com/search/?q=Two%20Sum
  *
  * Description:
  * Given an integer array and a target, return the indices of two different elements whose sum equals the target. Exactly one valid answer exists.

@@ -1,6 +1,7 @@
 /**
  * Problem: Number of Recent Calls
  * Topic: Queue
+ * LeetCode search: https://leetcode.com/search/?q=Number%20of%20Recent%20Calls
  *
  * Description:
  * Design a counter that records request times and returns how many requests occurred within the inclusive interval from t minus 3000 through t.

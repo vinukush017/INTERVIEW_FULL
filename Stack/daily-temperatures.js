@@ -1,6 +1,7 @@
 /**
  * Problem: Daily Temperatures
  * Topic: Stack
+ * LeetCode search: https://leetcode.com/search/?q=Daily%20Temperatures
  *
  * Description:
  * For each daily temperature, return how many days must pass before a warmer temperature occurs. Use zero when no warmer future day exists.

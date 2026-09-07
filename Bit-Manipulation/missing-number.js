@@ -1,6 +1,7 @@
 /**
  * Problem: Missing Number
  * Topic: Bit Manipulation
+ * LeetCode search: https://leetcode.com/search/?q=Missing%20Number
  *
  * Description:
  * An array contains n distinct values selected from zero through n. Return the one value from that range that is missing.

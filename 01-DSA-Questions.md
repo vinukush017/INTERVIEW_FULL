@@ -37,10 +37,11 @@ Do not choose topics randomly. Learn them in the following dependency order. A l
 | 15 | Local choices and proof of correctness | Greedy | Comparing greedy with DP clarifies when local choices work. |
 | 16 | Sorting by start/end and overlap rules | Intervals | Interval problems reuse sorting, greedy, heaps, and arrays. |
 | 17 | XOR, bit operations, and numeric simulation | Bit Manipulation, then Math | Learn these independent techniques after the core patterns. |
+| 18 | Comparison sorts, their complexity, and custom comparators | Sorting | You've been using `.sort()` since Stage 1 — this is dedicated practice implementing and reasoning about it directly, once every other pattern is comfortable. |
 
 The short version is:
 
-**Arrays → Strings → HashMap → Two Pointers → Sliding Window → Stack/Queue → Binary Search → LinkedList → Recursion → Trees → Heap → Backtracking → Graph → Dynamic Programming → Greedy → Intervals → Bits/Math**
+**Arrays → Strings → HashMap → Two Pointers → Sliding Window → Stack/Queue → Binary Search → LinkedList → Recursion → Trees → Heap → Backtracking → Graph → Dynamic Programming → Greedy → Intervals → Bits/Math → Sorting**
 
 ## Dependency-ordered practice queue
 
@@ -56,6 +57,23 @@ This is the actual problem-solving order. Follow it from top to bottom, includin
 6. [Product of Array Except Self](./Arrays/product-of-array-except-self.js) — **challenge on the first pass**
 7. [Longest Consecutive Sequence](./Arrays/longest-consecutive-sequence.js) — **challenge on the first pass**
 8. [Top K Frequent Elements](./HashMap/top-k-frequent-elements.js) — **challenge on the first pass**
+9. [Move Zeroes](./Arrays/move-zeroes.js)
+10. [Remove Duplicates from Sorted Array](./Arrays/remove-duplicates-from-sorted-array.js)
+11. [Remove Element](./Arrays/remove-element.js)
+12. [Majority Element](./Arrays/majority-element.js)
+13. [Find All Numbers Disappeared in an Array](./Arrays/find-all-numbers-disappeared-in-an-array.js)
+14. [Pascal's Triangle](./Arrays/pascals-triangle.js)
+15. [Third Maximum Number](./Arrays/third-maximum-number.js)
+16. [Reverse String](./String/reverse-string.js)
+17. [Reverse Words in a String](./String/reverse-words-in-a-string.js)
+18. [Find the Index of the First Occurrence in a String](./String/find-the-index-of-the-first-occurrence-in-a-string.js)
+19. [Longest Common Prefix](./String/longest-common-prefix.js)
+20. [Roman to Integer](./String/roman-to-integer.js)
+21. [Isomorphic Strings](./String/isomorphic-strings.js)
+22. [Contains Duplicate II](./HashMap/contains-duplicate-ii.js)
+23. [Intersection of Two Arrays](./HashMap/intersection-of-two-arrays.js)
+24. [Ransom Note](./HashMap/ransom-note.js)
+25. [Word Pattern](./HashMap/word-pattern.js)
 
 ### Level 2 — Two pointers on arrays and strings
 
@@ -70,6 +88,9 @@ Learn left/right pointers and why each pointer moves before starting.
 7. [Trapping Rain Water](./Two-Pointers/trapping-rain-water.js) — **challenge**
 8. [Palindromic Substrings](./String/palindromic-substrings.js)
 9. [Longest Palindromic Substring](./String/longest-palindromic-substring.js)
+10. [Is Subsequence](./Two-Pointers/is-subsequence.js)
+11. [Squares of a Sorted Array](./Two-Pointers/squares-of-a-sorted-array.js)
+12. [Reverse Vowels of a String](./Two-Pointers/reverse-vowels-of-a-string.js)
 
 ### Level 3 — Sliding window
 
@@ -96,6 +117,12 @@ Learn ordinary Stack and Queue operations before monotonic-stack/deque questions
 9. [Car Fleet](./Stack/car-fleet.js)
 10. [Sliding Window Maximum](./Sliding-Window/sliding-window-maximum.js)
 11. [Largest Rectangle in Histogram](./Stack/largest-rectangle-in-histogram.js) — **challenge**
+12. [Baseball Game](./Stack/baseball-game.js)
+13. [Remove All Adjacent Duplicates In String](./Stack/remove-all-adjacent-duplicates-in-string.js)
+14. [Implement Stack using Queues](./Stack/implement-stack-using-queues.js)
+15. [Moving Average from Data Stream](./Queue/moving-average-from-data-stream.js)
+16. [Number of Students Unable to Eat Lunch](./Queue/number-of-students-unable-to-eat-lunch.js)
+17. [Time Needed to Buy Tickets](./Queue/time-needed-to-buy-tickets.js)
 
 ### Level 5 — Binary search
 
@@ -107,6 +134,10 @@ Learn ordinary Stack and Queue operations before monotonic-stack/deque questions
 6. [Koko Eating Bananas](./Binary-Search/koko-eating-bananas.js)
 7. [Time Based Key-Value Store](./Binary-Search/time-based-key-value-store.js)
 8. [Median of Two Sorted Arrays](./Binary-Search/median-of-two-sorted-arrays.js) — **challenge**
+9. [Sqrt(x)](./Binary-Search/sqrtx.js)
+10. [First Bad Version](./Binary-Search/first-bad-version.js)
+11. [Find Peak Element](./Binary-Search/find-peak-element.js)
+12. [Find First and Last Position of Element in Sorted Array](./Binary-Search/find-first-and-last-position-of-element-in-sorted-array.js)
 
 ### Level 6 — Linked lists
 
@@ -118,24 +149,35 @@ Learn ordinary Stack and Queue operations before monotonic-stack/deque questions
 6. [Reorder List](./LinkedList/reorder-list.js)
 7. [Copy List With Random Pointer](./LinkedList/copy-list-with-random-pointer.js)
 8. [LRU Cache](./LinkedList/lru-cache.js) — **challenge; requires HashMap too**
+9. [Middle of the Linked List](./LinkedList/middle-of-the-linked-list.js)
+10. [Palindrome Linked List](./LinkedList/palindrome-linked-list.js)
+11. [Intersection of Two Linked Lists](./LinkedList/intersection-of-two-linked-lists.js)
+12. [Remove Duplicates from Sorted List](./LinkedList/remove-duplicates-from-sorted-list.js)
 
 ### Level 7 — Recursion, trees, and BSTs
 
-First practise base cases, recursive calls, and tracing the call stack on tiny examples. Then continue:
+First practise base cases, recursive calls, and tracing the call stack on tiny examples — solve the three Recursion problems below before touching a tree problem. They're intentionally small; the goal is comfort with the base case / recursive case shape, not difficulty. Then continue:
 
-1. [Maximum Depth of Binary Tree](./Trees/maximum-depth-of-binary-tree.js)
-2. [Invert Binary Tree](./Trees/invert-binary-tree.js)
-3. [Same Tree](./Trees/same-tree.js)
-4. [Binary Tree Level Order Traversal](./Trees/binary-tree-level-order-traversal.js)
-5. [Diameter of Binary Tree](./Trees/diameter-of-binary-tree.js)
-6. [Balanced Binary Tree](./Trees/balanced-binary-tree.js)
-7. [Binary Tree Right Side View](./Trees/binary-tree-right-side-view.js)
-8. [Count Good Nodes in Binary Tree](./Trees/count-good-nodes-in-binary-tree.js)
-9. [Lowest Common Ancestor of BST](./Trees/lowest-common-ancestor-of-bst.js)
-10. [Validate Binary Search Tree](./Trees/validate-binary-search-tree.js)
-11. [Kth Smallest Element in BST](./Trees/kth-smallest-element-in-bst.js)
-12. [Subtree of Another Tree](./Trees/subtree-of-another-tree.js)
-13. [Construct Binary Tree from Preorder and Inorder](./Trees/construct-binary-tree-from-preorder-and-inorder-traversal.js) — **challenge**
+1. [Factorial](./Recursion/factorial.js)
+2. [Fibonacci Number](./Recursion/fibonacci.js)
+3. [Sum of Array (Recursive)](./Recursion/sum-of-array.js)
+4. [Maximum Depth of Binary Tree](./Trees/maximum-depth-of-binary-tree.js)
+5. [Invert Binary Tree](./Trees/invert-binary-tree.js)
+6. [Same Tree](./Trees/same-tree.js)
+7. [Binary Tree Level Order Traversal](./Trees/binary-tree-level-order-traversal.js)
+8. [Diameter of Binary Tree](./Trees/diameter-of-binary-tree.js)
+9. [Balanced Binary Tree](./Trees/balanced-binary-tree.js)
+10. [Binary Tree Right Side View](./Trees/binary-tree-right-side-view.js)
+11. [Count Good Nodes in Binary Tree](./Trees/count-good-nodes-in-binary-tree.js)
+12. [Lowest Common Ancestor of BST](./Trees/lowest-common-ancestor-of-bst.js)
+13. [Validate Binary Search Tree](./Trees/validate-binary-search-tree.js)
+14. [Kth Smallest Element in BST](./Trees/kth-smallest-element-in-bst.js)
+15. [Subtree of Another Tree](./Trees/subtree-of-another-tree.js)
+16. [Construct Binary Tree from Preorder and Inorder](./Trees/construct-binary-tree-from-preorder-and-inorder-traversal.js) — **challenge**
+17. [Symmetric Tree](./Trees/symmetric-tree.js)
+18. [Path Sum](./Trees/path-sum.js)
+19. [Minimum Depth of Binary Tree](./Trees/minimum-depth-of-binary-tree.js)
+20. [Convert Sorted Array to Binary Search Tree](./Trees/convert-sorted-array-to-binary-search-tree.js)
 
 ### Level 8 — Heap and priority queue
 
@@ -145,6 +187,8 @@ First practise base cases, recursive calls, and tracing the call stack on tiny e
 4. [Merge K Sorted Lists](./Heap/merge-k-sorted-lists.js) — requires Linked Lists
 5. [Task Scheduler](./Heap/task-scheduler.js)
 6. [Find Median from Data Stream](./Heap/find-median-from-data-stream.js) — **challenge**
+7. [Relative Ranks](./Heap/relative-ranks.js)
+8. [K Closest Points to Origin](./Heap/k-closest-points-to-origin.js)
 
 ### Level 9 — Backtracking
 
@@ -159,6 +203,9 @@ Learn choose → explore → undo. Do not begin with grid or constraint problems
 7. [Palindrome Partitioning](./Backtracking/palindrome-partitioning.js) — requires palindrome work from Level 2
 8. [Word Search](./Backtracking/word-search.js)
 9. [N-Queens](./Backtracking/n-queens.js) — **challenge**
+10. [Generate Parentheses](./Backtracking/generate-parentheses.js)
+11. [Combinations](./Backtracking/combinations.js)
+12. [Letter Case Permutation](./Backtracking/letter-case-permutation.js)
 
 ### Level 10 — Graphs
 
@@ -176,6 +223,10 @@ Start only after recursion, Set/Map, Stack/Queue, trees, and basic backtracking.
 10. [Course Schedule](./Graph/course-schedule.js)
 11. [Course Schedule II](./Graph/course-schedule-ii.js)
 12. [Word Ladder](./Graph/word-ladder.js) — **challenge**
+13. [Flood Fill](./Graph/flood-fill.js)
+14. [Keys and Rooms](./Graph/keys-and-rooms.js)
+15. [Find if Path Exists in Graph](./Graph/find-if-path-exists-in-graph.js)
+16. [Is Graph Bipartite](./Graph/is-graph-bipartite.js)
 
 ### Level 11 — Dynamic programming
 
@@ -193,6 +244,10 @@ Learn brute-force recursion first, identify repeated states, then add memoizatio
 10. [Partition Equal Subset Sum](./Dynamic-Programming/partition-equal-subset-sum.js)
 11. [Longest Common Subsequence](./Dynamic-Programming/longest-common-subsequence.js)
 12. [Edit Distance](./Dynamic-Programming/edit-distance.js) — **challenge**
+13. [N-th Tribonacci Number](./Dynamic-Programming/n-th-tribonacci-number.js)
+14. [Unique Paths](./Dynamic-Programming/unique-paths.js)
+15. [Unique Paths II](./Dynamic-Programming/unique-paths-ii.js)
+16. [Triangle](./Dynamic-Programming/triangle.js)
 
 ### Level 12 — Greedy and intervals
 
@@ -209,6 +264,11 @@ Learn brute-force recursion first, identify repeated states, then add memoizatio
 11. [Non-overlapping Intervals](./Intervals/non-overlapping-intervals.js)
 12. [Meeting Rooms II](./Intervals/meeting-rooms-ii.js) — requires Heap
 13. [Minimum Interval to Include Each Query](./Intervals/minimum-interval-to-include-each-query.js) — **challenge; requires Heap**
+14. [Best Time to Buy and Sell Stock II](./Greedy/best-time-to-buy-and-sell-stock-ii.js)
+15. [Assign Cookies](./Greedy/assign-cookies.js)
+16. [Lemonade Change](./Greedy/lemonade-change.js)
+17. [Summary Ranges](./Intervals/summary-ranges.js)
+18. [Interval List Intersections](./Intervals/interval-list-intersections.js)
 
 ### Level 13 — Bits, math, and remaining simulations
 
@@ -223,6 +283,34 @@ Learn brute-force recursion first, identify repeated states, then add memoizatio
 9. [Pow(x, n)](./Math/pow-x-n.js) — requires Recursion
 10. [Multiply Strings](./Math/multiply-strings.js)
 11. [Sum of Two Integers](./Bit-Manipulation/sum-of-two-integers.js) — **challenge**
+12. [Hamming Distance](./Bit-Manipulation/hamming-distance.js)
+13. [Binary Number with Alternating Bits](./Bit-Manipulation/binary-number-with-alternating-bits.js)
+14. [Complement of Base 10 Integer](./Bit-Manipulation/complement-of-base-10-integer.js)
+15. [Reverse Integer](./Math/reverse-integer.js)
+16. [Palindrome Number](./Math/palindrome-number.js)
+17. [FizzBuzz](./Math/fizzbuzz.js)
+18. [Excel Sheet Column Number](./Math/excel-sheet-column-number.js)
+19. [Add Digits](./Math/add-digits.js)
+
+
+### Level 14 — Sorting
+
+Sorting algorithms and the problems that lean on them. Most items here only need Arrays; **Sort List** additionally needs Linked List and Recursion, so save it for last in this level.
+
+1. [Sort an Array](./Sorting/sort-an-array.js)
+2. [Sort Colors](./Sorting/sort-colors.js)
+3. [Merge Sorted Array](./Sorting/merge-sorted-array.js)
+4. [Largest Number](./Sorting/largest-number.js)
+5. [Wiggle Sort](./Sorting/wiggle-sort.js)
+6. [H-Index](./Sorting/h-index.js)
+7. [Relative Sort Array](./Sorting/relative-sort-array.js)
+8. [Sort List](./Sorting/sort-list.js) — requires Linked List and Recursion
+9. [Bubble Sort](./Sorting/bubble-sort.js)
+10. [Selection Sort](./Sorting/selection-sort.js)
+11. [Insertion Sort](./Sorting/insertion-sort.js)
+12. [Merge Sort (Implementation)](./Sorting/merge-sort-implementation.js)
+13. [Quick Sort (Implementation)](./Sorting/quick-sort-implementation.js)
+14. [Heap Sort (Implementation)](./Sorting/heap-sort-implementation.js)
 
 ## Problems
 
@@ -230,9 +318,16 @@ The sections below are the single progress checklist. They are grouped by folder
 
 ### Arrays
 
-- [ ] [Product of Array Except Self](./Arrays/product-of-array-except-self.js)
+- [x] [Product of Array Except Self](./Arrays/product-of-array-except-self.js)
 - [ ] [Longest Consecutive Sequence](./Arrays/longest-consecutive-sequence.js)
 - [ ] [Maximum Product Subarray](./Arrays/maximum-product-subarray.js)
+- [ ] [Move Zeroes](./Arrays/move-zeroes.js)
+- [ ] [Remove Duplicates from Sorted Array](./Arrays/remove-duplicates-from-sorted-array.js)
+- [ ] [Remove Element](./Arrays/remove-element.js)
+- [ ] [Majority Element](./Arrays/majority-element.js)
+- [ ] [Find All Numbers Disappeared in an Array](./Arrays/find-all-numbers-disappeared-in-an-array.js)
+- [ ] [Pascal's Triangle](./Arrays/pascals-triangle.js)
+- [ ] [Third Maximum Number](./Arrays/third-maximum-number.js)
 
 ### Strings
 
@@ -242,6 +337,12 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [Encode and Decode Strings](./String/encode-and-decode-strings.js) — after basic string traversal
 - [ ] [Palindromic Substrings](./String/palindromic-substrings.js) — after Two Pointers or Dynamic Programming
 - [ ] [Longest Palindromic Substring](./String/longest-palindromic-substring.js) — after Palindromic Substrings
+- [ ] [Reverse String](./String/reverse-string.js)
+- [ ] [Reverse Words in a String](./String/reverse-words-in-a-string.js)
+- [ ] [Find the Index of the First Occurrence in a String](./String/find-the-index-of-the-first-occurrence-in-a-string.js)
+- [ ] [Longest Common Prefix](./String/longest-common-prefix.js)
+- [ ] [Roman to Integer](./String/roman-to-integer.js)
+- [ ] [Isomorphic Strings](./String/isomorphic-strings.js)
 
 ### HashMap
 
@@ -250,6 +351,10 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [x] [Valid Anagram](./HashMap/valid-anagram.js)
 - [x] [Group Anagrams](./HashMap/group-anagrams.js)
 - [x] [Top K Frequent Elements](./HashMap/top-k-frequent-elements.js)
+- [ ] [Contains Duplicate II](./HashMap/contains-duplicate-ii.js)
+- [ ] [Intersection of Two Arrays](./HashMap/intersection-of-two-arrays.js)
+- [ ] [Ransom Note](./HashMap/ransom-note.js)
+- [ ] [Word Pattern](./HashMap/word-pattern.js)
 
 ### Two Pointers
 
@@ -259,6 +364,9 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [Container With Most Water](./Two-Pointers/container-with-most-water.js)
 - [ ] [Trapping Rain Water](./Two-Pointers/trapping-rain-water.js)
 - [ ] [Valid Palindrome II](./Two-Pointers/valid-palindrome-ii.js)
+- [ ] [Is Subsequence](./Two-Pointers/is-subsequence.js)
+- [ ] [Squares of a Sorted Array](./Two-Pointers/squares-of-a-sorted-array.js)
+- [ ] [Reverse Vowels of a String](./Two-Pointers/reverse-vowels-of-a-string.js)
 
 ### Sliding Window
 
@@ -277,6 +385,9 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [Daily Temperatures](./Stack/daily-temperatures.js)
 - [ ] [Car Fleet](./Stack/car-fleet.js)
 - [ ] [Largest Rectangle in Histogram](./Stack/largest-rectangle-in-histogram.js)
+- [ ] [Baseball Game](./Stack/baseball-game.js)
+- [ ] [Remove All Adjacent Duplicates In String](./Stack/remove-all-adjacent-duplicates-in-string.js)
+- [ ] [Implement Stack using Queues](./Stack/implement-stack-using-queues.js)
 
 ### Queue
 
@@ -284,6 +395,9 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [Design Circular Queue](./Queue/design-circular-queue.js)
 - [ ] [Number of Recent Calls](./Queue/number-of-recent-calls.js)
 - [ ] [Dota2 Senate](./Queue/dota2-senate.js)
+- [ ] [Moving Average from Data Stream](./Queue/moving-average-from-data-stream.js)
+- [ ] [Number of Students Unable to Eat Lunch](./Queue/number-of-students-unable-to-eat-lunch.js)
+- [ ] [Time Needed to Buy Tickets](./Queue/time-needed-to-buy-tickets.js)
 
 ### LinkedList
 
@@ -295,6 +409,34 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [Copy List With Random Pointer](./LinkedList/copy-list-with-random-pointer.js)
 - [ ] [Add Two Numbers](./LinkedList/add-two-numbers.js)
 - [ ] [LRU Cache](./LinkedList/lru-cache.js)
+- [ ] [Middle of the Linked List](./LinkedList/middle-of-the-linked-list.js)
+- [ ] [Palindrome Linked List](./LinkedList/palindrome-linked-list.js)
+- [ ] [Intersection of Two Linked Lists](./LinkedList/intersection-of-two-linked-lists.js)
+- [ ] [Remove Duplicates from Sorted List](./LinkedList/remove-duplicates-from-sorted-list.js)
+
+### Recursion
+
+- [ ] [Factorial](./Recursion/factorial.js)
+- [ ] [Fibonacci Number](./Recursion/fibonacci.js)
+- [ ] [Sum of Array (Recursive)](./Recursion/sum-of-array.js)
+
+
+### Sorting
+
+- [ ] [Sort an Array](./Sorting/sort-an-array.js)
+- [ ] [Sort Colors](./Sorting/sort-colors.js)
+- [ ] [Merge Sorted Array](./Sorting/merge-sorted-array.js)
+- [ ] [Largest Number](./Sorting/largest-number.js)
+- [ ] [Wiggle Sort](./Sorting/wiggle-sort.js)
+- [ ] [H-Index](./Sorting/h-index.js)
+- [ ] [Relative Sort Array](./Sorting/relative-sort-array.js)
+- [ ] [Sort List](./Sorting/sort-list.js)
+- [ ] [Bubble Sort](./Sorting/bubble-sort.js)
+- [ ] [Selection Sort](./Sorting/selection-sort.js)
+- [ ] [Insertion Sort](./Sorting/insertion-sort.js)
+- [ ] [Merge Sort (Implementation)](./Sorting/merge-sort-implementation.js)
+- [ ] [Quick Sort (Implementation)](./Sorting/quick-sort-implementation.js)
+- [ ] [Heap Sort (Implementation)](./Sorting/heap-sort-implementation.js)
 
 ### Binary Search
 
@@ -306,6 +448,10 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [Koko Eating Bananas](./Binary-Search/koko-eating-bananas.js)
 - [ ] [Time Based Key-Value Store](./Binary-Search/time-based-key-value-store.js)
 - [ ] [Median of Two Sorted Arrays](./Binary-Search/median-of-two-sorted-arrays.js)
+- [ ] [Sqrt(x)](./Binary-Search/sqrtx.js)
+- [ ] [First Bad Version](./Binary-Search/first-bad-version.js)
+- [ ] [Find Peak Element](./Binary-Search/find-peak-element.js)
+- [ ] [Find First and Last Position of Element in Sorted Array](./Binary-Search/find-first-and-last-position-of-element-in-sorted-array.js)
 
 ### Trees
 
@@ -322,6 +468,10 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [Validate Binary Search Tree](./Trees/validate-binary-search-tree.js)
 - [ ] [Kth Smallest Element in BST](./Trees/kth-smallest-element-in-bst.js)
 - [ ] [Construct Binary Tree from Preorder and Inorder Traversal](./Trees/construct-binary-tree-from-preorder-and-inorder-traversal.js)
+- [ ] [Symmetric Tree](./Trees/symmetric-tree.js)
+- [ ] [Path Sum](./Trees/path-sum.js)
+- [ ] [Minimum Depth of Binary Tree](./Trees/minimum-depth-of-binary-tree.js)
+- [ ] [Convert Sorted Array to Binary Search Tree](./Trees/convert-sorted-array-to-binary-search-tree.js)
 
 ### Heap
 
@@ -331,6 +481,8 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [Task Scheduler](./Heap/task-scheduler.js)
 - [ ] [Find Median from Data Stream](./Heap/find-median-from-data-stream.js)
 - [ ] [Merge K Sorted Lists](./Heap/merge-k-sorted-lists.js)
+- [ ] [Relative Ranks](./Heap/relative-ranks.js)
+- [ ] [K Closest Points to Origin](./Heap/k-closest-points-to-origin.js)
 
 ### Graph
 
@@ -346,6 +498,10 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [Graph Valid Tree](./Graph/graph-valid-tree.js)
 - [ ] [Number of Connected Components in an Undirected Graph](./Graph/number-of-connected-components-in-an-undirected-graph.js)
 - [ ] [Word Ladder](./Graph/word-ladder.js)
+- [ ] [Flood Fill](./Graph/flood-fill.js)
+- [ ] [Keys and Rooms](./Graph/keys-and-rooms.js)
+- [ ] [Find if Path Exists in Graph](./Graph/find-if-path-exists-in-graph.js)
+- [ ] [Is Graph Bipartite](./Graph/is-graph-bipartite.js)
 
 ### Backtracking
 
@@ -358,6 +514,9 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [Palindrome Partitioning](./Backtracking/palindrome-partitioning.js)
 - [ ] [N-Queens](./Backtracking/n-queens.js)
 - [ ] [Letter Combinations of a Phone Number](./Backtracking/letter-combinations-of-a-phone-number.js)
+- [ ] [Generate Parentheses](./Backtracking/generate-parentheses.js)
+- [ ] [Combinations](./Backtracking/combinations.js)
+- [ ] [Letter Case Permutation](./Backtracking/letter-case-permutation.js)
 
 ### Dynamic Programming
 
@@ -372,6 +531,10 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [Decode Ways](./Dynamic-Programming/decode-ways.js)
 - [ ] [Longest Common Subsequence](./Dynamic-Programming/longest-common-subsequence.js)
 - [ ] [Edit Distance](./Dynamic-Programming/edit-distance.js)
+- [ ] [N-th Tribonacci Number](./Dynamic-Programming/n-th-tribonacci-number.js)
+- [ ] [Unique Paths](./Dynamic-Programming/unique-paths.js)
+- [ ] [Unique Paths II](./Dynamic-Programming/unique-paths-ii.js)
+- [ ] [Triangle](./Dynamic-Programming/triangle.js)
 
 ### Greedy
 
@@ -382,6 +545,9 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [Merge Triplets to Form Target Triplet](./Greedy/merge-triplets-to-form-target-triplet.js)
 - [ ] [Partition Labels](./Greedy/partition-labels.js)
 - [ ] [Valid Parenthesis String](./Greedy/valid-parenthesis-string.js)
+- [ ] [Best Time to Buy and Sell Stock II](./Greedy/best-time-to-buy-and-sell-stock-ii.js)
+- [ ] [Assign Cookies](./Greedy/assign-cookies.js)
+- [ ] [Lemonade Change](./Greedy/lemonade-change.js)
 
 ### Bit Manipulation
 
@@ -391,6 +557,9 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [Reverse Bits](./Bit-Manipulation/reverse-bits.js)
 - [ ] [Missing Number](./Bit-Manipulation/missing-number.js)
 - [ ] [Sum of Two Integers](./Bit-Manipulation/sum-of-two-integers.js)
+- [ ] [Hamming Distance](./Bit-Manipulation/hamming-distance.js)
+- [ ] [Binary Number with Alternating Bits](./Bit-Manipulation/binary-number-with-alternating-bits.js)
+- [ ] [Complement of Base 10 Integer](./Bit-Manipulation/complement-of-base-10-integer.js)
 
 ### Intervals
 
@@ -400,6 +569,8 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [Meeting Rooms](./Intervals/meeting-rooms.js)
 - [ ] [Meeting Rooms II](./Intervals/meeting-rooms-ii.js)
 - [ ] [Minimum Interval to Include Each Query](./Intervals/minimum-interval-to-include-each-query.js)
+- [ ] [Summary Ranges](./Intervals/summary-ranges.js)
+- [ ] [Interval List Intersections](./Intervals/interval-list-intersections.js)
 
 ### Math
 
@@ -408,3 +579,8 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [Rotate Image](./Math/rotate-image.js)
 - [ ] [Pow(x, n)](./Math/pow-x-n.js)
 - [ ] [Multiply Strings](./Math/multiply-strings.js)
+- [ ] [Reverse Integer](./Math/reverse-integer.js)
+- [ ] [Palindrome Number](./Math/palindrome-number.js)
+- [ ] [FizzBuzz](./Math/fizzbuzz.js)
+- [ ] [Excel Sheet Column Number](./Math/excel-sheet-column-number.js)
+- [ ] [Add Digits](./Math/add-digits.js)

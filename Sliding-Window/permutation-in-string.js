@@ -1,6 +1,7 @@
 /**
  * Problem: Permutation in String
  * Topic: Sliding Window
+ * LeetCode search: https://leetcode.com/search/?q=Permutation%20in%20String
  *
  * Description:
  * Given strings s1 and s2, return true if s2 contains a contiguous substring that is a permutation of s1.

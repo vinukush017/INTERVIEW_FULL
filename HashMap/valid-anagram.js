@@ -1,6 +1,7 @@
 /**
  * Problem: Valid Anagram
  * Topic: HashMap
+ * LeetCode search: https://leetcode.com/search/?q=Valid%20Anagram
  *
  * Description:
  * Given two strings, return true when one string can be rearranged to form the other using every character exactly once.

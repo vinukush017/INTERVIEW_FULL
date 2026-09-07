@@ -1,6 +1,7 @@
 /**
  * Problem: Subsets II
  * Topic: Backtracking
+ * LeetCode search: https://leetcode.com/search/?q=Subsets%20II
  *
  * Description:
  * Given integers that may repeat, return every unique subset. The result must not contain duplicate subsets.

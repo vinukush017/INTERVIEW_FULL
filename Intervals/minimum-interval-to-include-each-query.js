@@ -1,6 +1,7 @@
 /**
  * Problem: Minimum Interval to Include Each Query
  * Topic: Intervals
+ * LeetCode search: https://leetcode.com/search/?q=Minimum%20Interval%20to%20Include%20Each%20Query
  *
  * Description:
  * For each query value, return the length of the smallest interval containing it, or -1 if no interval contains it.

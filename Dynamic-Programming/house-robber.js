@@ -1,6 +1,7 @@
 /**
  * Problem: House Robber
  * Topic: Dynamic Programming
+ * LeetCode search: https://leetcode.com/search/?q=House%20Robber
  *
  * Description:
  * Given money in houses along one street, return the maximum amount that can be taken without choosing adjacent houses.

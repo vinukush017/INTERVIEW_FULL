@@ -1,6 +1,7 @@
 /**
  * Problem: Word Break
  * Topic: Dynamic Programming
+ * LeetCode search: https://leetcode.com/search/?q=Word%20Break
  *
  * Description:
  * Given a string and a dictionary, return true when the entire string can be divided into one or more dictionary words. Words may be reused.

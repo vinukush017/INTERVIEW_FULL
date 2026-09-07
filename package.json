@@ -1,0 +1,16 @@
+{
+  "name": "interview-prep",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal DSA and full-stack interview preparation workspace",
+  "scripts": {
+    "dev": "node scripts/serve-dashboard.js",
+    "dashboard": "node scripts/serve-dashboard.js",
+    "today": "node scripts/today.js",
+    "done": "node scripts/done.js",
+    "progress": "node scripts/progress.js",
+    "review": "node scripts/review.js",
+    "test": "node scripts/test-solution.js",
+    "add": "node scripts/add-problem.mjs"
+  }
+}

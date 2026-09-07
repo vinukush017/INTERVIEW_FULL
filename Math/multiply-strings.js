@@ -1,6 +1,7 @@
 /**
  * Problem: Multiply Strings
  * Topic: Math
+ * LeetCode search: https://leetcode.com/search/?q=Multiply%20Strings
  *
  * Description:
  * Given two non-negative integers as decimal strings, return their product as a string without converting the complete inputs to built-in large integers.

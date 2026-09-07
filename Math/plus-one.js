@@ -1,6 +1,7 @@
 /**
  * Problem: Plus One
  * Topic: Math
+ * LeetCode search: https://leetcode.com/search/?q=Plus%20One
  *
  * Description:
  * An array stores a non-negative integer with one digit per position and no leading zero. Add one and return the resulting digits.

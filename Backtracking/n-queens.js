@@ -1,6 +1,7 @@
 /**
  * Problem: N-Queens
  * Topic: Backtracking
+ * LeetCode search: https://leetcode.com/search/?q=N-Queens
  *
  * Description:
  * Place n queens on an n-by-n board so no two attack each other. Return every distinct board arrangement.

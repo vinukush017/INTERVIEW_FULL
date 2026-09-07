@@ -1,6 +1,7 @@
 /**
  * Problem: Encode and Decode Strings
  * Topic: String
+ * LeetCode search: https://leetcode.com/search/?q=Encode%20and%20Decode%20Strings
  *
  * Description:
  * Design one function that converts a list of strings into one string and another that reconstructs the exact original list, including empty and special-character strings.

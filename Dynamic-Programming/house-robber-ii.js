@@ -1,6 +1,7 @@
 /**
  * Problem: House Robber II
  * Topic: Dynamic Programming
+ * LeetCode search: https://leetcode.com/search/?q=House%20Robber%20II
  *
  * Description:
  * Houses form a circle, so the first and last are adjacent. Return the maximum amount available without choosing adjacent houses.

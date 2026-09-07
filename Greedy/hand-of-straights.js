@@ -1,6 +1,7 @@
 /**
  * Problem: Hand of Straights
  * Topic: Greedy
+ * LeetCode search: https://leetcode.com/search/?q=Hand%20of%20Straights
  *
  * Description:
  * Given card values and group size, return true when every card can be divided into groups of consecutive values of that exact size.

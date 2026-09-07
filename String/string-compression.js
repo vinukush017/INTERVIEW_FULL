@@ -1,6 +1,7 @@
 /**
  * Problem: String Compression
  * Topic: String
+ * LeetCode search: https://leetcode.com/search/?q=String%20Compression
  *
  * Description:
  * Compress consecutive equal characters in place using the character followed by its count when greater than one. Return the new array length.

@@ -1,6 +1,7 @@
 /**
  * Problem: Kth Largest Element in an Array
  * Topic: Heap
+ * LeetCode search: https://leetcode.com/search/?q=Kth%20Largest%20Element%20in%20an%20Array
  *
  * Description:
  * Given an unsorted integer array and k, return the kth largest value by sorted order, including duplicate values.

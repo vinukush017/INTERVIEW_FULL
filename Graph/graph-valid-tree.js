@@ -1,6 +1,7 @@
 /**
  * Problem: Graph Valid Tree
  * Topic: Graph
+ * LeetCode search: https://leetcode.com/search/?q=Graph%20Valid%20Tree
  *
  * Description:
  * Given n labeled nodes and undirected edges, return true when the graph is connected and contains no cycle.

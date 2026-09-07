@@ -1,6 +1,7 @@
 /**
  * Problem: Valid Parentheses
  * Topic: Stack
+ * LeetCode search: https://leetcode.com/search/?q=Valid%20Parentheses
  *
  * Description:
  * Given a string containing only bracket characters, return true when every opening bracket is closed by the correct type in the correct order.

@@ -1,6 +1,7 @@
 /**
  * Problem: Course Schedule
  * Topic: Graph
+ * LeetCode search: https://leetcode.com/search/?q=Course%20Schedule
  *
  * Description:
  * Given a course count and prerequisite pairs, return true when all courses can be completed without a dependency cycle.

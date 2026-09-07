@@ -1,6 +1,7 @@
 /**
  * Problem: Group Anagrams
  * Topic: HashMap
+ * LeetCode search: https://leetcode.com/search/?q=Group%20Anagrams
  *
  * Description:
  * Given an array of strings, group together strings that contain the same characters with the same frequencies. Group order does not matter.

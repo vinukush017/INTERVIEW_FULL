@@ -1,5 +1,33 @@
 # Heap
 
+## Pattern
+
+A priority queue: the min (or max) is always available in O(log n), without
+sorting everything. The recurring trick for "top k" problems is to keep a
+heap of size k and pop whenever it grows past that — you never hold more
+than k items in memory.
+
+**Recognize it when:** "kth largest/smallest", "top k frequent", "merge k
+sorted lists", "running median of a stream".
+
+**Template (top-k with a min-heap of size k):**
+```js
+// push each candidate, then pop the smallest whenever size exceeds k;
+// whatever remains is the k largest.
+if (heap.size() < k) heap.push(x);
+else if (x > heap.peek()) { heap.pop(); heap.push(x); }
+```
+
+**Complexity:** O(log n) per insert/pop; O(n log k) to find the top k out of
+n elements (versus O(n log n) for a full sort).
+
+**Watch out for:** JavaScript has no built-in heap — either implement a
+small binary-heap class once and reuse it, or fall back to a sorted
+insertion for small k under interview time pressure, but say out loud that
+you know the real complexity difference.
+
+---
+
 Open a question, write the solution, add test cases, and record time and space complexity. Track completion only in [01-DSA-Questions.md](../01-DSA-Questions.md).
 
 - [Kth Largest Element in an Array](./kth-largest-element-in-an-array.js)
@@ -8,3 +36,5 @@ Open a question, write the solution, add test cases, and record time and space c
 - [Task Scheduler](./task-scheduler.js)
 - [Find Median from Data Stream](./find-median-from-data-stream.js)
 - [Merge K Sorted Lists](./merge-k-sorted-lists.js)
+- [Relative Ranks](./relative-ranks.js)
+- [K Closest Points to Origin](./k-closest-points-to-origin.js)

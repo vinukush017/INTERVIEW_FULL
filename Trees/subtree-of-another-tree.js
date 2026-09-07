@@ -1,6 +1,7 @@
 /**
  * Problem: Subtree of Another Tree
  * Topic: Trees
+ * LeetCode search: https://leetcode.com/search/?q=Subtree%20of%20Another%20Tree
  *
  * Description:
  * Return true when one tree appears within another tree with exactly the same structure and node values.

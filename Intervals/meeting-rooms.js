@@ -1,6 +1,7 @@
 /**
  * Problem: Meeting Rooms
  * Topic: Intervals
+ * LeetCode search: https://leetcode.com/search/?q=Meeting%20Rooms
  *
  * Description:
  * Given meeting intervals, return true when one person can attend every meeting without any time overlap.

@@ -1,6 +1,7 @@
 /**
  * Problem: Validate Binary Search Tree
  * Topic: Trees
+ * LeetCode search: https://leetcode.com/search/?q=Validate%20Binary%20Search%20Tree
  *
  * Description:
  * Return true when every node obeys strict binary-search-tree ordering across its entire left and right subtrees.

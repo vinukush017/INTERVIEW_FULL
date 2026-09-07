@@ -1,6 +1,7 @@
 /**
  * Problem: Last Stone Weight
  * Topic: Heap
+ * LeetCode search: https://leetcode.com/search/?q=Last%20Stone%20Weight
  *
  * Description:
  * Repeatedly smash the two heaviest stones. Equal stones both disappear; otherwise their difference remains. Return the final weight or zero.

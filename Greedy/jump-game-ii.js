@@ -1,6 +1,7 @@
 /**
  * Problem: Jump Game II
  * Topic: Greedy
+ * LeetCode search: https://leetcode.com/search/?q=Jump%20Game%20II
  *
  * Description:
  * Each value is the maximum forward jump length from that index. Return the minimum jumps needed to reach the last index. Reachability is guaranteed.

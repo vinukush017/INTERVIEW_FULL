@@ -1,6 +1,7 @@
 /**
  * Problem: Binary Search
  * Topic: Binary Search
+ * LeetCode search: https://leetcode.com/search/?q=Binary%20Search
  *
  * Description:
  * Given a sorted integer array and a target, return its index or -1 when the target is absent.

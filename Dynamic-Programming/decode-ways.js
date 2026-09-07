@@ -1,6 +1,7 @@
 /**
  * Problem: Decode Ways
  * Topic: Dynamic Programming
+ * LeetCode search: https://leetcode.com/search/?q=Decode%20Ways
  *
  * Description:
  * Digits map from 1 through 26 to letters. Return how many valid ways a digit string can be decoded; zero cannot be decoded by itself.

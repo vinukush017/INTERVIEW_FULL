@@ -1,6 +1,7 @@
 /**
  * Problem: Permutations
  * Topic: Backtracking
+ * LeetCode search: https://leetcode.com/search/?q=Permutations
  *
  * Description:
  * Given distinct integers, return every possible ordering of all values.

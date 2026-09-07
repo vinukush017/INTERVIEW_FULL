@@ -1,6 +1,7 @@
 /**
  * Problem: Insert Interval
  * Topic: Intervals
+ * LeetCode search: https://leetcode.com/search/?q=Insert%20Interval
  *
  * Description:
  * Insert a new interval into sorted, non-overlapping intervals, merging overlaps so the result remains sorted and non-overlapping.

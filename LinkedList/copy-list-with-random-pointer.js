@@ -1,6 +1,7 @@
 /**
  * Problem: Copy List With Random Pointer
  * Topic: LinkedList
+ * LeetCode search: https://leetcode.com/search/?q=Copy%20List%20With%20Random%20Pointer
  *
  * Description:
  * Create a deep copy of a linked list whose nodes contain next and random pointers. No copied pointer may reference an original node.

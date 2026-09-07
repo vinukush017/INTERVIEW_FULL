@@ -1,6 +1,7 @@
 /**
  * Problem: Partition Equal Subset Sum
  * Topic: Dynamic Programming
+ * LeetCode search: https://leetcode.com/search/?q=Partition%20Equal%20Subset%20Sum
  *
  * Description:
  * Given positive integers, return true when they can be divided into two subsets having equal sums.

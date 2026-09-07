@@ -1,6 +1,7 @@
 /**
  * Problem: 3Sum
  * Topic: Two Pointers
+ * LeetCode search: https://leetcode.com/search/?q=3Sum
  *
  * Description:
  * Given an integer array, return all unique triplets of different positions whose values sum to zero. Duplicate triplets are not allowed.

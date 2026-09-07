@@ -1,6 +1,7 @@
 /**
  * Problem: Valid Parenthesis String
  * Topic: Greedy
+ * LeetCode search: https://leetcode.com/search/?q=Valid%20Parenthesis%20String
  *
  * Description:
  * Given parentheses and asterisks, return true if asterisks can act as left parentheses, right parentheses, or empty text to make the string valid.

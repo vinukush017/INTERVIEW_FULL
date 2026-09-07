@@ -1,6 +1,7 @@
 /**
  * Problem: Reverse Bits
  * Topic: Bit Manipulation
+ * LeetCode search: https://leetcode.com/search/?q=Reverse%20Bits
  *
  * Description:
  * Reverse all 32 bits of an unsigned integer and return the resulting unsigned value.

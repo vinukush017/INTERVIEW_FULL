@@ -1,6 +1,7 @@
 /**
  * Problem: Max Area of Island
  * Topic: Graph
+ * LeetCode search: https://leetcode.com/search/?q=Max%20Area%20of%20Island
  *
  * Description:
  * Given a binary grid, return the largest number of horizontally or vertically connected land cells. Return zero if there is no land.

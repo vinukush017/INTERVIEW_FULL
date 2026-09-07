@@ -1,6 +1,7 @@
 /**
  * Problem: Median of Two Sorted Arrays
  * Topic: Binary Search
+ * LeetCode search: https://leetcode.com/search/?q=Median%20of%20Two%20Sorted%20Arrays
  *
  * Description:
  * Given two sorted arrays, return the median of all their values. The expected running time is logarithmic in the smaller input.

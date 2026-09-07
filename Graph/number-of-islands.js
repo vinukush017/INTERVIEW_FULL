@@ -1,6 +1,7 @@
 /**
  * Problem: Number of Islands
  * Topic: Graph
+ * LeetCode search: https://leetcode.com/search/?q=Number%20of%20Islands
  *
  * Description:
  * Given a grid of land and water characters, count connected land regions. Cells connect horizontally and vertically.

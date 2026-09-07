@@ -1,6 +1,7 @@
 /**
  * Problem: Remove Nth Node From End of List
  * Topic: LinkedList
+ * LeetCode search: https://leetcode.com/search/?q=Remove%20Nth%20Node%20From%20End%20of%20List
  *
  * Description:
  * Given a linked-list head and n, remove the nth node counted from the end and return the resulting head.

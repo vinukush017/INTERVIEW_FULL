@@ -1,6 +1,7 @@
 /**
  * Problem: Trapping Rain Water
  * Topic: Two Pointers
+ * LeetCode search: https://leetcode.com/search/?q=Trapping%20Rain%20Water
  *
  * Description:
  * Given non-negative bar heights of width one, return how many units of rain water remain trapped after raining.

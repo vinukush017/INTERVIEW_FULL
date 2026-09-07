@@ -1,6 +1,7 @@
 /**
  * Problem: Longest Increasing Subsequence
  * Topic: Dynamic Programming
+ * LeetCode search: https://leetcode.com/search/?q=Longest%20Increasing%20Subsequence
  *
  * Description:
  * Given an integer array, return the length of its longest strictly increasing subsequence. Selected values do not need to be contiguous.

@@ -1,6 +1,7 @@
 /**
  * Problem: Sliding Window Maximum
  * Topic: Sliding Window
+ * LeetCode search: https://leetcode.com/search/?q=Sliding%20Window%20Maximum
  *
  * Description:
  * Given an integer array and window size k, return the maximum value in every contiguous window of length k.

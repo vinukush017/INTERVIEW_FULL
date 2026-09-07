@@ -1,6 +1,7 @@
 /**
  * Problem: Number of Connected Components in an Undirected Graph
  * Topic: Graph
+ * LeetCode search: https://leetcode.com/search/?q=Number%20of%20Connected%20Components%20in%20an%20Undirected%20Graph
  *
  * Description:
  * Given n labeled nodes and undirected edges, return the number of separate connected components.

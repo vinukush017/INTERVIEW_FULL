@@ -1,6 +1,7 @@
 /**
  * Problem: Longest Substring Without Repeating Characters
  * Topic: Sliding Window
+ * LeetCode search: https://leetcode.com/search/?q=Longest%20Substring%20Without%20Repeating%20Characters
  *
  * Description:
  * Given a string, return the length of the longest contiguous substring containing no repeated characters.

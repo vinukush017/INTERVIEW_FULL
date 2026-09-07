@@ -1,6 +1,7 @@
 /**
  * Problem: Binary Tree Right Side View
  * Topic: Trees
+ * LeetCode search: https://leetcode.com/search/?q=Binary%20Tree%20Right%20Side%20View
  *
  * Description:
  * Return the values visible when a binary tree is viewed from its right side, ordered from top to bottom.

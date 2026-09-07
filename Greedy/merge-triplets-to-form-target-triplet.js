@@ -1,6 +1,7 @@
 /**
  * Problem: Merge Triplets to Form Target Triplet
  * Topic: Greedy
+ * LeetCode search: https://leetcode.com/search/?q=Merge%20Triplets%20to%20Form%20Target%20Triplet
  *
  * Description:
  * You may merge selected triplets by taking coordinate-wise maximums. Return true when the target triplet can be produced.

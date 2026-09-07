@@ -1,6 +1,7 @@
 /**
  * Problem: Reverse Linked List
  * Topic: LinkedList
+ * LeetCode search: https://leetcode.com/search/?q=Reverse%20Linked%20List
  *
  * Description:
  * Given the head of a singly linked list, reverse its links and return the new head.

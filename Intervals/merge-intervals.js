@@ -1,6 +1,7 @@
 /**
  * Problem: Merge Intervals
  * Topic: Intervals
+ * LeetCode search: https://leetcode.com/search/?q=Merge%20Intervals
  *
  * Description:
  * Given intervals, combine every overlapping range and return the non-overlapping ranges that cover the same values.

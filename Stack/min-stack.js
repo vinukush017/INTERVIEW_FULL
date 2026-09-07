@@ -1,6 +1,7 @@
 /**
  * Problem: Min Stack
  * Topic: Stack
+ * LeetCode search: https://leetcode.com/search/?q=Min%20Stack
  *
  * Description:
  * Design a stack supporting push, pop, top, and retrieval of the minimum element, with every operation returning in constant time.

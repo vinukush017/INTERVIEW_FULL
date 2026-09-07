@@ -1,6 +1,7 @@
 /**
  * Problem: Find Median from Data Stream
  * Topic: Heap
+ * LeetCode search: https://leetcode.com/search/?q=Find%20Median%20from%20Data%20Stream
  *
  * Description:
  * Design a structure that accepts numbers one at a time and returns the median of all values received so far.

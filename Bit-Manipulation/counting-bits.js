@@ -1,6 +1,7 @@
 /**
  * Problem: Counting Bits
  * Topic: Bit Manipulation
+ * LeetCode search: https://leetcode.com/search/?q=Counting%20Bits
  *
  * Description:
  * Given n, return an array where position i contains the number of set bits in i for every value from zero through n.

@@ -1,6 +1,7 @@
 /**
  * Problem: Two Sum II - Input Array Is Sorted
  * Topic: Two Pointers
+ * LeetCode search: https://leetcode.com/search/?q=Two%20Sum%20II%20-%20Input%20Array%20Is%20Sorted
  *
  * Description:
  * Given a 1-indexed array sorted in non-decreasing order and a target, return the positions of two different values whose sum is the target.

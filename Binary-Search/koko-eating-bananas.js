@@ -1,6 +1,7 @@
 /**
  * Problem: Koko Eating Bananas
  * Topic: Binary Search
+ * LeetCode search: https://leetcode.com/search/?q=Koko%20Eating%20Bananas
  *
  * Description:
  * Given banana-pile sizes and h hours, return the smallest integer eating speed that finishes every pile within h hours.

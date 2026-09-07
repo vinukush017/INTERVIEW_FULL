@@ -1,6 +1,7 @@
 /**
  * Problem: Longest Repeating Character Replacement
  * Topic: Sliding Window
+ * LeetCode search: https://leetcode.com/search/?q=Longest%20Repeating%20Character%20Replacement
  *
  * Description:
  * Given an uppercase string and k replacements, return the longest substring that can contain one repeated character after changing at most k positions.

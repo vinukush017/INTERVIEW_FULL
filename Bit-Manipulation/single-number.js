@@ -1,6 +1,7 @@
 /**
  * Problem: Single Number
  * Topic: Bit Manipulation
+ * LeetCode search: https://leetcode.com/search/?q=Single%20Number
  *
  * Description:
  * Every integer in an array appears twice except one. Return the value that appears only once.

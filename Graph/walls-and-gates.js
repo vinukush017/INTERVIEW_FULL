@@ -1,6 +1,7 @@
 /**
  * Problem: Walls and Gates
  * Topic: Graph
+ * LeetCode search: https://leetcode.com/search/?q=Walls%20and%20Gates
  *
  * Description:
  * Fill each empty room with its distance to the nearest gate. Walls block movement, and the grid must be modified in place.

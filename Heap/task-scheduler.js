@@ -1,6 +1,7 @@
 /**
  * Problem: Task Scheduler
  * Topic: Heap
+ * LeetCode search: https://leetcode.com/search/?q=Task%20Scheduler
  *
  * Description:
  * Given lettered CPU tasks and cooldown n, return the minimum time slots required when identical tasks must be separated by at least n intervals.

@@ -1,6 +1,7 @@
 /**
  * Problem: Word Ladder
  * Topic: Graph
+ * LeetCode search: https://leetcode.com/search/?q=Word%20Ladder
  *
  * Description:
  * Change one letter at a time from a begin word to an end word, using only dictionary words. Return the shortest sequence length or zero if impossible.

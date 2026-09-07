@@ -1,6 +1,7 @@
 /**
  * Problem: Combination Sum
  * Topic: Backtracking
+ * LeetCode search: https://leetcode.com/search/?q=Combination%20Sum
  *
  * Description:
  * Given distinct positive candidates and a target, return unique combinations summing to the target. A candidate may be reused any number of times.

@@ -1,6 +1,7 @@
 /**
  * Problem: Invert Binary Tree
  * Topic: Trees
+ * LeetCode search: https://leetcode.com/search/?q=Invert%20Binary%20Tree
  *
  * Description:
  * Given a binary-tree root, swap every node's left and right children and return the root.

@@ -1,6 +1,7 @@
 /**
  * Problem: Linked List Cycle
  * Topic: LinkedList
+ * LeetCode search: https://leetcode.com/search/?q=Linked%20List%20Cycle
  *
  * Description:
  * Given a linked-list head, return true when following next pointers eventually visits a previously seen node.

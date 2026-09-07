@@ -1,6 +1,7 @@
 /**
  * Problem: Design Circular Queue
  * Topic: Queue
+ * LeetCode search: https://leetcode.com/search/?q=Design%20Circular%20Queue
  *
  * Description:
  * Design a fixed-capacity circular queue supporting insertion, deletion, front, rear, empty, and full operations.

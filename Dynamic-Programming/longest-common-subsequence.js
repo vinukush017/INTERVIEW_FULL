@@ -1,6 +1,7 @@
 /**
  * Problem: Longest Common Subsequence
  * Topic: Dynamic Programming
+ * LeetCode search: https://leetcode.com/search/?q=Longest%20Common%20Subsequence
  *
  * Description:
  * Given two strings, return the length of their longest shared subsequence. Chosen characters must preserve order but need not be contiguous.

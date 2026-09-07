@@ -1,6 +1,7 @@
 /**
  * Problem: LRU Cache
  * Topic: LinkedList
+ * LeetCode search: https://leetcode.com/search/?q=LRU%20Cache
  *
  * Description:
  * Design a fixed-capacity cache with get and put operations. When full, inserting a new key must remove the least recently used key.

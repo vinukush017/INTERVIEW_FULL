@@ -1,6 +1,7 @@
 /**
  * Problem: Longest Consecutive Sequence
  * Topic: Arrays
+ * LeetCode search: https://leetcode.com/search/?q=Longest%20Consecutive%20Sequence
  *
  * Description:
  * Given an unsorted integer array, return the length of its longest run of consecutive values. The values do not need to be adjacent in the input.

@@ -1,6 +1,7 @@
 /**
  * Problem: Happy Number
  * Topic: Math
+ * LeetCode search: https://leetcode.com/search/?q=Happy%20Number
  *
  * Description:
  * Repeatedly replace a positive integer with the sum of the squares of its digits. Return true if the process reaches one rather than looping forever.

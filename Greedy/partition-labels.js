@@ -1,6 +1,7 @@
 /**
  * Problem: Partition Labels
  * Topic: Greedy
+ * LeetCode search: https://leetcode.com/search/?q=Partition%20Labels
  *
  * Description:
  * Split a string into as many parts as possible so every character occurs in at most one part. Return the part lengths.

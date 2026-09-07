@@ -1,6 +1,7 @@
 /**
  * Problem: Count Good Nodes in Binary Tree
  * Topic: Trees
+ * LeetCode search: https://leetcode.com/search/?q=Count%20Good%20Nodes%20in%20Binary%20Tree
  *
  * Description:
  * A node is good when no earlier value on the root-to-node path is greater. Return the total number of good nodes.

@@ -1,0 +1,742 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Interview Prep Dashboard</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f7f7f8;
+    --card: #ffffff;
+    --text: #1a1a1a;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --accent: #2563eb;
+    --accent-soft: #dbeafe;
+    --track: #e5e7eb;
+    --fill: #2563eb;
+    --done: #16a34a;
+    --done-soft: #dcfce7;
+    --fail: #dc2626;
+    --fail-soft: #fee2e2;
+    --challenge: #d97706;
+    --code-bg: #0f1115;
+    --code-text: #e6e6e6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1115;
+      --card: #171a21;
+      --text: #e6e6e6;
+      --muted: #9aa1ac;
+      --border: #2a2e37;
+      --accent: #60a5fa;
+      --accent-soft: #1e3a5f;
+      --track: #262a33;
+      --fill: #60a5fa;
+      --done: #4ade80;
+      --done-soft: #143321;
+      --fail: #f87171;
+      --fail-soft: #3a1a1a;
+      --challenge: #fbbf24;
+      --code-bg: #0a0c10;
+      --code-text: #e6e6e6;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    padding: 24px 16px 64px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  h1 { font-size: 1.4rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 20px; }
+
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .stat-card .label { color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.03em; }
+  .stat-card .value { font-size: 1.5rem; font-weight: 600; margin-top: 2px; }
+  .stat-card .value.streak-on { color: var(--done); }
+
+  .next-card {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+  }
+  .next-card .label { color: var(--accent); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; }
+  .next-card .title { font-size: 1.2rem; font-weight: 600; margin: 6px 0 4px; }
+  .next-card .path { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.85rem; color: var(--muted); }
+  .next-card .go-btn { margin-top: 10px; }
+  .badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--challenge);
+    color: #1a1a1a;
+    margin-left: 8px;
+  }
+
+  .overall-bar-track {
+    height: 10px;
+    background: var(--track);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+  .overall-bar-fill { height: 100%; background: var(--fill); border-radius: 999px; transition: width 0.3s ease; }
+
+  .topic {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .topic-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .topic-header:hover { background: var(--accent-soft); }
+  .topic-name { font-weight: 600; }
+  .topic-meta { display: flex; align-items: center; gap: 10px; }
+  .topic-count { font-size: 0.85rem; color: var(--muted); }
+  .mini-bar-track { width: 90px; height: 6px; background: var(--track); border-radius: 999px; overflow: hidden; }
+  .mini-bar-fill { height: 100%; background: var(--fill); }
+  .chevron { transition: transform 0.15s ease; color: var(--muted); }
+  .topic.open > .topic-header .chevron { transform: rotate(90deg); }
+
+  .problem-list { display: none; padding: 4px 16px 14px; }
+  .topic.open > .problem-list { display: block; }
+
+  .concept-box {
+    background: var(--accent-soft);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin: 8px 0 14px;
+    font-size: 0.86rem;
+    line-height: 1.55;
+  }
+  .concept-box p { margin: 0 0 8px; }
+  .concept-box p:last-child { margin-bottom: 0; }
+  .concept-box code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.85em;
+    background: var(--card);
+    border-radius: 3px;
+    padding: 1px 4px;
+  }
+  .concept-box pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    border-radius: 6px;
+    padding: 10px 12px;
+    overflow-x: auto;
+    margin: 8px 0;
+  }
+  .concept-box pre code { background: none; padding: 0; }
+  .concept-toggle {
+    font-size: 0.78rem;
+    color: var(--accent);
+    cursor: pointer;
+    user-select: none;
+    margin: 6px 0 0;
+    display: inline-block;
+  }
+
+  .problem-block { border-top: 1px solid var(--border); }
+  .problem-block:first-child { border-top: none; }
+  .problem-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 4px;
+    font-size: 0.92rem;
+    cursor: pointer;
+  }
+  .problem-row:hover .problem-title { color: var(--accent); }
+  .check {
+    width: 16px; height: 16px;
+    border-radius: 4px;
+    border: 1.5px solid var(--muted);
+    flex-shrink: 0;
+  }
+  .check.done { background: var(--done); border-color: var(--done); }
+  .problem-title { flex: 1; }
+  .problem-title.done { color: var(--muted); text-decoration: line-through; }
+  .problem-path { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.78rem; color: var(--muted); }
+  .chevron-sm { color: var(--muted); font-size: 0.75rem; transition: transform 0.15s ease; }
+  .problem-block.open .chevron-sm { transform: rotate(90deg); }
+
+  .editor-panel { display: none; padding: 4px 4px 16px 30px; }
+  .problem-block.open .editor-panel { display: block; }
+  .editor-loading { color: var(--muted); font-size: 0.85rem; padding: 8px 0; }
+  .code-area {
+    width: 100%;
+    min-height: 260px;
+    background: var(--code-bg);
+    color: var(--code-text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    resize: vertical;
+    tab-size: 2;
+  }
+  .editor-actions { display: flex; align-items: center; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .confirm-label { font-size: 0.82rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+  .output {
+    margin-top: 10px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.8rem;
+    white-space: pre-wrap;
+    max-height: 260px;
+    overflow-y: auto;
+  }
+  .output.output-pass { border-color: var(--done); background: var(--done-soft); }
+  .output.output-fail { border-color: var(--fail); background: var(--fail-soft); }
+
+  .rep-badge {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 1px 6px;
+    border-radius: 999px;
+    background: var(--track);
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .leetcode-link {
+    font-size: 0.75rem;
+    color: var(--accent);
+    text-decoration: none;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .leetcode-link:hover { text-decoration: underline; }
+  .editor-leetcode { font-size: 0.8rem; color: var(--accent); text-decoration: none; margin-bottom: 8px; display: inline-block; }
+  .editor-leetcode:hover { text-decoration: underline; }
+
+  .review-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+  .review-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .review-title { font-weight: 600; }
+  .review-sub { color: var(--muted); font-size: 0.82rem; margin-top: 2px; }
+  .review-result { margin-top: 12px; }
+  .review-result .title { font-size: 1.05rem; font-weight: 600; }
+  .review-result .meta { color: var(--muted); font-size: 0.82rem; margin: 2px 0 8px; }
+
+  .order-toggle {
+    font-size: 0.85rem;
+    color: var(--accent);
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+  .order-toggle:hover { text-decoration: underline; }
+  .order-list {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    max-height: 480px;
+    overflow-y: auto;
+    margin-bottom: 24px;
+  }
+  .order-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .order-row:first-child { border-top: none; }
+  .order-row:hover { background: var(--accent-soft); }
+  .order-num { color: var(--muted); width: 32px; flex-shrink: 0; text-align: right; }
+  .order-topic {
+    font-size: 0.68rem;
+    color: var(--muted);
+    background: var(--track);
+    border-radius: 4px;
+    padding: 1px 6px;
+    flex-shrink: 0;
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .order-title { flex: 1; }
+  .order-title.done { color: var(--muted); text-decoration: line-through; }
+
+  .footer { margin-top: 28px; color: var(--muted); font-size: 0.8rem; display: flex; justify-content: space-between; align-items: center; }
+  button {
+    font: inherit;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+  }
+  button:hover { border-color: var(--accent); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .empty { color: var(--muted); padding: 20px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Interview Prep Dashboard</h1>
+  <div class="sub" id="subline">Loading…</div>
+
+  <div class="stat-row" id="statRow"></div>
+
+  <div id="nextCard"></div>
+
+  <div class="review-card">
+    <div class="review-header">
+      <div>
+        <div class="review-title">Random Review</div>
+        <div class="review-sub">Picks a solved problem you've practiced the fewest times, so everything reaches the same rep count before anything gets a third pass.</div>
+      </div>
+      <button id="reviewBtn">Give me one</button>
+    </div>
+    <div class="review-result" id="reviewResult"></div>
+  </div>
+
+  <div class="overall-bar-track"><div class="overall-bar-fill" id="overallFill" style="width:0%"></div></div>
+
+  <div class="order-toggle" id="orderToggle">Show the full study order (loading…) &#9656;</div>
+  <div class="order-list" id="orderList" hidden></div>
+
+  <div id="topics"></div>
+
+  <div class="footer">
+    <span id="generatedAt"></span>
+    <button id="refreshBtn">Refresh list</button>
+  </div>
+</div>
+
+<script>
+  let lastData = null;
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+    }[c]));
+  }
+  function escapeAttr(s) { return escapeHtml(s).replace(/`/g, "&#96;"); }
+
+  function anyEditorOpen() {
+    return !!document.querySelector(".problem-block.open");
+  }
+
+  async function fetchData() {
+    const res = await fetch("/api/data", { cache: "no-store" });
+    return res.json();
+  }
+
+  // Cheap refresh: streak, progress bar, next-problem card. Safe to call on
+  // a timer since it never touches an open editor's unsaved text.
+  function renderStats(data) {
+    lastData = data;
+    const pct = data.totalCount ? Math.round((data.solvedCount / data.totalCount) * 100) : 0;
+    document.getElementById("subline").textContent =
+      "Solve inline below, or in your editor \u2014 either way, Run Tests / Mark Done here keeps everything in sync.";
+    document.getElementById("overallFill").style.width = pct + "%";
+    document.getElementById("generatedAt").textContent =
+      "Updated " + new Date(data.generatedAt).toLocaleTimeString();
+
+    const streakLabel = data.streak.current > 0
+      ? data.streak.current + " day" + (data.streak.current === 1 ? "" : "s")
+      : "0 (start today)";
+
+    document.getElementById("statRow").innerHTML = `
+      <div class="stat-card">
+        <div class="label">Streak</div>
+        <div class="value ${data.streak.current > 0 ? "streak-on" : ""}">${streakLabel}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Longest streak</div>
+        <div class="value">${data.streak.longest} day${data.streak.longest === 1 ? "" : "s"}</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Solved</div>
+        <div class="value">${data.solvedCount}/${data.totalCount} (${pct}%)</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">This week</div>
+        <div class="value">~${data.suggestedMinutes} min/day</div>
+      </div>
+    `;
+
+    const nextCard = document.getElementById("nextCard");
+    if (data.next) {
+      nextCard.innerHTML = `
+        <div class="next-card">
+          <div class="label">Next problem</div>
+          <div class="title">${escapeHtml(data.next.title)}${data.next.challenge ? '<span class="badge">challenge</span>' : ""}</div>
+          <div class="path">${escapeHtml(data.next.relPath)}</div>
+          <button class="go-btn primary" onclick="jumpTo('${escapeAttr(data.next.relPath)}')">Open it below</button>
+        </div>
+      `;
+    } else {
+      nextCard.innerHTML = `<div class="next-card"><div class="title">Every queued problem is checked off \u2014 time for revision or mocks.</div></div>`;
+    }
+
+    const orderToggle = document.getElementById("orderToggle");
+    const isOpen = !document.getElementById("orderList").hidden;
+    orderToggle.innerHTML = `Show the full study order (${data.flatQueue.length} problems, one list) &#9656;`.replace(
+      "&#9656;",
+      isOpen ? "&#9662;" : "&#9656;"
+    );
+    if (isOpen) renderOrderList(data); // read-only list, safe to refresh live
+  }
+
+  function jumpTo(relPath) {
+    const block = document.querySelector(`.problem-block[data-path="${cssEscape(relPath)}"]`);
+    if (!block) return;
+    const topic = block.closest(".topic");
+    if (topic && !topic.classList.contains("open")) topic.classList.add("open");
+    block.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (!block.classList.contains("open")) openProblem(block);
+  }
+
+  function cssEscape(s) {
+    return s.replace(/["\\]/g, "\\$&");
+  }
+
+  // Full rebuild of the topic/problem list. Only called on initial load and
+  // on an explicit Refresh click when nothing is being edited, so it never
+  // silently discards text sitting in an open editor.
+  function renderTopics(data) {
+    const topicsEl = document.getElementById("topics");
+    if (!data.topics.some((t) => t.items.length)) {
+      topicsEl.innerHTML = '<div class="empty">No problems found.</div>';
+      return;
+    }
+    topicsEl.innerHTML = data.topics
+      .filter((t) => t.items.length)
+      .map((t, i) => {
+        const solved = t.items.filter((it) => it.checked).length;
+        const total = t.items.length;
+        const tpct = total ? Math.round((solved / total) * 100) : 0;
+        const rows = t.items
+          .map(
+            (it) => `
+            <div class="problem-block" data-path="${escapeAttr(it.path)}" data-has-test="${it.hasTest ? "1" : "0"}" data-leetcode="${escapeAttr(it.leetcodeUrl)}">
+              <div class="problem-row" onclick="toggleProblem(this.closest('.problem-block'))">
+                <div class="check ${it.checked ? "done" : ""}"></div>
+                <div class="problem-title ${it.checked ? "done" : ""}">${escapeHtml(it.title)}</div>
+                ${it.checked && it.repCount > 0 ? `<span class="rep-badge">${it.repCount}×</span>` : ""}
+                <a class="leetcode-link" href="${escapeAttr(it.leetcodeUrl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">LeetCode</a>
+                <div class="problem-path">${escapeHtml(it.path)}</div>
+                <div class="chevron-sm">&#9656;</div>
+              </div>
+              <div class="editor-panel"></div>
+            </div>`
+          )
+          .join("");
+        return `
+          <div class="topic" data-idx="${i}">
+            <div class="topic-header" onclick="toggleTopic(${i})">
+              <div class="topic-name">${escapeHtml(t.name)}</div>
+              <div class="topic-meta">
+                <div class="topic-count">${solved}/${total}</div>
+                <div class="mini-bar-track"><div class="mini-bar-fill" style="width:${tpct}%"></div></div>
+                <div class="chevron">&#9656;</div>
+              </div>
+            </div>
+            <div class="problem-list">
+              ${t.conceptHtml ? `<div class="concept-box">${t.conceptHtml}</div>` : ""}
+              ${rows}
+            </div>
+          </div>
+        `;
+      })
+      .join("");
+  }
+
+  function toggleTopic(i) {
+    const el = document.querySelector(`.topic[data-idx="${i}"]`);
+    if (el) el.classList.toggle("open");
+  }
+  window.toggleTopic = toggleTopic;
+  window.jumpTo = jumpTo;
+
+  async function toggleProblem(block) {
+    if (!block) return;
+    const willOpen = !block.classList.contains("open");
+    block.classList.toggle("open");
+    if (willOpen && !block.dataset.loaded) {
+      await openProblem(block);
+    }
+  }
+  window.toggleProblem = toggleProblem;
+
+  async function openProblem(block) {
+    if (!block.classList.contains("open")) block.classList.add("open");
+    const filePath = block.dataset.path;
+    const panel = block.querySelector(".editor-panel");
+    panel.innerHTML = '<div class="editor-loading">Loading\u2026</div>';
+    try {
+      const res = await fetch("/api/file?path=" + encodeURIComponent(filePath));
+      if (!res.ok) throw new Error("not found");
+      const data = await res.json();
+      block.dataset.loaded = "1";
+      renderEditor(block, filePath, data.content);
+    } catch (err) {
+      panel.innerHTML = '<div class="editor-loading">Could not load this file.</div>';
+    }
+  }
+
+  function renderEditor(block, filePath, content) {
+    const hasTest = block.dataset.hasTest === "1";
+    const leetcodeUrl = block.dataset.leetcode;
+    const panel = block.querySelector(".editor-panel");
+    panel.innerHTML = `
+      <a class="editor-leetcode" href="${leetcodeUrl}" target="_blank" rel="noopener">Search this problem on LeetCode &#8599;</a>
+      <textarea class="code-area" spellcheck="false"></textarea>
+      <div class="editor-actions">
+        <button class="btn-save">Save</button>
+        ${hasTest ? '<button class="btn-run primary">Run Tests</button>' : ""}
+        <button class="btn-done ${hasTest ? "" : "primary"}">Mark Done</button>
+        ${!hasTest ? '<label class="confirm-label"><input type="checkbox" class="confirm-box" /> I can explain the approach, coded it without copying, and know its time/space complexity</label>' : ""}
+      </div>
+      <pre class="output" hidden></pre>
+    `;
+    const textarea = panel.querySelector(".code-area");
+    textarea.value = content;
+    textarea.addEventListener("keydown", (e) => {
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const start = e.target.selectionStart;
+        const end = e.target.selectionEnd;
+        e.target.value = e.target.value.slice(0, start) + "  " + e.target.value.slice(end);
+        e.target.selectionStart = e.target.selectionEnd = start + 2;
+      }
+    });
+
+    panel.querySelector(".btn-save").addEventListener("click", () => saveFile(filePath, textarea.value, panel));
+    const runBtn = panel.querySelector(".btn-run");
+    if (runBtn) runBtn.addEventListener("click", () => runTests(filePath, textarea.value, panel));
+    panel.querySelector(".btn-done").addEventListener("click", () => markDoneAction(filePath, textarea.value, panel, block));
+  }
+
+  async function saveFile(filePath, content, panel) {
+    const out = panel.querySelector(".output");
+    out.hidden = false;
+    out.className = "output";
+    out.textContent = "Saving\u2026";
+    try {
+      const res = await fetch("/api/file", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: filePath, content }),
+      });
+      const data = await res.json();
+      out.textContent = data.ok ? "Saved." : "Error: " + (data.error || "unknown");
+    } catch (err) {
+      out.textContent = "Save failed: " + err.message;
+    }
+  }
+
+  async function runTests(filePath, content, panel) {
+    const out = panel.querySelector(".output");
+    out.hidden = false;
+    out.className = "output";
+    out.textContent = "Saving and running tests\u2026";
+    await fetch("/api/file", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ path: filePath, content }),
+    });
+    try {
+      const res = await fetch("/api/run-tests", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: filePath }),
+      });
+      const data = await res.json();
+      out.textContent = (data.output && data.output.trim()) || (data.pass ? "Passed." : "Failed.");
+      out.className = "output " + (data.pass ? "output-pass" : "output-fail");
+    } catch (err) {
+      out.textContent = "Run failed: " + err.message;
+      out.className = "output output-fail";
+    }
+  }
+
+  async function markDoneAction(filePath, content, panel, block) {
+    const out = panel.querySelector(".output");
+    out.hidden = false;
+    out.className = "output";
+    const confirmBox = panel.querySelector(".confirm-box");
+    const confirmed = confirmBox ? confirmBox.checked : false;
+    const wasAlreadyDone = block.querySelector(".check").classList.contains("done");
+    out.textContent = "Saving\u2026";
+    await fetch("/api/file", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ path: filePath, content }),
+    });
+    try {
+      const res = await fetch("/api/done", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ path: filePath, confirmed }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        out.textContent = (wasAlreadyDone ? "Nice, solved it again." : "Marked done.") + (data.output ? "\n\n" + data.output : "");
+        out.className = "output output-pass";
+        markRowDone(block, !wasAlreadyDone);
+        const fresh = await fetchData();
+        renderStats(fresh);
+        updateRepBadge(block, fresh, filePath);
+      } else if (data.reason === "tests_failed") {
+        out.textContent = "Tests failed \u2014 fix the solution first.\n\n" + (data.output || "");
+        out.className = "output output-fail";
+      } else if (data.reason === "not_confirmed") {
+        out.textContent = "Check the self-certify box first \u2014 that's how problems without an automated test get marked done.";
+        out.className = "output output-fail";
+      } else {
+        out.textContent = "Could not mark done: " + (data.reason || "unknown error");
+        out.className = "output output-fail";
+      }
+    } catch (err) {
+      out.textContent = "Request failed: " + err.message;
+      out.className = "output output-fail";
+    }
+  }
+
+  // Updates just this one row's checkmark in place, so other open editors
+  // elsewhere on the page are left completely untouched. Only bumps the
+  // topic's solved count on a genuine first solve — re-solving an
+  // already-checked problem (a review) must not double-count it.
+  function markRowDone(block, isFirstSolve) {
+    block.querySelector(".check").classList.add("done");
+    block.querySelector(".problem-title").classList.add("done");
+    if (!isFirstSolve) return;
+    const topic = block.closest(".topic");
+    if (topic) {
+      const count = topic.querySelector(".topic-count");
+      const [solved, total] = count.textContent.split("/").map(Number);
+      const newSolved = Math.min(total, solved + 1);
+      count.textContent = `${newSolved}/${total}`;
+      topic.querySelector(".mini-bar-fill").style.width = Math.round((newSolved / total) * 100) + "%";
+    }
+  }
+
+  // Re-reads this problem's fresh rep count from just-fetched /api/data and
+  // updates (or creates) its "N×" badge in place.
+  function updateRepBadge(block, freshData, filePath) {
+    let found = null;
+    for (const t of freshData.topics) {
+      const item = t.items.find((i) => i.path === filePath);
+      if (item) { found = item; break; }
+    }
+    if (!found) return;
+    const row = block.querySelector(".problem-row");
+    let badge = row.querySelector(".rep-badge");
+    if (!badge && found.repCount > 0) {
+      badge = document.createElement("span");
+      badge.className = "rep-badge";
+      row.querySelector(".problem-title").insertAdjacentElement("afterend", badge);
+    }
+    if (badge) badge.textContent = `${found.repCount}×`;
+  }
+
+  async function loadRandomReview() {
+    const resultEl = document.getElementById("reviewResult");
+    resultEl.innerHTML = '<div class="editor-loading">Picking…</div>';
+    try {
+      const res = await fetch("/api/random-review", { cache: "no-store" });
+      const data = await res.json();
+      if (data.none) {
+        resultEl.innerHTML = '<div class="editor-loading">Solve a problem first — there\'s nothing to review yet.</div>';
+        return;
+      }
+      resultEl.innerHTML = `
+        <div class="title">${escapeHtml(data.title)}</div>
+        <div class="meta">Solved ${data.repCount} time${data.repCount === 1 ? "" : "s"} so far &mdash; ${data.poolSize} problem${data.poolSize === 1 ? "" : "s"} tied for least-practiced right now.</div>
+        <button class="primary" onclick="jumpTo('${escapeAttr(data.relPath)}')">Open it below</button>
+      `;
+    } catch (err) {
+      resultEl.innerHTML = '<div class="editor-loading">Could not load a review problem.</div>';
+    }
+  }
+  document.getElementById("reviewBtn").addEventListener("click", loadRandomReview);
+
+  function toggleOrderList() {
+    const list = document.getElementById("orderList");
+    list.hidden = !list.hidden;
+    // renderStats also (re)renders the list when it's visible and flips the toggle arrow.
+    if (lastData) renderStats(lastData);
+  }
+  document.getElementById("orderToggle").addEventListener("click", toggleOrderList);
+
+  function renderOrderList(data) {
+    const list = document.getElementById("orderList");
+    list.innerHTML = data.flatQueue
+      .map(
+        (q, i) => `
+        <div class="order-row" onclick="jumpTo('${escapeAttr(q.relPath)}')">
+          <div class="order-num">${i + 1}</div>
+          <div class="check ${q.checked ? "done" : ""}"></div>
+          <div class="order-topic">${escapeHtml(q.topic)}</div>
+          <div class="order-title ${q.checked ? "done" : ""}">${escapeHtml(q.title)}</div>
+          ${q.challenge ? '<span class="badge">challenge</span>' : ""}
+        </div>`
+      )
+      .join("");
+  }
+
+  async function refresh({ force } = {}) {
+    const data = await fetchData();
+    renderStats(data);
+    if (!document.getElementById("topics").children.length) {
+      renderTopics(data);
+      return;
+    }
+    if (force && anyEditorOpen()) {
+      alert("Close any open problem editors before refreshing the list, so nothing you're editing gets lost.");
+      return;
+    }
+    if (force || !anyEditorOpen()) renderTopics(data);
+  }
+
+  document.getElementById("refreshBtn").addEventListener("click", () => refresh({ force: true }));
+  refresh();
+  setInterval(() => fetchData().then(renderStats), 15000);
+</script>
+</body>
+</html>

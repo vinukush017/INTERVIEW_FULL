@@ -1,6 +1,7 @@
 /**
  * Problem: Merge K Sorted Lists
  * Topic: Heap
+ * LeetCode search: https://leetcode.com/search/?q=Merge%20K%20Sorted%20Lists
  *
  * Description:
  * Given an array of sorted linked-list heads, merge all nodes into one sorted linked list and return its head.

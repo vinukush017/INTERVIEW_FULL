@@ -1,6 +1,7 @@
 /**
  * Problem: Coin Change
  * Topic: Dynamic Programming
+ * LeetCode search: https://leetcode.com/search/?q=Coin%20Change
  *
  * Description:
  * Given coin denominations and an amount, return the fewest coins needed to form that amount, or -1 when it cannot be formed. Coins may be reused.

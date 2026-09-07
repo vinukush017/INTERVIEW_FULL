@@ -1,6 +1,7 @@
 /**
  * Problem: Diameter of Binary Tree
  * Topic: Trees
+ * LeetCode search: https://leetcode.com/search/?q=Diameter%20of%20Binary%20Tree
  *
  * Description:
  * Return the greatest number of edges on any path between two nodes in a binary tree. The path need not pass through the root.

@@ -1,6 +1,7 @@
 /**
  * Problem: Kth Smallest Element in a BST
  * Topic: Trees
+ * LeetCode search: https://leetcode.com/search/?q=Kth%20Smallest%20Element%20in%20a%20BST
  *
  * Description:
  * Given a binary-search-tree root and k, return the kth smallest node value using one-based ordering.

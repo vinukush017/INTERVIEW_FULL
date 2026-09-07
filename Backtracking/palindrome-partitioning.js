@@ -1,6 +1,7 @@
 /**
  * Problem: Palindrome Partitioning
  * Topic: Backtracking
+ * LeetCode search: https://leetcode.com/search/?q=Palindrome%20Partitioning
  *
  * Description:
  * Given a string, return every way to split it so that each resulting substring is a palindrome.

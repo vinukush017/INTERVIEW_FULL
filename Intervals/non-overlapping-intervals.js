@@ -1,6 +1,7 @@
 /**
  * Problem: Non-overlapping Intervals
  * Topic: Intervals
+ * LeetCode search: https://leetcode.com/search/?q=Non-overlapping%20Intervals
  *
  * Description:
  * Given intervals, return the minimum number that must be removed so all remaining intervals are non-overlapping.

@@ -1,6 +1,7 @@
 /**
  * Problem: Word Search
  * Topic: Backtracking
+ * LeetCode search: https://leetcode.com/search/?q=Word%20Search
  *
  * Description:
  * Given a character grid and a word, return true if adjacent horizontal or vertical cells can spell the word without reusing a cell.

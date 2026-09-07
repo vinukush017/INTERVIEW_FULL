@@ -1,6 +1,7 @@
 /**
  * Problem: Longest Palindromic Substring
  * Topic: String
+ * LeetCode search: https://leetcode.com/search/?q=Longest%20Palindromic%20Substring
  *
  * Description:
  * Given a string, return its longest contiguous substring that reads the same forward and backward. Any one answer is acceptable when tied.
