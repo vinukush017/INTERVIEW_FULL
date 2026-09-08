@@ -56,6 +56,99 @@
   h1 { font-size: 1.4rem; margin: 0 0 4px; }
   .sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 20px; }
 
+  .tab-bar { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--border); }
+  .tab-btn {
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    padding: 8px 4px 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+  .tab-btn:hover { border-color: var(--border); }
+  .tab-btn.active:hover { border-bottom-color: var(--accent); }
+
+  .js-core-section { margin-bottom: 28px; }
+  .js-core-section .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .js-core-section h2 { font-size: 1.05rem; margin: 0 0 4px; }
+  .js-core-section .section-sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 12px; }
+  .section-toggle-all { font-size: 0.8rem; color: var(--accent); cursor: pointer; user-select: none; background: none; border: none; padding: 0; }
+  .section-toggle-all:hover { text-decoration: underline; }
+
+  .snippet-grid { display: flex; flex-direction: column; gap: 10px; }
+  .snippet-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .snippet-card .snippet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .snippet-card .snippet-header:hover { background: var(--accent-soft); }
+  .snippet-card .title { font-weight: 600; font-size: 0.92rem; }
+  .snippet-card .chevron-sm { color: var(--muted); font-size: 0.75rem; transition: transform 0.15s ease; flex-shrink: 0; }
+  .snippet-card.open .chevron-sm { transform: rotate(90deg); }
+  .snippet-card .snippet-body { display: none; padding: 0 16px 16px; }
+  .snippet-card.open .snippet-body { display: block; }
+  .snippet-card .note { color: var(--muted); font-size: 0.85rem; margin-bottom: 10px; line-height: 1.6; }
+  .snippet-card pre {
+    background: var(--code-bg);
+    color: var(--code-text);
+    border-radius: 6px;
+    padding: 10px 12px;
+    overflow-x: auto;
+    margin: 0;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.8rem;
+    line-height: 1.5;
+    white-space: pre;
+  }
+
+  .flashcard-controls { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+  .flashcard-search {
+    flex: 1;
+    min-width: 180px;
+    font: inherit;
+    padding: 7px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--card);
+    color: var(--text);
+  }
+  .flashcard-cat-select {
+    font: inherit;
+    padding: 7px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--card);
+    color: var(--text);
+  }
+  .flashcard {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  .flashcard .cat { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.03em; font-weight: 600; margin-bottom: 4px; }
+  .flashcard .q { font-weight: 600; font-size: 0.94rem; }
+  .flashcard .a { color: var(--muted); font-size: 0.88rem; line-height: 1.55; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); display: none; }
+  .flashcard.open .a { display: block; }
+  .flashcard .hint { color: var(--muted); font-size: 0.75rem; margin-top: 2px; }
+  .flashcard.open .hint { display: none; }
+
   .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px; }
   .stat-card {
     background: var(--card);
@@ -316,36 +409,77 @@
 <body>
 <div class="wrap">
   <h1>Interview Prep Dashboard</h1>
-  <div class="sub" id="subline">Loading…</div>
 
-  <div class="stat-row" id="statRow"></div>
-
-  <div id="nextCard"></div>
-
-  <div class="review-card">
-    <div class="review-header">
-      <div>
-        <div class="review-title">Random Review</div>
-        <div class="review-sub">Picks a solved problem you've practiced the fewest times, so everything reaches the same rep count before anything gets a third pass.</div>
-      </div>
-      <button id="reviewBtn">Give me one</button>
-    </div>
-    <div class="review-result" id="reviewResult"></div>
+  <div class="tab-bar">
+    <button class="tab-btn active" id="tabBtnProblems">Problems</button>
+    <button class="tab-btn" id="tabBtnJsCore">JS Core</button>
   </div>
 
-  <div class="overall-bar-track"><div class="overall-bar-fill" id="overallFill" style="width:0%"></div></div>
+  <div id="problemsTab">
+    <div class="sub" id="subline">Loading…</div>
 
-  <div class="order-toggle" id="orderToggle">Show the full study order (loading…) &#9656;</div>
-  <div class="order-list" id="orderList" hidden></div>
+    <div class="stat-row" id="statRow"></div>
 
-  <div id="topics"></div>
+    <div id="nextCard"></div>
 
-  <div class="footer">
-    <span id="generatedAt"></span>
-    <button id="refreshBtn">Refresh list</button>
+    <div class="review-card">
+      <div class="review-header">
+        <div>
+          <div class="review-title">Random Review</div>
+          <div class="review-sub">Picks a solved problem you've practiced the fewest times, so everything reaches the same rep count before anything gets a third pass.</div>
+        </div>
+        <button id="reviewBtn">Give me one</button>
+      </div>
+      <div class="review-result" id="reviewResult"></div>
+    </div>
+
+    <div class="overall-bar-track"><div class="overall-bar-fill" id="overallFill" style="width:0%"></div></div>
+
+    <div class="order-toggle" id="orderToggle">Show the full study order (loading…) &#9656;</div>
+    <div class="order-list" id="orderList" hidden></div>
+
+    <div id="topics"></div>
+
+    <div class="footer">
+      <span id="generatedAt"></span>
+      <button id="refreshBtn">Refresh list</button>
+    </div>
+  </div>
+
+  <div id="jsCoreTab" hidden>
+    <div class="sub">Core JavaScript syntax and theory, kept separate from problem tracking — nothing here affects your streak or checklist.</div>
+
+    <div class="js-core-section">
+      <div class="section-head">
+        <h2>Ways to write a function</h2>
+        <button class="section-toggle-all" id="functionFormsToggleAll">Expand all</button>
+      </div>
+      <div class="section-sub">The same handful of forms come up constantly — knowing all of them cold means never freezing on "wait, how do I write this." Click a card to expand it.</div>
+      <div class="snippet-grid" id="functionFormsGrid"></div>
+    </div>
+
+    <div class="js-core-section">
+      <div class="section-head">
+        <h2>Timers &amp; async patterns</h2>
+        <button class="section-toggle-all" id="asyncFormsToggleAll">Expand all</button>
+      </div>
+      <div class="section-sub">setTimeout, setInterval, and the debounce/throttle patterns built on top of them. Click a card to expand it.</div>
+      <div class="snippet-grid" id="asyncFormsGrid"></div>
+    </div>
+
+    <div class="js-core-section">
+      <h2>Theory flashcards</h2>
+      <div class="section-sub">Click a card to reveal the answer. Search or filter by category to focus on a weak spot.</div>
+      <div class="flashcard-controls">
+        <input class="flashcard-search" id="flashcardSearch" type="text" placeholder="Search questions…" />
+        <select class="flashcard-cat-select" id="flashcardCategory"></select>
+      </div>
+      <div id="flashcardList"></div>
+    </div>
   </div>
 </div>
 
+<script src="js-core-data.js"></script>
 <script>
   let lastData = null;
 
@@ -737,6 +871,108 @@
   document.getElementById("refreshBtn").addEventListener("click", () => refresh({ force: true }));
   refresh();
   setInterval(() => fetchData().then(renderStats), 15000);
+
+  // ---------------------------------------------------------------------
+  // JS Core tab. Entirely separate from everything above: its own data
+  // (js-core-data.js), its own render functions, no shared state with the
+  // Problems tab, no writes to progress/checklist. Just a reference.
+  // ---------------------------------------------------------------------
+
+  function switchTab(tab) {
+    const isProblems = tab === "problems";
+    document.getElementById("problemsTab").hidden = !isProblems;
+    document.getElementById("jsCoreTab").hidden = isProblems;
+    document.getElementById("tabBtnProblems").classList.toggle("active", isProblems);
+    document.getElementById("tabBtnJsCore").classList.toggle("active", !isProblems);
+    try {
+      localStorage.setItem("dashboardTab", tab);
+    } catch {
+      // localStorage can throw in a private window -- the tab still switches fine without it.
+    }
+    if (!isProblems && !document.getElementById("functionFormsGrid").children.length) {
+      renderJsCoreTab();
+    }
+  }
+  document.getElementById("tabBtnProblems").addEventListener("click", () => switchTab("problems"));
+  document.getElementById("tabBtnJsCore").addEventListener("click", () => switchTab("jscore"));
+
+  try {
+    if (localStorage.getItem("dashboardTab") === "jscore") switchTab("jscore");
+  } catch {
+    // Default to the Problems tab if localStorage isn't available.
+  }
+
+  function renderSnippetGrid(containerId, items) {
+    document.getElementById(containerId).innerHTML = items
+      .map(
+        (item) => `
+        <div class="snippet-card">
+          <div class="snippet-header" onclick="this.closest('.snippet-card').classList.toggle('open')">
+            <div class="title">${escapeHtml(item.title)}</div>
+            <div class="chevron-sm">&#9656;</div>
+          </div>
+          <div class="snippet-body">
+            <div class="note">${escapeHtml(item.note)}</div>
+            <pre>${escapeHtml(item.code)}</pre>
+          </div>
+        </div>`
+      )
+      .join("");
+  }
+
+  function setupToggleAll(buttonId, containerId) {
+    const btn = document.getElementById(buttonId);
+    btn.addEventListener("click", () => {
+      const cards = document.querySelectorAll(`#${containerId} .snippet-card`);
+      const shouldExpand = btn.textContent === "Expand all";
+      cards.forEach((c) => c.classList.toggle("open", shouldExpand));
+      btn.textContent = shouldExpand ? "Collapse all" : "Expand all";
+    });
+  }
+
+  function renderJsCoreTab() {
+    renderSnippetGrid("functionFormsGrid", FUNCTION_FORMS);
+    renderSnippetGrid("asyncFormsGrid", ASYNC_TIMER_FORMS);
+    setupToggleAll("functionFormsToggleAll", "functionFormsGrid");
+    setupToggleAll("asyncFormsToggleAll", "asyncFormsGrid");
+
+    const categorySelect = document.getElementById("flashcardCategory");
+    const categories = [...new Set(THEORY_CARDS.map((c) => c.category))];
+    categorySelect.innerHTML =
+      '<option value="">All categories</option>' +
+      categories.map((c) => `<option value="${escapeAttr(c)}">${escapeHtml(c)}</option>`).join("");
+
+    renderFlashcards();
+    document.getElementById("flashcardSearch").addEventListener("input", renderFlashcards);
+    categorySelect.addEventListener("change", renderFlashcards);
+  }
+
+  function renderFlashcards() {
+    const query = document.getElementById("flashcardSearch").value.trim().toLowerCase();
+    const category = document.getElementById("flashcardCategory").value;
+    const filtered = THEORY_CARDS.filter((c) => {
+      const matchesCategory = !category || c.category === category;
+      const matchesQuery = !query || c.q.toLowerCase().includes(query) || c.a.toLowerCase().includes(query);
+      return matchesCategory && matchesQuery;
+    });
+
+    const list = document.getElementById("flashcardList");
+    if (filtered.length === 0) {
+      list.innerHTML = '<div class="empty">No questions match that search.</div>';
+      return;
+    }
+    list.innerHTML = filtered
+      .map(
+        (c, i) => `
+        <div class="flashcard" data-idx="${i}" onclick="this.classList.toggle('open')">
+          <div class="cat">${escapeHtml(c.category)}</div>
+          <div class="q">${escapeHtml(c.q)}</div>
+          <div class="hint">Click to reveal the answer</div>
+          <div class="a">${escapeHtml(c.a)}</div>
+        </div>`
+      )
+      .join("");
+  }
 </script>
 </body>
 </html>
