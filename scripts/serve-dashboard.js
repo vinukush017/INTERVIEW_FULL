@@ -1,382 +1,194 @@
 #!/usr/bin/env node
-// Local, interactive progress dashboard. Run: npm run dashboard
-// Serves dashboard/index.html plus a small JSON API so you can read a
-// problem, edit it, run its test, and mark it done — all from the browser.
-// Every endpoint reuses the same checklist + progress log the terminal
-// commands (today/done/progress) use, so there is only one source of truth.
-const http = require("node:http");
-const fs = require("node:fs");
-const path = require("node:path");
-const { spawnSync, exec } = require("node:child_process");
-const {
-  repoRoot,
-  questionsPath,
-  loadProgress,
-  saveProgress,
-  todayISO,
-  parseQueue,
-  parseChecklist,
-  markDone,
-  computeStreak,
-} = require("./lib/progress");
+// Local command center. Markdown/checklist/log remain canonical; no new store.
+const http = require('node:http');
+const fs = require('node:fs');
+const path = require('node:path');
+const { execFile } = require('node:child_process');
+const { repoRoot, todayISO, parseQueue, parseChecklist, computeStreak } = require('./lib/progress');
+const { selectNext, selectReview, parseTopics, repCounts } = require('./lib/study');
+const { inside, renderMarkdown, documentPaths, loadEnglish, topicIndex } = require('./lib/content');
 
-const PORT = process.env.PORT ? Number(process.env.PORT) : 4173;
-const DASHBOARD_DIR = path.join(repoRoot, "dashboard");
-
-// Most checklist topic names match their folder name 1:1 once spaces become
-// hyphens (e.g. "Two Pointers" -> "Two-Pointers"). "Strings" is the one
-// exception — its folder is the singular "String".
-const TOPIC_FOLDER_OVERRIDES = { Strings: "String" };
-function topicFolder(name) {
-  return TOPIC_FOLDER_OVERRIDES[name] || name.replace(/ /g, "-");
-}
-const FOLDER_TOPIC_OVERRIDES = { String: "Strings" };
-function topicHeading(folder) {
-  return FOLDER_TOPIC_OVERRIDES[folder] || folder.replace(/-/g, " ");
+function repository(root) {
+  const text = fs.readFileSync(path.join(root, '01-DSA-Questions.md'), 'utf8');
+  const { map } = parseChecklist(text);
+  const logFile = path.join(root, '.progress', 'log.json');
+  const progress = fs.existsSync(logFile) ? JSON.parse(fs.readFileSync(logFile, 'utf8')) : { startDate: todayISO(), entries: [] };
+  return { text, map, progress, logFile };
 }
 
-function leetcodeSearchUrl(title) {
-  return `https://leetcode.com/search/?q=${encodeURIComponent(title)}`;
-}
-
-// Number of times a problem has been logged as solved (first solve + every
-// later re-solve). Keyed the same way progress log entries are: "Folder/slug"
-// with no extension.
-function computeRepCounts(entries) {
-  const counts = new Map();
-  for (const e of entries) counts.set(e.problem, (counts.get(e.problem) || 0) + 1);
-  return counts;
-}
-
-// Small, purpose-built markdown-to-HTML converter for the "## Pattern"
-// section of our own topic READMEs (static, developer-authored content —
-// not derived from anything editable through this API, so trusting it as
-// HTML on the way to the browser is safe).
-function renderMiniMarkdown(md) {
-  const escapeHtml = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  const blocks = [];
-  const withoutFences = md.replace(/```[a-z]*\n([\s\S]*?)```/g, (_, code) => {
-    blocks.push(`<pre><code>${escapeHtml(code.trim())}</code></pre>`);
-    return `@@BLOCK${blocks.length - 1}@@`;
-  });
-
-  let html = withoutFences
-    .split(/\n\n+/)
-    .map((para) => {
-      const trimmed = para.trim();
-      if (/^@@BLOCK\d+@@$/.test(trimmed)) return trimmed;
-      let inner = escapeHtml(trimmed)
-        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-        .replace(/`([^`]+)`/g, "<code>$1</code>")
-        .replace(/\n/g, "<br>");
-      return `<p>${inner}</p>`;
-    })
-    .join("\n");
-
-  blocks.forEach((block, i) => {
-    html = html.replace(`@@BLOCK${i}@@`, block);
-  });
-  return html;
-}
-
-// Extracts the "## Pattern" ... "---" section from a topic's README.md.
-function readTopicConcept(folder) {
-  const readmePath = path.join(repoRoot, folder, "README.md");
-  if (!fs.existsSync(readmePath)) return null;
-  const text = fs.readFileSync(readmePath, "utf8").replace(/\r\n/g, "\n");
-  const match = text.match(/## Pattern\n([\s\S]*?)\n---/);
-  if (!match) return null;
-  return renderMiniMarkdown(match[1].trim());
-}
-
-// Only accepts "Folder/sub/file.js"-shaped relative paths with no ".." —
-// this guards the /api/file and /api/run-tests endpoints from writing or
-// reading anything outside a real solution file.
-function resolveSolutionPath(relPathArg) {
-  if (typeof relPathArg !== "string" || !relPathArg) return null;
-  const relPath = relPathArg.replace(/\\/g, "/");
-  if (!/^[A-Za-z0-9_.-]+(?:\/[A-Za-z0-9_.-]+)*\.js$/.test(relPath)) return null;
-  if (relPath.split("/").includes("..")) return null;
-  const abs = path.join(repoRoot, relPath);
-  if (!abs.startsWith(repoRoot + path.sep) && abs !== repoRoot) return null;
+function registeredSolution(root, relPath) {
+  // Exact registry membership, not merely a .js suffix or a repository prefix.
+  if (typeof relPath !== 'string' || !/^[A-Za-z0-9_-]+(?:\/[A-Za-z0-9_.-]+)*\.js$/.test(relPath) || relPath.split('/').includes('..')) return null;
+  if (!relPath.includes('/') || ['scripts', 'dashboard', 'tests'].includes(relPath.split('/')[0])) return null;
+  if (!repository(root).map.has(relPath)) return null;
+  const abs = path.join(root, relPath);
+  if (!fs.existsSync(abs) || !fs.statSync(abs).isFile() || !inside(root, abs)) return null;
+  // No symlinks in an editable path, even to another file within this repo.
+  let part = root;
+  for (const segment of relPath.split('/')) {
+    part = path.join(part, segment);
+    if (fs.lstatSync(part).isSymbolicLink()) return null;
+  }
   return { relPath, abs };
 }
 
-function buildData() {
-  const text = fs.readFileSync(questionsPath, "utf8");
-  const lines = text.split(/\r?\n/);
-  const problemsStart = lines.findIndex((l) => l.trim() === "## Problems");
+function testPath(root, relPath) {
+  const file = path.join(root, 'tests', relPath.replace(/\.js$/, '.test.js'));
+  return fs.existsSync(file) && inside(root, file) ? file : null;
+}
 
-  const progress = loadProgress();
-  const repCounts = computeRepCounts(progress.entries);
-
-  const topics = [];
-  let currentTopic = null;
-  lines.forEach((line, idx) => {
-    if (idx < problemsStart) return;
-    const heading = line.match(/^### (.+)$/);
-    if (heading) {
-      currentTopic = {
-        name: heading[1],
-        conceptHtml: readTopicConcept(topicFolder(heading[1])),
-        items: [],
-      };
-      topics.push(currentTopic);
-      return;
-    }
-    const item = line.match(/^- \[([ x])\] \[(.+?)\]\(\.\/(.+?\.js)\)/);
-    if (item && currentTopic) {
-      const hasTest = fs.existsSync(
-        path.join(repoRoot, "tests", item[3].replace(/\.js$/, ".test.js"))
-      );
-      const relPathArg = item[3].replace(/\.js$/, "");
-      currentTopic.items.push({
-        checked: item[1] === "x",
-        title: item[2],
-        path: item[3],
-        hasTest,
-        leetcodeUrl: leetcodeSearchUrl(item[2]),
-        repCount: repCounts.get(relPathArg) || 0,
-      });
-    }
+function buildData(root) {
+  const { text, map, progress } = repository(root);
+  const allowed = documentPaths(root, map);
+  const counts = repCounts(progress.entries);
+  const topics = parseTopics(text).map(topic => {
+    const folder = topic.name === 'Strings' ? 'String' : topic.name.replace(/ /g, '-');
+    const source = `${folder}/README.md`;
+    const pattern = allowed.has(source) ? fs.readFileSync(path.join(root, source), 'utf8').replace(/\r\n/g, '\n').match(/## Pattern\n([\s\S]*?)\n---/) : null;
+    return { ...topic, conceptHtml: pattern ? renderMarkdown(pattern[1], source, allowed, map) : null,
+      items: topic.items.map(item => ({ ...item, hasTest: !!testPath(root, item.path), repCount: counts.get(item.path.replace(/\.js$/, '')) || 0,
+        leetcodeUrl: `https://leetcode.com/search/?q=${encodeURIComponent(item.title)}` })) };
   });
-
   const queue = parseQueue(text);
-  const { map } = parseChecklist(text);
-
-  let next = null;
-  let firstUnsolvedChallenge = null;
-  for (const q of queue) {
-    const entry = map.get(q.relPath);
-    if (entry && entry.checked) continue;
-    if (q.challenge) {
-      if (!firstUnsolvedChallenge) firstUnsolvedChallenge = q;
-      continue;
-    }
-    next = q;
-    break;
-  }
-  if (!next) next = firstUnsolvedChallenge;
-
-  const dates = progress.entries.map((e) => e.date);
-  const streak = computeStreak(dates);
-
-  const totalCount = topics.reduce((sum, t) => sum + t.items.length, 0);
-  const solvedCount = topics.reduce((sum, t) => sum + t.items.filter((i) => i.checked).length, 0);
-
-  const daysSinceStart = Math.max(
-    0,
-    Math.round((new Date(todayISO()) - new Date(progress.startDate)) / 86400000)
-  );
-  const week = Math.floor(daysSinceStart / 7) + 1;
-  const suggestedMinutes = week <= 2 ? 60 : week <= 4 ? 75 : week <= 8 ? 90 : 120;
-
-  // Full study order: every problem in strict dependency-queue order,
-  // spanning topics, so it can be reviewed as one flat list before starting.
-  const flatQueue = queue.map((q) => {
-    const entry = map.get(q.relPath);
-    const folder = q.relPath.split("/")[0];
-    return {
-      title: q.title,
-      relPath: q.relPath,
-      topic: topicHeading(folder),
-      challenge: q.challenge,
-      checked: !!(entry && entry.checked),
-    };
-  });
-
-  return {
-    generatedAt: new Date().toISOString(),
-    totalCount,
-    solvedCount,
-    streak,
-    week,
-    suggestedMinutes,
-    next,
-    topics,
-    flatQueue,
-  };
-}
-
-// Picks a problem to review: among SOLVED problems, always from the group
-// with the fewest recorded solves so far (ties broken randomly). This makes
-// every solved problem reach N reps before any of them reaches N+1 — once
-// everything has been solved twice, the next review naturally pushes toward
-// a third pass, automatically, with no hardcoded target count.
-function pickRandomReview() {
-  const text = fs.readFileSync(questionsPath, "utf8");
-  const { map } = parseChecklist(text);
-  const progress = loadProgress();
-  const repCounts = computeRepCounts(progress.entries);
-
-  const solved = [...map.entries()].filter(([, v]) => v.checked);
-  if (solved.length === 0) return null;
-
-  let minRep = Infinity;
-  for (const [relPath] of solved) {
-    const key = relPath.replace(/\.js$/, "");
-    minRep = Math.min(minRep, repCounts.get(key) || 0);
-  }
-  const candidates = solved.filter(([relPath]) => {
-    const key = relPath.replace(/\.js$/, "");
-    return (repCounts.get(key) || 0) === minRep;
-  });
-  const [relPath, entry] = candidates[Math.floor(Math.random() * candidates.length)];
-  return {
-    relPath,
-    title: entry.title,
-    repCount: minRep,
-    poolSize: candidates.length,
-  };
-}
-
-function readJsonBody(req) {
-  return new Promise((resolve, reject) => {
-    let raw = "";
-    req.on("data", (chunk) => {
-      raw += chunk;
-      if (raw.length > 2_000_000) req.destroy(); // 2MB guard, plenty for a solution file
-    });
-    req.on("end", () => {
-      if (!raw) return resolve({});
-      try {
-        resolve(JSON.parse(raw));
-      } catch {
-        reject(new Error("Invalid JSON body"));
-      }
-    });
-    req.on("error", reject);
-  });
+  const next = selectNext(queue, map);
+  return { generatedAt: new Date().toISOString(), phase: null, learningWeek: null,
+    totalCount: map.size, solvedCount: [...map.values()].filter(item => item.checked).length,
+    streak: computeStreak(progress.entries.map(entry => entry.date)), startDate: progress.startDate,
+    next: next ? { ...next, checked: !!map.get(next.relPath)?.checked, topic: topics.find(topic => topic.items.some(item => item.path === next.relPath))?.name || next.relPath.split('/')[0] } : null,
+    topics, recentActivity: progress.entries.slice(-20).reverse(),
+    flatQueue: queue.map(item => ({ ...item, checked: !!map.get(item.relPath)?.checked, topic: topics.find(topic => topic.items.some(problem => problem.path === item.relPath))?.name || item.relPath.split('/')[0] })) };
 }
 
 function sendJson(res, status, body) {
-  res.writeHead(status, { "Content-Type": "application/json; charset=utf-8" });
+  res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' });
   res.end(JSON.stringify(body));
 }
 
-// Runs a problem's test file (if one exists) via the existing CLI runner.
-function runTest(relPath) {
-  const relPathArg = relPath.replace(/\.js$/, "");
-  const testAbs = path.join(repoRoot, "tests", `${relPathArg}.test.js`);
-  if (!fs.existsSync(testAbs)) return { hasTest: false, pass: null, output: "" };
-  const result = spawnSync(
-    process.execPath,
-    [path.join("scripts", "test-solution.js"), relPathArg],
-    { cwd: repoRoot, encoding: "utf8" }
-  );
-  return {
-    hasTest: true,
-    pass: result.status === 0,
-    output: `${result.stdout || ""}${result.stderr || ""}`,
-  };
+function readJson(req) {
+  return new Promise((resolve, reject) => {
+    let raw = ''; let bytes = 0; let failed = false;
+    req.on('data', chunk => {
+      bytes += chunk.length;
+      if (bytes > 2_000_000) { if (!failed) reject(Object.assign(new Error('Body exceeds 2 MB'), { status: 413 })); failed = true; return; }
+      raw += chunk;
+    });
+    req.on('end', () => {
+      if (failed) return;
+      try { const parsed = JSON.parse(raw || '{}'); if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) throw new Error(); resolve(parsed); }
+      catch { reject(Object.assign(new Error('Invalid JSON object'), { status: 400 })); }
+    });
+    req.on('error', reject);
+  });
 }
 
-const MIME = {
-  ".html": "text/html; charset=utf-8",
-  ".css": "text/css; charset=utf-8",
-  ".js": "application/javascript; charset=utf-8",
-  ".json": "application/json; charset=utf-8",
-};
+function runTest(root, relPath, timeout) {
+  if (!testPath(root, relPath)) return Promise.resolve({ hasTest: false, pass: null, output: '' });
+  const runner = path.join(root, 'scripts', 'test-solution.js');
+  if (!inside(root, runner)) throw new Error('Test runner must remain inside the repository');
+  return new Promise(resolve => execFile(process.execPath, [runner, relPath.replace(/\.js$/, '')],
+    { cwd: root, timeout, killSignal: 'SIGKILL', maxBuffer: 1_000_000, encoding: 'utf8' }, (error, stdout, stderr) => {
+      const timedOut = !!error?.killed;
+      resolve({ hasTest: true, pass: !error, timedOut,
+        output: `${stdout || ''}${stderr || ''}${timedOut ? '\nTest execution stopped (timeout/output limit).' : ''}` });
+    }));
+}
 
-const server = http.createServer(async (req, res) => {
-  const [urlPath, query] = req.url.split("?");
-  const params = new URLSearchParams(query || "");
-
+function complete(root, relPath) {
+  // Re-read after testing. Keep the legacy shape and same-day deduplication.
+  const { text, map, progress, logFile } = repository(root);
+  const item = map.get(relPath);
+  if (!item) throw new Error('Problem no longer registered');
+  const originalLog = fs.existsSync(logFile) ? fs.readFileSync(logFile, 'utf8') : null;
+  const lines = text.split(/\r?\n/); const eol = text.includes('\r\n') ? '\r\n' : '\n';
+  lines[item.line] = lines[item.line].replace('- [ ]', '- [x]');
+  const problem = relPath.replace(/\.js$/, ''); const date = todayISO();
+  if (!progress.entries.some(entry => entry.problem === problem && entry.date === date)) progress.entries.push({ date, problem });
+  fs.mkdirSync(path.dirname(logFile), { recursive: true });
   try {
-    if (req.method === "GET" && urlPath === "/api/data") {
-      return sendJson(res, 200, buildData());
-    }
-
-    if (req.method === "GET" && urlPath === "/api/random-review") {
-      const pick = pickRandomReview();
-      if (!pick) return sendJson(res, 200, { none: true });
-      return sendJson(res, 200, pick);
-    }
-
-    if (req.method === "GET" && urlPath === "/api/file") {
-      const solved = resolveSolutionPath(params.get("path"));
-      if (!solved || !fs.existsSync(solved.abs)) return sendJson(res, 404, { error: "Not found" });
-      const content = fs.readFileSync(solved.abs, "utf8");
-      return sendJson(res, 200, { path: solved.relPath, content });
-    }
-
-    if (req.method === "PUT" && urlPath === "/api/file") {
-      const body = await readJsonBody(req);
-      const solved = resolveSolutionPath(body.path);
-      if (!solved || !fs.existsSync(solved.abs)) return sendJson(res, 404, { error: "Not found" });
-      if (typeof body.content !== "string") return sendJson(res, 400, { error: "Missing content" });
-      fs.writeFileSync(solved.abs, body.content);
-      return sendJson(res, 200, { ok: true });
-    }
-
-    if (req.method === "POST" && urlPath === "/api/run-tests") {
-      const body = await readJsonBody(req);
-      const solved = resolveSolutionPath(body.path);
-      if (!solved || !fs.existsSync(solved.abs)) return sendJson(res, 404, { error: "Not found" });
-      return sendJson(res, 200, runTest(solved.relPath));
-    }
-
-    if (req.method === "POST" && urlPath === "/api/done") {
-      const body = await readJsonBody(req);
-      const solved = resolveSolutionPath(body.path);
-      if (!solved || !fs.existsSync(solved.abs)) return sendJson(res, 404, { error: "Not found" });
-
-      const testResult = runTest(solved.relPath);
-      if (testResult.hasTest && !testResult.pass) {
-        return sendJson(res, 200, { ok: false, reason: "tests_failed", output: testResult.output });
-      }
-      if (!testResult.hasTest && !body.confirmed) {
-        return sendJson(res, 200, { ok: false, reason: "not_confirmed" });
-      }
-
-      const wasFound = markDone(solved.relPath);
-      if (!wasFound) return sendJson(res, 200, { ok: false, reason: "not_in_checklist" });
-
-      const progress = loadProgress();
-      const today = todayISO();
-      const relPathArg = solved.relPath.replace(/\.js$/, "");
-      const alreadyLoggedToday = progress.entries.some(
-        (e) => e.problem === relPathArg && e.date === today
-      );
-      if (!alreadyLoggedToday) progress.entries.push({ date: today, problem: relPathArg });
-      saveProgress(progress);
-
-      return sendJson(res, 200, { ok: true, output: testResult.output });
-    }
-
-    if (req.method !== "GET") {
-      return sendJson(res, 405, { error: "Method not allowed" });
-    }
-
-    // Static file serving for everything else under dashboard/.
-    const relStatic = urlPath === "/" ? "/index.html" : urlPath;
-    const filePath = path.join(DASHBOARD_DIR, decodeURIComponent(relStatic));
-    if (!filePath.startsWith(DASHBOARD_DIR)) {
-      res.writeHead(403);
-      return res.end("Forbidden");
-    }
-    fs.readFile(filePath, (err, content) => {
-      if (err) {
-        res.writeHead(404);
-        return res.end("Not found");
-      }
-      res.writeHead(200, { "Content-Type": MIME[path.extname(filePath)] || "application/octet-stream" });
-      res.end(content);
-    });
-  } catch (err) {
-    sendJson(res, 500, { error: String((err && err.message) || err) });
+    fs.writeFileSync(logFile, JSON.stringify(progress, null, 2) + '\n');
+    fs.writeFileSync(path.join(root, '01-DSA-Questions.md'), lines.join(eol));
+  } catch (error) {
+    // Best effort rollback of the first write; never report successful completion.
+    try { if (originalLog === null) fs.unlinkSync(logFile); else fs.writeFileSync(logFile, originalLog); } catch { /* Original error remains visible. */ }
+    throw error;
   }
-});
+}
 
-server.listen(PORT, () => {
-  const url = `http://localhost:${PORT}`;
-  console.log(`Dashboard running at ${url}`);
-  console.log("Press Ctrl+C to stop.");
-  const cmd =
-    process.platform === "win32"
-      ? `start "" "${url}"`
-      : process.platform === "darwin"
-      ? `open "${url}"`
-      : `xdg-open "${url}"`;
-  exec(cmd, () => {});
-});
+function createDashboardServer({ root = repoRoot, testTimeoutMs = 10_000 } = {}) {
+  const assets = new Set(['index.html', 'app.js', 'styles.css', 'js-core-data.js']);
+  const server = http.createServer(async (req, res) => {
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('Referrer-Policy', 'no-referrer');
+    res.setHeader('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'none'");
+    try {
+      const port = server.address().port;
+      const localHosts = [`127.0.0.1:${port}`, `localhost:${port}`];
+      if (!localHosts.includes(req.headers.host)) return sendJson(res, 403, { error: 'Local host required' });
+      if (req.headers.origin && !localHosts.some(host => req.headers.origin === `http://${host}`)) return sendJson(res, 403, { error: 'Cross-origin request rejected' });
+      const url = new URL(req.url, `http://127.0.0.1:${port}`);
+      if (req.method === 'GET' && url.pathname === '/favicon.ico') { res.writeHead(204); return res.end(); }
+      if (req.method === 'GET' && url.pathname === '/api/data') return sendJson(res, 200, buildData(root));
+      if (req.method === 'GET' && url.pathname === '/api/random-review') {
+        const { map, progress } = repository(root);
+        const pick = selectReview(map, progress.entries);
+        return sendJson(res, 200, pick ? { ...pick, history: progress.entries.filter(entry => entry.problem === pick.relPath.replace(/\.js$/, '')) } : { none: true });
+      }
+      if (req.method === 'GET' && ['/api/english', '/api/topics', '/api/content'].includes(url.pathname)) {
+        const { map } = repository(root); const allowed = documentPaths(root, map);
+        if (url.pathname === '/api/english') return sendJson(res, 200, loadEnglish(root, allowed, map));
+        if (url.pathname === '/api/topics') return sendJson(res, 200, topicIndex(root, allowed));
+        const file = url.searchParams.get('path');
+        if (!allowed.has(file)) return sendJson(res, 404, { error: 'Document not registered' });
+        const markdown = fs.readFileSync(path.join(root, file), 'utf8');
+        if (url.searchParams.get('format') === 'raw') { res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end(markdown); }
+        return sendJson(res, 200, { path: file, html: renderMarkdown(markdown, file, allowed, map) });
+      }
+      if (req.method === 'GET' && url.pathname === '/api/file') {
+        const solution = registeredSolution(root, url.searchParams.get('path'));
+        if (!solution) return sendJson(res, 404, { error: 'Practice file not registered or unsafe' });
+        return sendJson(res, 200, { path: solution.relPath, content: fs.readFileSync(solution.abs, 'utf8') });
+      }
+      if (['PUT', 'POST'].includes(req.method) && ['/api/file', '/api/run-tests', '/api/done'].includes(url.pathname)) {
+        if (!/^application\/json(?:;|$)/i.test(req.headers['content-type'] || '')) return sendJson(res, 415, { error: 'JSON content type required' });
+        const body = await readJson(req);
+        const solution = registeredSolution(root, body.path);
+        if (!solution) return sendJson(res, 404, { error: 'Practice file not registered or unsafe' });
+        if (req.method === 'PUT' && url.pathname === '/api/file') {
+          if (typeof body.content !== 'string') return sendJson(res, 400, { error: 'Missing content' });
+          fs.writeFileSync(solution.abs, body.content);
+          return sendJson(res, 200, { ok: true });
+        }
+        if (req.method !== 'POST' || url.pathname === '/api/file') return sendJson(res, 405, { error: 'Method not allowed' });
+        const result = await runTest(root, solution.relPath, testTimeoutMs);
+        if (url.pathname === '/api/run-tests') return sendJson(res, 200, result);
+        if (result.hasTest && !result.pass) return sendJson(res, 200, { ok: false, reason: 'tests_failed', output: result.output });
+        if (!result.hasTest && body.confirmed !== true) return sendJson(res, 200, { ok: false, reason: 'not_confirmed' });
+        if (!registeredSolution(root, solution.relPath)) return sendJson(res, 404, { error: 'Practice file changed during testing' });
+        complete(root, solution.relPath);
+        return sendJson(res, 200, { ok: true, output: result.output });
+      }
+      if (req.method !== 'GET') return sendJson(res, 405, { error: 'Method not allowed' });
+      const asset = url.pathname === '/' ? 'index.html' : url.pathname.slice(1);
+      const file = path.join(root, 'dashboard', asset);
+      if (!assets.has(asset) || !fs.existsSync(file) || !inside(path.join(root, 'dashboard'), file)) return sendJson(res, 404, { error: 'Not found' });
+      res.writeHead(200, { 'Content-Type': { '.html': 'text/html', '.css': 'text/css', '.js': 'application/javascript' }[path.extname(file)] + '; charset=utf-8' });
+      res.end(fs.readFileSync(file));
+    } catch (error) { sendJson(res, error.status || 500, { error: error.message }); }
+  });
+  return server;
+}
+
+if (require.main === module) {
+  const server = createDashboardServer();
+  server.on('error', error => { console.error(`Dashboard could not start: ${error.message}`); process.exitCode = 1; });
+  server.listen(Number(process.env.PORT || 4173), '127.0.0.1', () => {
+    const url = `http://127.0.0.1:${server.address().port}`;
+    console.log(`Dashboard running at ${url}\nPress Ctrl+C to stop.`);
+    if (process.env.DASHBOARD_NO_OPEN !== '1') {
+      const command = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'cmd' : 'xdg-open';
+      const args = process.platform === 'win32' ? ['/c', 'start', '', url] : [url];
+      execFile(command, args, error => { if (error) console.log(`Open ${url} in your browser.`); });
+    }
+  });
+}
+module.exports = { createDashboardServer, buildData, registeredSolution };

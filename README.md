@@ -1,18 +1,30 @@
 # Interview Preparation
 
-A focused interview-preparation workspace for full-stack JavaScript roles.
+A focused interview-preparation workspace for full-stack JavaScript roles,
+building both technical interview skills and clear English explanations.
 
 ## Start here — every single day
 
-    npm run dev
+After pulling the latest repository, start the daily command center:
 
-That's the only command you need to remember. It starts a local server and
-opens the dashboard in your browser at http://localhost:4173 — from there you
-can see your streak and progress, open the next problem in dependency order,
-write your solution in the inline editor, run its tests, and mark it done.
-Everything writes to the same files this repo has always used, so your editor
-and terminal stay usable too if you'd rather work there for a given problem.
-Ctrl+C in that terminal stops the server when you're done for the day.
+```sh
+git pull
+npm run dev
+```
+
+The server opens **Today** at http://127.0.0.1:4173. Start with its main DSA task
+or current review suggestion, then spend 15 minutes explaining the same topic
+aloud. **DSA** keeps the inline editor, save, tests and completion actions;
+**JS Core**, **English**, **Topics**, **Revision**, **Progress**, and **Mock
+Interviews** bring existing material into the dashboard. Weekly Review explains
+the upcoming workflow. Ctrl+C stops the server.
+
+Solutions, checklist and completion dates remain repository-backed. Attempt
+outcomes, speaking gaps and Today notes are **temporary** in this PR; copy
+important pending reviews to [TODAY.md](./TODAY.md) before closing/reloading.
+The manual card remains a fallback. The [English communication guide](./english/README.md)
+is the canonical daily speaking system; its frameworks, phrases and blank
+answer templates are viewable in the dashboard. No separate English syllabus.
 
 Prefer the terminal for the daily loop instead? `npm run today` /
 `npm run done -- Folder/problem-file` / `npm run progress` do the same three
@@ -58,15 +70,15 @@ Consistency matters more than completing a very large number of questions.
 
 ## Daily commands
 
-- `npm run dev` (alias: `npm run dashboard`) — the local webpage at http://localhost:4173. Click any problem to expand an inline editor: write your solution right there, **Run Tests** (for problems that have one), and **Mark Done** — it saves the file, checks the box in [01-DSA-Questions.md](./01-DSA-Questions.md), and updates your streak. Every problem row also links out to a LeetCode search for that exact title. Ctrl+C to stop it.
+- `npm run dev` (alias: `npm run dashboard`) — the local webpage at http://127.0.0.1:4173. In **DSA**, open a problem, write your solution, **Save & run tests** (where available), then **Mark Complete** — it saves the file, checks the box in [01-DSA-Questions.md](./01-DSA-Questions.md), and updates the existing completion log/streak. Untested problems require self-certification. Every problem also links to a LeetCode search. Ctrl+C to stop it.
 - `npm run today` — the terminal equivalent: streak, percent solved, next problem, today's full-stack topic.
 - `npm run done -- Folder/problem-file` — the terminal equivalent of the Mark Done button. Works on an already-solved problem too — that's how you log a re-solve.
 - `npm run progress` — the terminal equivalent of the dashboard's stats, as plain text.
-- `npm run review` — suggests one already-solved problem to re-solve from memory, always picking from whichever solved problems you've practiced the *fewest* times. Nothing gets a 3rd rep until everything solved has 2, nothing gets a 4th until everything has 3, and so on — no fixed target, it just keeps chasing the least-practiced group. In the dashboard, this is the **Random Review** card near the top.
+- `npm run review` — suggests one already-solved problem to re-solve from memory, always picking from whichever solved problems you've practiced the *fewest* times. Nothing gets a 3rd rep until everything solved has 2, nothing gets a 4th until everything has 3, and so on — no fixed target, it just keeps chasing the least-practiced group. In the dashboard, this is the **Revision** section and Today’s **Current review suggestion** card.
 - `npm test Folder/problem-file` — run a problem's test file directly, without marking it done.
 - `npm run add Folder "Problem Name"` — scaffold a new problem file, README entry, and checklist line.
 
-The dashboard also has a **"Show the full study order"** toggle near the top — the complete 206-problem queue as one flat, numbered list across every topic, so you can review the whole sequence before committing to it. Click any row to jump straight to that problem's editor.
+The **DSA** section also has a **Full dependency-ordered queue** disclosure — the complete existing queue as one flat, numbered list across every topic. Open any entry to go straight to its editor. `npm run review` remains a CLI fallback; it uses repetition counts, not scheduled due dates.
 
 ## Coding-file convention
 

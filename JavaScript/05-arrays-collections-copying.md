@@ -47,7 +47,7 @@ Do not force `reduce` into code that is clearer as a loop, `map`, or `filter`.
 - `Map` stores key-value pairs and allows keys of any type. It preserves insertion order.
 - `Set` stores unique values and is useful for membership checks and deduplication.
 - `WeakMap` stores object or non-registered symbol keys without preventing their garbage collection. It is not enumerable.
-- `WeakSet` weakly stores objects and is also not enumerable.
+- `WeakSet` weakly stores objects or non-registered symbols and is not enumerable. Registered symbols (`Symbol.for(...)`) cannot be stored. Check runtime support when using weak symbol references.
 
 Use plain objects for record-like data with known property names. Use `Map` when keys are dynamic, non-string values, or when its collection API improves clarity.
 

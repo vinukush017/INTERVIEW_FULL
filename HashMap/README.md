@@ -11,11 +11,14 @@ condition", "does a duplicate exist", "two values that sum to a target".
 
 **Template:**
 ```js
-const seen = new Map();
-for (const x of nums) {
-  const complement = target - x;
-  if (seen.has(complement)) return [seen.get(complement), i];
-  seen.set(x, i);
+function findPair(nums, target) {
+  const seen = new Map();
+  for (const [i, x] of nums.entries()) {
+    const complement = target - x;
+    if (seen.has(complement)) return [seen.get(complement), i];
+    seen.set(x, i);
+  }
+  return [];
 }
 ```
 

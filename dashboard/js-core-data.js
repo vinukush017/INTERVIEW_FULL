@@ -6,7 +6,7 @@
 const FUNCTION_FORMS = [
   {
     title: "Function Declaration",
-    note: "Defined with the function keyword and a name, at the top level of a script/function or inside a block. It's fully hoisted -- both the declaration AND its implementation move to the top of the enclosing scope, so you can call it before the line it's written on (unlike function expressions). This is the classic, most readable way to define a standalone function, and it's the only form JS engines let you call before their definition appears in the source. Use it for top-level utility functions where hoisting order doesn't matter and you want the clearest possible syntax.",
+    note: "Defined with the function keyword and a name. Before executing the enclosing scope, JavaScript initializes the declaration's binding with its callable function value, so it can be called before its declaration line. Hoisting describes this preparation; the source code is not physically moved. Function expressions become callable only when their assignment runs. Prefer declarations for readable standalone utilities; block declarations are scoped to that block in strict mode/modules.",
     code: `function add(a, b) {\n  return a + b;\n}`,
   },
   {
@@ -26,7 +26,7 @@ const FUNCTION_FORMS = [
   },
   {
     title: "Object Method Shorthand",
-    note: "The methodName() {} syntax inside an object literal -- equivalent to methodName: function() {} but shorter, and (a small but real difference) it doesn't create an anonymous function that shows as \"(anonymous)\" in stack traces. Because it's a regular function (not an arrow), this inside it is determined by the call site: calling object.method() binds this to object, but detaching the method (const fn = object.method; fn()) loses that binding.",
+    note: "The methodName() {} syntax defines a method in an object literal. Like a normal function-valued property, its this depends on the call site: object.method() supplies object, while a detached call loses that receiver. The forms are not fully equivalent: shorthand methods cannot be constructors and support super property access; an ordinary function-valued property can be a constructor. Both forms can have an inferred name, so stack-trace naming is not the defining difference.",
     code: `const calculator = {\n  add(a, b) {\n    return a + b;\n  },\n};`,
   },
   {
@@ -71,7 +71,7 @@ const FUNCTION_FORMS = [
   },
   {
     title: "Bound Function (.bind)",
-    note: "bind(thisArg, ...args) returns a brand-new function with this (and optionally some leading arguments) permanently locked in -- critically, it does NOT call the function; it just prepares a version you can call later, as many times as you like, always with that this. This is the standard fix for \"losing this\" when passing a method as a callback: element.addEventListener('click', obj.method.bind(obj)) guarantees this inside method is always obj, no matter how the event system invokes it.",
+    note: "bind(thisArg, ...args) returns a new function without invoking the original. Ordinary calls to a bound normal function use the supplied this value and prepend any bound arguments, which helps preserve a callback's receiver. If the target is constructible, new boundFn() ignores the bound this and creates an instance; bound arguments still apply. Binding an arrow does not change its lexical this.",
     code: `function greet() {\n  return \`Hi, \${this.name}\`;\n}\n\nconst boundGreet = greet.bind({ name: "Asha" });\nboundGreet(); // "Hi, Asha"`,
   },
   {
@@ -84,12 +84,12 @@ const FUNCTION_FORMS = [
 const ASYNC_TIMER_FORMS = [
   {
     title: "Basic setTimeout",
-    note: "Schedules a callback to run once, after AT LEAST the given number of milliseconds -- the delay is a minimum, not a guarantee, since the callback can only run once the call stack is empty and any currently-running synchronous code (or earlier-queued work) has finished. setTimeout(fn, 0) doesn't run \"immediately\"; it still waits for the current synchronous code to finish and gets queued after any pending Promise microtasks.",
+    note: "Schedules a callback to run once after a delay threshold, not at a guaranteed exact time. Runtime rules may normalize/clamp the delay, and busy synchronous code can postpone execution. setTimeout(fn, 0) does not interrupt the current job. In a browser, promise reactions already queued during that job run at the microtask checkpoint before a later timer task; this is execution order, not a rule about when the timer is queued.",
     code: `setTimeout(() => console.log("runs after ~1000ms"), 1000);`,
   },
   {
     title: "clearTimeout",
-    note: "setTimeout returns a numeric id (or a Timeout object in Node) identifying that specific pending timer. Passing that id to clearTimeout cancels it before it fires, as long as you call clearTimeout before the delay has elapsed -- once the callback has already run, clearTimeout on that id does nothing (it's a safe no-op, not an error). Commonly used to cancel a previous timer before starting a new one, which is exactly how debounce works below.",
+    note: "setTimeout returns a numeric id in a browser or a Timeout object in Node.js. Pass that handle to clearTimeout to cancel a callback that has not started, even if its delay threshold has elapsed while synchronous work kept it waiting. Cancellation cannot undo an already running/completed callback. Clearing an inactive handle is a no-op. Debounce uses this to cancel the previous pending timer before starting another.",
     code: `const id = setTimeout(() => console.log("will not run"), 1000);\nclearTimeout(id);`,
   },
   {
@@ -124,7 +124,7 @@ const ASYNC_TIMER_FORMS = [
   },
   {
     title: 'Classic "predict the output" trap',
-    note: "Execution always finishes ALL synchronous code first (A, then D -- the console.log calls run top to bottom before either async thing fires), THEN the engine drains the entire microtask queue (Promise .then callbacks -- C), and only THEN does it move to the next macrotask/task in the queue (the setTimeout callback -- B). This ordering -- sync code, then all microtasks, then the next task -- is the single most commonly tested event-loop question in interviews; memorize the three-tier priority, not just this one example, so you can predict any variation of it.",
+    note: "For this snippet, A and D run synchronously, the already-fulfilled promise queues C as a microtask, and B runs in a later timer callback: A, D, C, B. The browser model drains queued microtasks at a checkpoint before the next task. It is not a universal priority chart for every async operation: a still-pending promise may settle after a timer. Node.js also has event-loop phases and process.nextTick; state the runtime and module context for more complex ordering questions.",
     code: `console.log("A");\nsetTimeout(() => console.log("B"), 0);\nPromise.resolve().then(() => console.log("C"));\nconsole.log("D");\n\n// Output: A, D, C, B`,
   },
 ];
@@ -198,7 +198,7 @@ const THEORY_CARDS = [
   {
     category: "Async & Event Loop",
     q: "Why does a Promise .then callback run before a setTimeout(fn, 0) callback?",
-    a: "Promise reactions are microtasks; setTimeout schedules a task (often called a macrotask). After each synchronous run finishes, the engine fully drains the microtask queue before it picks up the next task -- so queued promise callbacks always jump ahead of queued timers.",
+    a: "In the shown browser snippet, Promise.resolve().then queues a reaction during the current job. That microtask runs before the next timer task. A pending promise need not settle before a timer, so promises do not universally run first. For Node.js, also consider its phases, process.nextTick, and CommonJS versus ES-module context rather than applying a universal browser priority chart.",
   },
   {
     category: "Async & Event Loop",

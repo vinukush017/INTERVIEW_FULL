@@ -2,9 +2,10 @@
 
 ## Pattern
 
-Make the locally best choice at every step, and trust (or prove) that never
-backtracking still reaches a globally optimal answer. Almost always starts
-with sorting by some key, then a single pass making the obvious choice.
+Make a locally optimal choice at each step and justify why it preserves a
+globally optimal solution. Sorting is common in interval/resource problems,
+but is not required for every greedy algorithm. The important part is why
+the choice is safe, not whether the code starts with a sort.
 
 **Recognize it when:** "maximize/minimize given intervals or resources",
 "activity selection", "can I always safely take the best option available
@@ -19,12 +20,14 @@ for (const item of items) {
 }
 ```
 
-**Complexity:** O(n log n), dominated by the initial sort.
+**Complexity:** O(n log n) for the interval-selection template above,
+dominated by sorting. Other greedy algorithms have different costs.
 
-**Watch out for:** a greedy choice you can't explain *why* is safe is
-usually a guess, not a proof — if you can't articulate the exchange
-argument (why swapping in a different choice never helps), the problem is
-probably DP instead, not greedy.
+**Watch out for:** an intuitive choice still needs justification, such as
+an exchange argument, a stays-ahead argument, or an invariant. Try small
+counterexamples first. Not finding a proof immediately does not mean the
+problem is DP. Consider DP when alternatives require exploring subproblem
+states/history rather than safely committing to one local choice.
 
 ---
 

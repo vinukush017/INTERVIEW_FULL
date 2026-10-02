@@ -10,6 +10,8 @@ const {
   computeStreak,
 } = require("./lib/progress");
 
+const { selectNext } = require("./lib/study");
+
 const FULLSTACK_TOPICS = [
   "JavaScript -- scope, hoisting, closures (02-JavaScript.md)",
   "JavaScript -- types, coercion, equality (02-JavaScript.md)",
@@ -45,19 +47,7 @@ function main() {
   // Challenge problems are meant to be skipped on a first pass through a
   // level (per 01-DSA-Questions.md), so prefer the first unsolved non-challenge
   // problem; only fall back to a challenge one if nothing else is left.
-  let next = null;
-  let firstUnsolvedChallenge = null;
-  for (const item of queue) {
-    const entry = map.get(item.relPath);
-    if (entry && entry.checked) continue;
-    if (item.challenge) {
-      if (!firstUnsolvedChallenge) firstUnsolvedChallenge = item;
-      continue;
-    }
-    next = item;
-    break;
-  }
-  if (!next) next = firstUnsolvedChallenge;
+  const next = selectNext(queue, map);
 
   console.log("");
   console.log(

@@ -3,27 +3,14 @@
 const fs = require("node:fs");
 const { questionsPath, loadProgress, computeStreak } = require("./lib/progress");
 
+const { parseTopics } = require("./lib/study");
+
 function main() {
   const text = fs.readFileSync(questionsPath, "utf8");
-  const lines = text.split(/\r?\n/);
-  const problemsStart = lines.findIndex((l) => l.trim() === "## Problems");
-
-  const topics = [];
-  let currentTopic = null;
-  lines.forEach((line, idx) => {
-    if (idx < problemsStart) return;
-    const heading = line.match(/^### (.+)$/);
-    if (heading) {
-      currentTopic = { name: heading[1], total: 0, solved: 0 };
-      topics.push(currentTopic);
-      return;
-    }
-    const item = line.match(/^- \[([ x])\] \[.+?\]\(\.\/.+?\.js\)/);
-    if (item && currentTopic) {
-      currentTopic.total += 1;
-      if (item[1] === "x") currentTopic.solved += 1;
-    }
-  });
+  const topics = parseTopics(text).map(topic => ({
+    name: topic.name, total: topic.items.length,
+    solved: topic.items.filter(item => item.checked).length,
+  }));
 
   const totalCount = topics.reduce((sum, t) => sum + t.total, 0);
   const solvedCount = topics.reduce((sum, t) => sum + t.solved, 0);
