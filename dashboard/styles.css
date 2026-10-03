@@ -50,3 +50,8 @@ form.card { border-color: var(--accent); }
 #planningHeader { font-weight: 600; color: var(--text); }
 #reviewEvidence, #planningSuggestions { margin-block: 24px; }
 #weeklyReviewForm h3 { margin-top: 0; }
+
+.pattern-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.pattern-grid .card { margin: 0; }
+.pattern-grid h3 button { text-align: left; }
+@media (max-width: 760px) { .pattern-grid { grid-template-columns: 1fr; } }

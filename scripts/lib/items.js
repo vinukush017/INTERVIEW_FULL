@@ -3,16 +3,19 @@ const path = require('node:path');
 const { parseChecklist, parseQueue } = require('./progress');
 const { parseTopics } = require('./study');
 const { documentPaths, topicIndex } = require('./content');
+const { loadCatalog } = require('./dsa-catalog');
 
 function itemRegistry(root) {
   const text = fs.readFileSync(path.join(root, '01-DSA-Questions.md'), 'utf8');
   const { map } = parseChecklist(text); const queue = parseQueue(text); const topics = parseTopics(text);
-  const items = new Map();
+  const items = new Map(); const catalog = loadCatalog(root);
+  if (catalog.problems.length !== map.size || catalog.problems.some(item => !map.has(item.path))) throw new Error("Catalog/checklist registration mismatch");
   for (const [file, entry] of map) {
     if (!file.includes('/') || ['scripts', 'dashboard', 'tests'].includes(file.split('/')[0])) continue;
+    const metadata = catalog.byPath.get(file); const definition = catalog.byPattern.get(metadata.pattern);
     items.set(file, { itemId: file, title: entry.title, topic: topics.find(topic => topic.items.some(item => item.path === file))?.name || file.split('/')[0],
-      kind: 'dsa', problem: file, priority: queue.find(item => item.relPath === file)?.challenge ? 'challenge' : 'core',
-      question: `Explain your approach to ${entry.title} before coding: clarify the problem, compare brute force with your optimization, and walk through an example.` });
+      kind: 'dsa', problem: file, role: metadata.role, patternId: metadata.pattern, pattern: definition.name, patternDefinition: definition, difficulty: metadata.difficulty, priority: metadata.role === 'CORE' ? 'core' : metadata.role.toLowerCase(),
+      question: `Explain ${entry.title}: clarify, compare brute force, recognize the pattern, justify the invariant/data structure, walk through an example, state time/space, and test edge cases aloud.${metadata.role === "TRANSFER" ? " What clue made you recognize this pattern?" : ""}` });
   }
   const data = require(path.join(root, 'dashboard', 'js-core-data.js'));
   for (const [group, category] of [[data.FUNCTION_FORMS, 'Function forms'], [data.ASYNC_TIMER_FORMS, 'Timers & async patterns'], [data.THEORY_CARDS, null]]) {

@@ -95,6 +95,8 @@ function evidenceText(summary) {
 function renderProgress() {
   const data = state.data; const evidence = data.evidence;
   $('progressSummary').innerHTML = `<p><strong>${data.solvedCount} / ${data.totalCount}</strong> DSA problems checked complete. ${evidence.legacyCount} completion records; missing independence/explanation stays unknown.</p><p>Study activity streak: ${data.streak.current} day(s) · Longest: ${data.streak.longest} · Last activity: ${html(data.streak.lastDate || 'none')}</p>`;
+  const core = data.topics.flatMap(topic => topic.items).filter(item => item.role === 'CORE');
+  $('progressSummary').insertAdjacentHTML('beforeend', `<p>Curated core: ${core.filter(item => item.checked).length}/${core.length} checked complete; ${core.filter(item => item.evidence.attempted).length}/${core.length} have actual attempt evidence. Neither count is readiness.</p>`);
   $('topicProgress').innerHTML = data.topics.map(topic => {
     const solved = topic.items.filter(item => item.checked).length;
     return `<div class="topic-progress"><span>${html(topic.name)}</span><progress max="${topic.items.length || 1}" value="${solved}" aria-label="${html(topic.name)} completion"></progress><span>${solved}/${topic.items.length}</span></div>`;
@@ -111,21 +113,24 @@ function renderProgress() {
 function findItem(file) { return state.data.topics.flatMap(topic => topic.items).find(item => item.path === file); }
 function renderDSA() {
   const container = $('problemTopics');
-  // Build once. Navigation, filtering and refresh never destroy editor drafts.
-  if (!container.children.length) {
-    for (const topic of state.data.topics) {
-      const group = document.createElement('details'); group.className = 'topic'; group.dataset.topic = topic.name;
+  // Append newly registered problems on refresh without destroying editor drafts.
+  for (const topic of state.data.topics) {
+    let group = [...container.children].find(group => group.dataset.topic === topic.name);
+    if (!group) {
+      group = document.createElement('details'); group.className = 'topic'; group.dataset.topic = topic.name;
       group.innerHTML = `<summary>${html(topic.name)} <span class="topic-count"></span></summary>`;
       if (topic.conceptHtml) {
         const concept = document.createElement('details'); concept.innerHTML = `<summary>Pattern reference — read after attempting</summary><div class="markdown">${topic.conceptHtml}</div>`; group.append(concept);
       }
-      for (const item of topic.items) {
+      container.append(group);
+    }
+    for (const item of topic.items) {
+      if (![...group.querySelectorAll('.problem-block')].some(block => block.dataset.path === item.path)) {
         const block = document.createElement('details'); block.className = 'problem-block'; block.dataset.path = item.path;
         block.innerHTML = `<summary>${html(item.title)} <span class="problem-meta"></span></summary><div class="problem-panel"></div>`;
         block.addEventListener('toggle', () => { if (block.open) loadEditor(block).catch(error => status(error.message, true)); });
         group.append(block);
       }
-      container.append(group);
     }
   }
   document.querySelectorAll('.topic').forEach(group => {
@@ -133,32 +138,70 @@ function renderDSA() {
     group.querySelector('.topic-count').textContent = `${topic.items.filter(item => item.checked).length}/${topic.items.length}`;
     group.querySelectorAll('.problem-block').forEach(block => {
       const item = findItem(block.dataset.path);
-      const meta = block.querySelector('.problem-meta'); meta.textContent = ` · ${item.checked ? 'Checked' : 'Not checked'} · ${item.repCount} recorded solves${item.hasTest ? ' · Tests available' : ''}`;
+      const meta = block.querySelector('.problem-meta'); meta.textContent = ` · ${item.role} · ${item.pattern} · ${item.checked ? 'Checked' : 'Not checked'} · latest ${item.evidence.latestOutcome} · independent ${item.evidence.lastIndependent || 'unknown'} · explanation ${item.evidence.explanation}${item.evidence.nextDue && item.evidence.nextDue <= state.data.evidence.date ? ' · review due ' + item.evidence.nextDue : ''}${item.hasTest ? ' · Tests available' : ''}`;
       meta.classList.toggle('completed', item.checked);
     });
   });
-  $('orderList').innerHTML = '<ol class="queue-list">' + state.data.flatQueue.map(item => `<li><button data-problem="${html(item.relPath)}">${html(item.title)} — ${html(item.topic)}${item.challenge ? ' · Challenge' : ''}${item.checked ? ' · Checked' : ''}</button></li>`).join('') + '</ol>';
-  filterProblems();
+  $('orderList').innerHTML = '<ol class="queue-list">' + state.data.flatQueue.map(item => `<li><button data-problem="${html(item.relPath)}">${html(item.title)} — ${html(item.topic)} · ${html(item.role)}${item.challenge ? ' · Challenge' : ''}${item.checked ? ' · Checked' : ''}</button></li>`).join('') + '</ol>';
+  renderPatterns(); filterProblems();
 }
 function filterProblems() {
-  const query = $('problemFilter').value.trim().toLowerCase();
+  if (!state.data) return;
+  const query = $('problemFilter').value.trim().toLowerCase(); let total = 0;
   document.querySelectorAll('.topic').forEach(group => {
     let visible = 0;
     group.querySelectorAll('.problem-block').forEach(block => {
-      const match = (findItem(block.dataset.path).title + ' ' + block.dataset.path + ' ' + group.dataset.topic).toLowerCase().includes(query);
+      const item = findItem(block.dataset.path); const e = item.evidence;
+      const due = [e.nextDue, e.speakingDue].some(date => date && date <= state.data.evidence.date);
+      const match = (!query || `${item.title} ${item.path} ${item.topic} ${item.pattern}`.toLowerCase().includes(query)) &&
+        (!$('roleFilter').value || item.role === $('roleFilter').value) && (!$('patternFilter').value || item.patternId === $('patternFilter').value) &&
+        (!$('attemptFilter').value || e.latestOutcome === $('attemptFilter').value) && (!$('readinessFilter').value || item.readiness === $('readinessFilter').value) &&
+        (!$('dueFilter').checked || due) && (!$('weakFilter').checked || e.weak);
       block.hidden = !match; if (match) visible++;
     });
-    group.hidden = visible === 0;
+    group.hidden = visible === 0; total += visible;
     if (query && visible) group.open = true;
   });
+  $('filterCount').textContent = `${total} matching problems / ${state.data.totalCount} library items. Evidence remains separate from completion.`;
 }
+for (const id of ['roleFilter','patternFilter','attemptFilter','readinessFilter','dueFilter','weakFilter']) $(id).addEventListener('change', filterProblems);
 $('problemFilter').addEventListener('input', filterProblems);
+function dsaView(patterns) {
+  $('patternWorkspace').hidden = !patterns; $('problemTopics').hidden = patterns; $('dsaFilters').hidden = patterns; $('filterCount').hidden = patterns;
+  $('problemsView').setAttribute('aria-pressed', String(!patterns)); $('patternsView').setAttribute('aria-pressed', String(patterns));
+}
+$('problemsView').addEventListener('click', () => dsaView(false));
+$('patternsView').addEventListener('click', () => dsaView(true));
+$('allProblems').addEventListener('click', () => { resetDSAFilters(); dsaView(false); filterProblems(); });
+function resetDSAFilters() {
+  for (const id of ['problemFilter','roleFilter','patternFilter','attemptFilter','readinessFilter']) $(id).value = '';
+  $('dueFilter').checked = false; $('weakFilter').checked = false;
+}
 async function openProblem(file) {
-  switchSection('dsa'); $('problemFilter').value = ''; filterProblems();
+  switchSection('dsa'); resetDSAFilters(); dsaView(false); filterProblems();
   const block = [...document.querySelectorAll('.problem-block')].find(block => block.dataset.path === file);
   if (!block) throw new Error('Problem is not in the checklist workspace');
   block.closest('.topic').open = true; block.open = true;
   await loadEditor(block); block.scrollIntoView({ block: 'start' }); block.querySelector('summary').focus();
+}
+function renderPatterns() {
+  const patterns = state.data.evidence.dsa.patterns;
+  const selected = $('patternFilter').value;
+  $('patternFilter').innerHTML = '<option value="">All patterns</option>' + patterns.map(p => `<option value="${p.id}">${html(p.name)}</option>`).join(''); $('patternFilter').value = selected;
+  const readiness = $('readinessFilter').value;
+  $('readinessFilter').innerHTML = '<option value="">Any evidence state</option>' + ['Not Started','Learning','Practicing','Demonstrated','Transfer Needed','Strong Recent Evidence','Needs Review'].map(value => `<option>${value}</option>`).join(''); $('readinessFilter').value = readiness;
+  $('patternList').innerHTML = patterns.map(p => `<article class="card"><h3><button data-pattern="${p.id}">${html(p.name)}</button></h3><p>${p.coreAttempted}/${p.coreTotal} core items attempted · ${html(p.state)}</p><p class="muted">${html(p.recentEvidence)}</p><p>${html(p.nextAction)}</p>${!p.coreTotal ? '<p class="muted">Supporting warm-ups only; not a readiness gate.</p>' : ''}</article>`).join('');
+  $('patternObservations').innerHTML = '<ul>' + patterns.filter(p => p.coreTotal).map(p => `<li><button data-pattern="${p.id}">${html(p.name)}</button>: ${html(p.state)}${p.communicationWeakness ? ' · explanation needs practice' : ''}</li>`).join('') + '</ul>';
+  if (state.selectedPattern) showPattern(state.selectedPattern, false);
+}
+function showPattern(id, navigate = true) {
+  const p = state.data.evidence.dsa.patterns.find(p => p.id === id); if (!p) return;
+  state.selectedPattern = id;
+  const detail = $('patternDetail'); detail.hidden = false;
+  detail.innerHTML = `<h3>${html(p.name)} — ${html(p.state)}</h3><p>${html(p.cue)}</p><p class="muted">Default guidance: ${p.defaultPhase}. Evidence may justify earlier practice.</p><p>${html(p.recentEvidence)}</p><p>Current weakness: ${html(p.weakness || (p.communicationWeakness ? 'Explanation needs practice' : 'No recent weakness recorded; missing evidence is unknown'))}</p><p><strong>Next action:</strong> ${html(p.nextAction)}</p><div class="actions">${p.nextItem ? `<button data-problem="${html(p.nextItem)}">Open next practice item</button><button data-pattern-speak="${html(p.nextItem)}">Explain the invariant</button>` : ''}<button data-document="${html(p.source)}">Read canonical recognition guidance after attempting</button></div>` +
+    ['CORE','SUPPORTING','TRANSFER','OPTIONAL'].map(role => `<h4>${role[0] + role.slice(1).toLowerCase()}</h4><ul>` + (p.members.map(findItem).filter(item => item.role === role).map(item => `<li><button data-problem="${html(item.path)}">${html(item.title)}</button> · ${html(item.evidence.latestOutcome)} · explanation ${html(item.evidence.explanation)}${role === 'TRANSFER' ? ' · candidate, external familiarity unknown' : ''}</li>`).join('') || '<li>No items in this role; a meaningful variation can be chosen manually.</li>') + '</ul>').join('') +
+    '<h4>Recent attempts / explanations</h4><ul>' + (p.recentAttempts.map(event => `<li>${event.date} — ${html(event.title)}: ${html(event.outcome || event.track)} · explanation ${html(event.explanation)}</li>`).join('') || '<li>No recorded evidence.</li>') + '</ul>';
+  if (navigate) { switchSection('dsa'); dsaView(true); detail.scrollIntoView({ block: 'start' }); detail.focus(); }
 }
 function defaultAttemptType(file) {
   return findItem(file)?.checked || state.data.evidence.events.some(event => event.track === 'dsa' && event.itemId === file) ? 'review' : 'first_attempt';
@@ -233,7 +276,8 @@ window.addEventListener('beforeunload', event => {
 
 // Speaking evidence is explicitly repository-backed. Drafts and reveal controls are not history.
 function useProblemForSpeaking(problem, navigate = true) {
-  setPractice(problem ? { question: `Explain your approach to ${problem.title} before coding: clarify the problem, compare brute force with your optimization, and walk through an example.`, framework: 'DSA', itemId: problem.relPath, attemptType: 'dsa_explanation', problem: problem.relPath, followUp: 'Why is the invariant safe? What are the time/space complexity and edge cases?' } : { question: 'Choose a technical question from JS Core or a topic you are studying.', framework: 'Technical concept' }, navigate);
+  const item = problem && findItem(problem.relPath);
+  setPractice(problem ? { question: item?.question || problem.question || `Explain your approach to ${problem.title} before coding.`, framework: 'DSA', itemId: problem.relPath, attemptType: 'dsa_explanation', problem: problem.relPath, followUp: item?.role === 'TRANSFER' ? 'What clue made you recognize this pattern? Why does the invariant still work?' : 'Why is the invariant safe? What are the time/space complexity and edge cases?'  } : { question: 'Choose a technical question from JS Core or a topic you are studying.', framework: 'Technical concept' }, navigate);
 }
 function setPractice(practice, navigate) {
   // Do not silently replace pending gaps from a previous speaking question.
@@ -352,6 +396,8 @@ function renderTopics(topics) {
 }
 document.addEventListener('click', event => {
   const element = event.target.closest('button, a'); if (!element) return;
+  if (element.dataset.pattern) showPattern(element.dataset.pattern);
+  if (element.dataset.patternSpeak) { const item = findItem(element.dataset.patternSpeak); useProblemForSpeaking({ relPath: item.path, title: item.title }); }
   if (element.dataset.section) switchSection(element.dataset.section);
   if (element.dataset.mainSpeaking) practiceFromEvidence(state.data.evidence.today.main, true);
   if (element.dataset.openTopic) {
@@ -403,7 +449,7 @@ function attemptForm(panel, file, id) {
   if (!outcome) throw new Error('Choose the actual attempt result first.');
   return { id, track: 'dsa', itemId: file, attemptType: read('attemptType') || 'first_attempt', outcome,
     minutes: read('minutes') === '' ? null : Number(read('minutes')), confidence: read('confidence') === '' ? null : Number(read('confidence')),
-    explanation: evidenceChoices(read('explanation')), technicalGap: read('technicalGap'), communicationGap: read('communicationGap'), mistakeOrInsight: read('mistakeOrInsight') };
+    explanation: evidenceChoices(read('explanation')), technicalGap: read('technicalGap'), communicationGap: read('communicationGap'), mistakeOrInsight: read('mistakeOrInsight'), question: findItem(file).question };
 }
 function showLastAttempt(file, panel) {
   const previous = state.data?.evidence.latest['dsa:' + file];
@@ -508,7 +554,7 @@ function renderPlanning() {
   $('planningSetup').hidden = view.initialized; $('weeklyReviewForm').hidden = !view.initialized;
   $('openWeeklyReview').hidden = !view.initialized;
   if (!$('setupPhase').options.length) $('setupPhase').innerHTML = view.phases.map(phase => `<option value="${phase.id}">${html(phase.name)}</option>`).join('');
-  $('dsaFocusOptions').innerHTML = state.data.topics.map(topic => `<option value="${html(topic.name)}"></option>`).join('');
+  $('dsaFocusOptions').innerHTML = state.data.evidence.dsa.patterns.filter(pattern => pattern.coreTotal).map(pattern => `<option value="${html(pattern.name)}">${html(pattern.state)}</option>`).join('') + state.data.topics.map(topic => `<option value="${html(topic.name)}"></option>`).join('');
   $('reviewReminder').hidden = !view.reviewRecommended;
   if (!view.initialized) {
     $('planningHeader').textContent = 'Learning phase/week not configured yet.';
@@ -526,6 +572,8 @@ function renderPlanning() {
   $('progressPlanning').innerHTML = planSummary + `<p>Due revision: ${state.data.evidence.review.dueCount} channels; ${view.summary.overdue} overdue. Daily selection stays bounded.</p>`;
   $('weekOverview').innerHTML = '<h3>This week</h3>' + planSummary;
   $('reviewEvidence').innerHTML = '<h3>What happened?</h3><h4>Recent demonstrated outputs (recorded, not permanent mastery)</h4><ul>' + (view.summary.outputs.map(item => `<li>${html(item.title)} · ${html(item.track)} / ${html(item.attemptType)} · ${html(item.outcome || 'explanation ' + item.explanation)}</li>`).join('') || '<li>No successful output evidence in this review window.</li>') + '</ul>' + evidenceText(view.summary) + `<p>Practical attempts: ${view.summary.practical} (${view.summary.successfulPractical} independent). Recorded timed DSA mocks: ${view.summary.mocks}; other mock history is unknown.</p><p>Technically successful but explanation partial/no: ${view.summary.knewButCouldNotExplain} paired events. This is a proxy; private understanding is not measurable.</p>` + ['recurringTechnicalGaps', 'recurringCommunicationGaps'].map(key => `<h4>${key === 'recurringTechnicalGaps' ? 'Technical gaps / forgotten points' : 'English communication gaps'}</h4><ul>${view.summary[key].map(gap => `<li>${html(gap.text)} — ${gap.count} records</li>`).join('') || '<li>No gap evidence recorded.</li>'}</ul>`).join('') + '<h4>Current weak items</h4><ul>' + (view.summary.weakItems.map(item => `<li>${html(item.title)} (${html(item.topic)}, ${html(item.channel)}) — ${html(item.reason)}</li>`).join('') || '<li>No recorded weakness; this does not prove readiness.</li>') + '</ul>';
+  const patterns = view.summary.dsaPatterns;
+  if (patterns) $('reviewEvidence').insertAdjacentHTML('beforeend', `<h4>DSA pattern evidence</h4><p>${patterns.independentCoreAttempts} independent core attempts · ${patterns.transferAttempts} transfer attempts.</p>` + [['Patterns practiced', patterns.patternsPracticed], ['Need review', patterns.patternsNeedingReview], ['Ready for transfer candidate', patterns.patternsReadyForTransfer], ['Explanation weakness', patterns.patternsWithExplanationWeakness]].map(([label, values]) => `<p>${label}: ${html(values.join(' · ') || 'None recorded')}</p>`).join(''));
   $('planningSuggestions').innerHTML = '<h3>Planning suggestions</h3><ul>' + (view.suggestions.map(suggestion => `<li>${html(suggestion)}</li>`).join('') || '<li>Not enough evidence for a change recommendation. Keep scope small.</li>') + '</ul>';
   $('phaseExit').innerHTML = `<details><summary>Phase purpose and exit evidence</summary><p>${html(view.phase.purpose)}</p><p>Outputs: ${html(view.phase.outputs)}</p><p>DSA: ${html(view.phase.dsa)}</p><p>Communication: ${html(view.phase.communication)}</p><p>Practical: ${html(view.phase.practical)}</p><p>Mocks: ${html(view.phase.mocks)}</p><ul>${view.phase.exit.map(item => `<li>${html(item)}</li>`).join('')}</ul><p>Phase learning weeks so far: ${view.phaseWeek}; baseline ${view.phase.weeks}. Baselines are not deadlines. Continue stays in this phase; Advance is intentional.</p></details>`;
   // Refresh evidence without destroying unsaved decisions in an open review.

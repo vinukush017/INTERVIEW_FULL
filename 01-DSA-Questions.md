@@ -1,21 +1,72 @@
 # DSA Interview Questions
 
-This is the single progress checklist. Every question opens its JavaScript practice file.
+This is the single completion checklist for the full retained library. Use the
+**dashboard DSA core path** for daily preparation. Every question still opens its
+original JavaScript practice file. Roles/patterns live in
+`data/dsa-catalog.json`; the dashboard generates role and pattern views from it.
+Do not maintain a second core checklist.
+
+## Curated path and pattern evidence
+
+- **CORE:** representative interview patterns; the default daily path.
+- **SUPPORTING:** another slice when a pattern still needs practice.
+- **TRANSFER:** a materially different contract/constraint after delayed core
+  recall and clear explanation. It is a candidate, not a claim of being unseen.
+- **OPTIONAL:** depth, niche variants, overlapping sorts and warm-ups. They never
+  block interview readiness. Select them manually through All Problems.
+
+The catalog currently has 73 core problems among 210 library files (206 original
+files plus four targeted gaps). These are coverage choices, not a quota or a
+requirement to finish every core item before interviewing. The live catalog and
+validated dashboard counts are authoritative as the library grows.
+
+For a pattern, default evidence is independent core solving, a successful
+**delayed** retrieval, a notes-free explanation, and a different transfer/variation
+where available. Broad families require two independent core representatives;
+simple families may need one. No single problem proves every variant. Same-day
+retries do not prove retention. Recency matters: older evidence leads back to
+practice rather than permanent mastery. Checked legacy items have completion
+known and readiness unknown.
+
+States are Not Started, Learning, Practicing, Demonstrated, Transfer Needed,
+Strong Recent Evidence and Needs Review. Pattern details show the supporting
+attempts and next action; these are observations, not readiness percentages.
+Transfer candidates are suggested only after recent delayed independent core
+recall with clear explanation. A failed transfer keeps prior core evidence and
+adds a practice/review recommendation.
+
+Phase 1 defaults to linear patterns, stack/queue, binary search and linked-list
+basics; Phase 2 adds trees/BST, heaps, graphs, backtracking, basic DP, greedy and
+intervals. Later phases maintain recall, transfer and timed reasoning. Phase is
+default guidance, not a prohibition on earlier practice.
 
 ## Completion rule
 
-Mark a problem `[x]` only when you can:
+Completion and evidence are separate. For a genuine independent completion, be able to:
 
 - explain the approach before coding;
 - write the solution without copying;
 - test important edge cases; and
 - state the time and space complexity.
 
-If you needed the solution, leave it unchecked and repeat it after 1, 3, 7, and 14 days. The topic-folder READMEs are navigation pages; update progress only here.
+Save the actual independent/hinted/studied/failed outcome, even if unchecked.
+Failed/studied attempts do not complete a problem. A working hinted solution can
+be marked complete under the existing validated workflow, but the evidence still
+says hinted. The old checkboxes are preserved; they do not manufacture independence.
+Reviews adapt through 1 → 3 → 7 → 14 → 30 days and stay bounded. Folder READMEs
+remain canonical recognition references; this file is the completion authority.
+
+For core and transfer practice, use [the DSA speaking framework](./english/README.md#dsa):
+clarify → brute force → recognize the pattern → optimized invariant/data structure
+→ example → time/space → edges → test aloud. On transfer, ask **“What clue made
+you recognize this pattern?”** Save that question with your explanation outcome.
+
+The four new files are intentionally unsolved practice contracts, not completed
+reference solutions. Their notes are blank until a genuine attempt.
 
 ## Concept-first learning order
 
-Do not choose topics randomly. Learn them in the following dependency order. A later topic intentionally reuses concepts and data structures from earlier topics.
+Use this conceptual order as guidance. It is not an all-problems prerequisite chain; the dashboard selects curated core work, due recall and eligible transfer within your weekly focus.
 
 | Stage | Learn first | Then practise | Why it comes here |
 | --- | --- | --- | --- |
@@ -45,7 +96,7 @@ The short version is:
 
 ## Dependency-ordered practice queue
 
-This is the actual problem-solving order. Follow it from top to bottom, including across topic folders. A problem is placed only after the main concepts it needs. Problems marked **challenge** should be skipped on the first pass and attempted after the rest of that level feels comfortable.
+This is the full library ordering, retained for navigation and relative tie-breaking. It does not make every file mandatory. Catalog roles determine the default path; older **challenge** annotations are historical pacing hints, not difficulty labels. Open All Problems to choose any item deliberately.
 
 ### Level 1 — Loops, arrays, strings, Set, and Map
 
@@ -75,6 +126,9 @@ This is the actual problem-solving order. Follow it from top to bottom, includin
 24. [Ransom Note](./HashMap/ransom-note.js)
 25. [Word Pattern](./HashMap/word-pattern.js)
 
+26. [Range Sum Query - Immutable](./Arrays/range-sum-query-immutable.js)
+27. [Subarray Sum Equals K](./Arrays/subarray-sum-equals-k.js)
+
 ### Level 2 — Two pointers on arrays and strings
 
 Learn left/right pointers and why each pointer moves before starting.
@@ -96,11 +150,12 @@ Learn left/right pointers and why each pointer moves before starting.
 
 Learn window boundaries and reuse the Set/Map knowledge from Level 1.
 
-1. [Best Time to Buy and Sell Stock](./Sliding-Window/best-time-to-buy-and-sell-stock.js)
-2. [Longest Substring Without Repeating Characters](./Sliding-Window/longest-substring-without-repeating-characters.js)
-3. [Permutation in String](./Sliding-Window/permutation-in-string.js)
-4. [Longest Repeating Character Replacement](./Sliding-Window/longest-repeating-character-replacement.js)
-5. [Minimum Window Substring](./Sliding-Window/minimum-window-substring.js) — **challenge**
+1. [Maximum Average Subarray I](./Sliding-Window/maximum-average-subarray-i.js)
+2. [Best Time to Buy and Sell Stock](./Sliding-Window/best-time-to-buy-and-sell-stock.js)
+3. [Longest Substring Without Repeating Characters](./Sliding-Window/longest-substring-without-repeating-characters.js)
+4. [Permutation in String](./Sliding-Window/permutation-in-string.js)
+5. [Longest Repeating Character Replacement](./Sliding-Window/longest-repeating-character-replacement.js)
+6. [Minimum Window Substring](./Sliding-Window/minimum-window-substring.js) — **challenge**
 
 ### Level 4 — Stack, queue, and monotonic structures
 
@@ -156,7 +211,7 @@ Learn ordinary Stack and Queue operations before monotonic-stack/deque questions
 
 ### Level 7 — Recursion, trees, and BSTs
 
-First practise base cases, recursive calls, and tracing the call stack on tiny examples — solve the three Recursion problems below before touching a tree problem. They're intentionally small; the goal is comfort with the base case / recursive case shape, not difficulty. Then continue:
+Review base cases and the call stack. The three recursion warm-ups are supporting practice when needed; their completion is not required before attempting a tree.
 
 1. [Factorial](./Recursion/factorial.js)
 2. [Fibonacci Number](./Recursion/fibonacci.js)
@@ -190,6 +245,8 @@ First practise base cases, recursive calls, and tracing the call stack on tiny e
 7. [Relative Ranks](./Heap/relative-ranks.js)
 8. [K Closest Points to Origin](./Heap/k-closest-points-to-origin.js)
 
+9. [Implement Trie (Prefix Tree)](./Trie/implement-trie-prefix-tree.js)
+
 ### Level 9 — Backtracking
 
 Learn choose → explore → undo. Do not begin with grid or constraint problems.
@@ -209,7 +266,7 @@ Learn choose → explore → undo. Do not begin with grid or constraint problems
 
 ### Level 10 — Graphs
 
-Start only after recursion, Set/Map, Stack/Queue, trees, and basic backtracking.
+Use Set/Map and a visited frontier; recursive DFS needs recursion, while BFS needs a queue. Backtracking is not a prerequisite for ordinary graph traversal.
 
 1. [Number of Islands](./Graph/number-of-islands.js)
 2. [Max Area of Island](./Graph/max-area-of-island.js)
@@ -314,7 +371,7 @@ Sorting algorithms and the problems that lean on them. Most items here only need
 
 ## Problems
 
-The sections below are the single progress checklist. They are grouped by folder only for tracking; **do not use their position as the learning order**. Use the dependency-ordered queue above to choose the next problem.
+The sections below are the single progress checklist. They are grouped by folder only for tracking; **do not use their position as the learning order**. Use the dashboard core/pattern selection for the next task; the full queue above remains a library view.
 
 ### Arrays
 
@@ -328,6 +385,9 @@ The sections below are the single progress checklist. They are grouped by folder
 - [ ] [Find All Numbers Disappeared in an Array](./Arrays/find-all-numbers-disappeared-in-an-array.js)
 - [ ] [Pascal's Triangle](./Arrays/pascals-triangle.js)
 - [ ] [Third Maximum Number](./Arrays/third-maximum-number.js)
+
+- [ ] [Range Sum Query - Immutable](./Arrays/range-sum-query-immutable.js)
+- [ ] [Subarray Sum Equals K](./Arrays/subarray-sum-equals-k.js)
 
 ### Strings
 
@@ -376,6 +436,8 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [Permutation in String](./Sliding-Window/permutation-in-string.js)
 - [ ] [Minimum Window Substring](./Sliding-Window/minimum-window-substring.js)
 - [ ] [Sliding Window Maximum](./Sliding-Window/sliding-window-maximum.js)
+
+- [ ] [Maximum Average Subarray I](./Sliding-Window/maximum-average-subarray-i.js)
 
 ### Stack
 
@@ -584,3 +646,7 @@ Learn basic string traversal here near the start of the roadmap. The first begin
 - [ ] [FizzBuzz](./Math/fizzbuzz.js)
 - [ ] [Excel Sheet Column Number](./Math/excel-sheet-column-number.js)
 - [ ] [Add Digits](./Math/add-digits.js)
+
+### Trie
+
+- [ ] [Implement Trie (Prefix Tree)](./Trie/implement-trie-prefix-tree.js)

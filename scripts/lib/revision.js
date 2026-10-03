@@ -37,12 +37,14 @@ function deriveReviewStates(events, registry) {
   return [...states.values()];
 }
 function dueReviews(states, date) {
-  const priority = item => item.channel === 'coding' && item.priority === 'core' && ['failed', 'studied_solution'].includes(item.latestOutcome) ? 0 :
+  const priority = item => item.channel === 'coding' && item.priority === 'core' && ['failed', 'studied_solution', 'hinted'].includes(item.latestOutcome) ? 0 :
     item.nextDue < date ? 1 : item.channel === 'speaking' && ['partial', 'no'].includes(item.latestOutcome) ? 2 : item.weak ? 3 : 4;
-  return states.filter(item => item.nextDue && item.nextDue <= date).sort((a, b) => priority(a) - priority(b) || a.nextDue.localeCompare(b.nextDue) || a.key.localeCompare(b.key));
+  return states.filter(item => item.nextDue && item.nextDue <= date).sort((a, b) => (a.role === 'OPTIONAL' ? 1 : 0) - (b.role === 'OPTIONAL' ? 1 : 0) || priority(a) - priority(b) || a.nextDue.localeCompare(b.nextDue) || a.key.localeCompare(b.key));
 }
 function boundedReviews(due) {
-  const coding = due.find(item => item.channel === 'coding');
-  return coding ? [coding] : due.filter(item => item.channel !== 'coding').slice(0, 3);
+  const essential = due.filter(item => item.role !== 'OPTIONAL');
+  const pool = essential.length ? essential : due;
+  const coding = pool.find(item => item.channel === 'coding');
+  return coding ? [coding] : pool.filter(item => item.channel !== 'coding').slice(0, 3);
 }
 module.exports = { INTERVALS, addDays, deriveReviewStates, dueReviews, boundedReviews };

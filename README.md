@@ -59,7 +59,7 @@ CLI fallbacks use the same planning/evidence/revision functions:
   records evidence. Failed/studied only record attempts; independent/hinted
   require tests or explicit self-certification.
 - `npm test Folder/problem-file` — existing per-problem tests.
-- `npm run add Folder "Problem Name"` — existing scaffolder.
+- `npm run add -- Folder "Problem Name" --pattern pattern-id` — registered scaffolder; Supporting by default.
 - `npm run test:progress` / `npm run test:dashboard` — evidence/planning/API tests.
 
 `npm run dashboard` aliases dev. If the default port is occupied, use
@@ -83,4 +83,14 @@ Full mock history and application tracking are not implemented.
 [01-DSA-Questions.md](./01-DSA-Questions.md) is the single completion checklist;
 topic READMEs are navigation. Read the prompt, attempt first, then add approach,
 complexity, tests and lessons. Checked files are not proof of independent readiness.
-The full problem library is retained.
+DSA defaults to a **curated core path**, with weakness-driven supporting practice,
+delayed recall and transfer candidates. **All Problems** retains the entire library.
+Core completion alone is not readiness: independent solving, delayed recall,
+applying the pattern to a different contract and explaining it without notes matter.
+Use the **Patterns** view for evidence and the next action.
+
+[DSA guide](./01-DSA-Questions.md) documents the roles and evidence gates.
+`npm run add -- Arrays "Problem Name" --pattern prefix-sum` registers a practice
+file in the catalog, queue and checklist together (Supporting by default).
+Choose a real pattern ID from the catalog; registration does not invent a prompt,
+solution, difficulty or mastery.

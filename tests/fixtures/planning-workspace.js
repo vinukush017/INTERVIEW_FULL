@@ -7,7 +7,7 @@ function workspace() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'interview-planning-'));
   const checklist = fs.readFileSync(path.join(repoRoot, '01-DSA-Questions.md'), 'utf8');
   const map = parseChecklist(checklist).map;
-  const files = new Set([...map.keys(), ...documentPaths(repoRoot, map), '01-DSA-Questions.md',
+  const files = new Set([...map.keys(), ...documentPaths(repoRoot, map), '01-DSA-Questions.md', 'data/dsa-catalog.json',
     'dashboard/js-core-data.js', 'dashboard/app.js', 'dashboard/index.html', 'dashboard/styles.css',
     'tests/HashMap/two-sum.test.js']);
   for (const file of files) { fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true }); fs.copyFileSync(path.join(repoRoot, file), path.join(root, file)); }

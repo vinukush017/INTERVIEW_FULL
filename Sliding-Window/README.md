@@ -42,3 +42,5 @@ Open a question, write the solution, add test cases, and record time and space c
 - [Permutation in String](./permutation-in-string.js)
 - [Minimum Window Substring](./minimum-window-substring.js)
 - [Sliding Window Maximum](./sliding-window-maximum.js)
+
+- [Maximum Average Subarray I](./maximum-average-subarray-i.js)

@@ -15,7 +15,7 @@ const dsa = 'HashMap/two-sum.js'; const js = 'js:question:what-is-a-closure';
 beforeEach(() => {
   root = fs.mkdtempSync(path.join(os.tmpdir(), 'interview-evidence-'));
   legacy = JSON.parse(fs.readFileSync(path.join(__dirname, '../fixtures/legacy-progress.json'), 'utf8'));
-  for (const file of ['.progress/log.json', '01-DSA-Questions.md', 'dashboard/js-core-data.js']) {
+  for (const file of ['data/dsa-catalog.json', '.progress/log.json', '01-DSA-Questions.md', 'dashboard/js-core-data.js']) {
     fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true }); fs.copyFileSync(path.join(repoRoot, file), path.join(root, file));
   }
   fs.writeFileSync(path.join(root, '.progress/log.json'), JSON.stringify(legacy, null, 2) + '\n');

@@ -16,7 +16,7 @@ const sourceLog = fs.readFileSync(path.join(repoRoot, '.progress/log.json'), 'ut
 before(async () => {
   root = fs.mkdtempSync(path.join(os.tmpdir(), 'interview-dashboard-'));
   const map = parseChecklist(sourceChecklist).map;
-  const files = new Set([...map.keys(), ...documentPaths(repoRoot, map), '01-DSA-Questions.md', '.progress/log.json', 'scripts/test-solution.js',
+  const files = new Set([...map.keys(), ...documentPaths(repoRoot, map), '01-DSA-Questions.md', 'data/dsa-catalog.json', '.progress/log.json', 'scripts/test-solution.js',
     'tests/HashMap/two-sum.test.js', 'tests/Arrays/product-of-array-except-self.test.js', 'tests/Two-Pointers/valid-palindrome.test.js',
     'dashboard/index.html', 'dashboard/app.js', 'dashboard/styles.css', 'dashboard/js-core-data.js']);
   for (const file of files) {

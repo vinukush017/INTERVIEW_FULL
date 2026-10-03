@@ -17,5 +17,7 @@ try {
   console.log(`\nReadiness evidence, last 30 study dates\n${readiness.recentIndependent} validated independent DSA attempts recorded.`);
   console.log(`${readiness.explanationSample.yes}/${readiness.explanationSample.total} of the latest up to 10 explanations were notes-free.`);
   for (const track of readiness.tracks) console.log(`${track.topic}: ${track.practicalAttempts ? track.practicalAttempts + ' self-reported practical attempts' : 'No demonstrated practical evidence yet'}.`);
+  console.log('\nDSA pattern observations');
+  for (const pattern of state.dsa.patterns.filter(item => item.coreTotal)) console.log(`  ${pattern.name}: ${pattern.state} — ${pattern.nextAction}`);
   console.log('No readiness score; difficulty, coverage and external interview evaluation remain unknown.\n');
 } catch (error) { console.error(error.message); process.exitCode = 1; }

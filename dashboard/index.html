@@ -33,7 +33,16 @@
       </section>
       <section id="dsa" class="page" hidden>
         <h2 tabindex="-1">DSA workspace</h2><p class="muted">Open → solve → save/test → explain → record the outcome. Mark Complete keeps the existing checklist/log workflow.</p>
-        <label>Filter problems<input id="problemFilter" type="search" placeholder="Title, topic or file"></label>
+        <p class="notice">The curated core path is the default. All problems stay available. Completion counts do not prove delayed recall, transfer or clear English explanation.</p>
+        <div class="actions"><button id="problemsView" aria-pressed="true">Problems</button><button id="patternsView" aria-pressed="false">Patterns</button><button id="allProblems">All Problems</button></div>
+        <div id="dsaFilters" class="fields">
+          <label>Role<select id="roleFilter"><option value="CORE">Core</option><option value="SUPPORTING">Supporting</option><option value="TRANSFER">Transfer</option><option value="OPTIONAL">Optional</option><option value="">All Problems</option></select></label>
+          <label>Pattern<select id="patternFilter"><option value="">All patterns</option></select></label>
+          <label>Attempt state<select id="attemptFilter"><option value="">Any attempt state</option><option value="unknown">No recorded attempt</option><option value="independent">Independent</option><option value="hinted">Hinted</option><option value="studied_solution">Studied solution</option><option value="failed">Failed</option></select></label>
+          <label>Pattern evidence state<select id="readinessFilter"><option value="">Any evidence state</option></select></label>
+          <label>Filter problems<input id="problemFilter" type="search" placeholder="Title, topic, pattern or file"></label>
+          <div><label><input id="dueFilter" type="checkbox">Due coding / speaking review</label><label><input id="weakFilter" type="checkbox">Weak items</label></div>
+        </div><p id="filterCount" role="status"></p><div id="patternWorkspace" hidden><div id="patternList" class="pattern-grid"></div><article id="patternDetail" class="card" hidden tabindex="-1"></article></div>
         <details id="studyOrder"><summary>Full dependency-ordered queue</summary><div id="orderList"></div></details>
         <div id="problemTopics">Loading…</div>
       </section>
@@ -64,7 +73,7 @@
         <h3>Interview answer bank — read-only templates</h3><p class="muted">Bullet cues only. Your experience and answers remain blank until you supply them.</p><div id="answerBank"></div><button data-document="english/INTERVIEW_ANSWER_BANK.md">Read full answer bank</button><button data-document="english/README.md">Read communication guide</button>
       </section>
       <section id="topics" class="page" hidden><h2 tabindex="-1">Interview topics</h2><p class="muted">Existing checklists and notes. Record retrieval or practical evidence without inventing topic completion or readiness.</p><div id="topicIndex" class="start-grid"></div></section>
-      <section id="progress" class="page" hidden><h2 tabindex="-1">Progress</h2><h3>Current plan</h3><div id="progressPlanning"></div><h3>Completion</h3><div id="progressSummary"></div><div id="topicProgress"></div><h3>Evidence</h3><div id="evidenceSummary"></div><h3>Current weaknesses</h3><div id="weaknessSummary"></div><details><summary>Last seven study dates — review foundation</summary><div id="weeklyEvidence"></div></details><h3>Recent recorded activity</h3><div id="recentActivity"></div><h3>Readiness</h3><div id="readinessEvidence"></div><p class="notice">These are observations, not a readiness score. Difficulty/transfer coverage and independent interview evaluation remain unknown.</p></section>
+      <section id="progress" class="page" hidden><h2 tabindex="-1">Progress</h2><h3>Current plan</h3><div id="progressPlanning"></div><h3>Completion</h3><div id="progressSummary"></div><div id="topicProgress"></div><h3>Evidence</h3><div id="evidenceSummary"></div><h3>Current weaknesses</h3><div id="weaknessSummary"></div><details><summary>Last seven study dates — review foundation</summary><div id="weeklyEvidence"></div></details><h3>Recent recorded activity</h3><div id="recentActivity"></div><h3>DSA pattern observations</h3><div id="patternObservations"></div><h3>Readiness</h3><div id="readinessEvidence"></div><p class="notice">These are observations, not a readiness score. Difficulty and independent interview evaluation remain unknown; pattern states describe recorded evidence, not permanent mastery.</p></section>
       <section id="weekly" class="page" hidden><h2 tabindex="-1">Weekly review</h2><div id="weekOverview"></div><div id="reviewEvidence"></div><div id="planningSuggestions"></div><div id="phaseExit"></div>
         <form id="weeklyReviewForm" class="card" hidden><h3>Decisions</h3><p>Carry at most one essential item and one small secondary item. Reschedule, revise, deprioritize or drop everything else.</p><div class="fields">
           <label>Available hours next week<input id="reviewHours" type="number" min="1" max="40" step="0.5" required></label>

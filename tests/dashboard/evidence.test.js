@@ -15,7 +15,7 @@ const sourceChecklist = fs.readFileSync(path.join(repoRoot, '01-DSA-Questions.md
 beforeEach(async () => {
   root = fs.mkdtempSync(path.join(os.tmpdir(), 'interview-api-evidence-'));
   const map = parseChecklist(sourceChecklist).map;
-  const files = new Set([...map.keys(), ...documentPaths(repoRoot, map), '01-DSA-Questions.md', '.progress/log.json', 'dashboard/js-core-data.js',
+  const files = new Set([...map.keys(), ...documentPaths(repoRoot, map), '01-DSA-Questions.md', 'data/dsa-catalog.json', '.progress/log.json', 'dashboard/js-core-data.js',
     'scripts/test-solution.js', 'tests/HashMap/two-sum.test.js', 'tests/Arrays/product-of-array-except-self.test.js', 'tests/Two-Pointers/valid-palindrome.test.js']);
   for (const file of files) {
     fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true }); fs.copyFileSync(path.join(repoRoot, file), path.join(root, file));

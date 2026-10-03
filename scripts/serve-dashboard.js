@@ -45,23 +45,23 @@ function buildData(root, now = new Date()) {
   const { text, map, progress } = repository(root);
   const allowed = documentPaths(root, map);
   const counts = repCounts(progress.entries);
+  const evidence = buildStudyState(root, now); const registry = itemRegistry(root);
   const topics = parseTopics(text).map(topic => {
     const folder = topic.name === 'Strings' ? 'String' : topic.name.replace(/ /g, '-');
     const source = `${folder}/README.md`;
     const pattern = allowed.has(source) ? fs.readFileSync(path.join(root, source), 'utf8').replace(/\r\n/g, '\n').match(/## Pattern\n([\s\S]*?)\n---/) : null;
     return { ...topic, conceptHtml: pattern ? renderMarkdown(pattern[1], source, allowed, map) : null,
-      items: topic.items.map(item => ({ ...item, hasTest: !!testPath(root, item.path), repCount: counts.get(item.path.replace(/\.js$/, '')) || 0,
+      items: topic.items.map(item => ({ ...item, ...registry.get(item.path), evidence: evidence.dsa.evidence[item.path], readiness: evidence.dsa.patterns.find(pattern => pattern.id === registry.get(item.path).patternId).state, hasTest: !!testPath(root, item.path), repCount: counts.get(item.path.replace(/\.js$/, '')) || 0,
         leetcodeUrl: `https://leetcode.com/search/?q=${encodeURIComponent(item.title)}` })) };
   });
   const queue = parseQueue(text);
-  const evidence = buildStudyState(root, now);
   const next = evidence.today.main;
   return { generatedAt: new Date().toISOString(), phase: evidence.planning.state?.phaseId || null, learningWeek: evidence.planning.state?.learningWeek || null,
     totalCount: map.size, solvedCount: [...map.values()].filter(item => item.checked).length,
     streak: evidence.streak, startDate: progress.startDate, evidence,
     next,
     topics, recentActivity: evidence.recentActivity,
-    flatQueue: queue.map(item => ({ ...item, checked: !!map.get(item.relPath)?.checked, topic: topics.find(topic => topic.items.some(problem => problem.path === item.relPath))?.name || item.relPath.split('/')[0] })) };
+    flatQueue: queue.map(item => ({ ...item, role: registry.get(item.relPath).role, patternId: registry.get(item.relPath).patternId, checked: !!map.get(item.relPath)?.checked, topic: topics.find(topic => topic.items.some(problem => problem.path === item.relPath))?.name || item.relPath.split('/')[0] })) };
 }
 
 function sendJson(res, status, body) {

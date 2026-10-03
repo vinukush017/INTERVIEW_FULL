@@ -7,6 +7,7 @@ const { legacyEvidence } = require('./evidence');
 const { addDays, deriveReviewStates, dueReviews, boundedReviews } = require('./revision');
 
 const { aggregate } = require('./study-summary');
+const { derivePatterns } = require('./dsa-patterns');
 const { planningView, selectPlannedTask } = require('./planning');
 function buildStudyState(root = repoRoot, now = new Date()) {
   const progress = loadProgress(root); const date = todayISO(now, progress.studyTimezone);
@@ -17,8 +18,9 @@ function buildStudyState(root = repoRoot, now = new Date()) {
   const baselineMap = new Map([...map].filter(([file]) => !knownCoding.has(file)));
   const baseline = !selected.length ? selectReview(baselineMap, progress.entries, () => 0) : null;
   const queue = parseQueue(text);
-  const planning = planningView(progress, states, now);
-  const next = selectPlannedTask(progress, registry, queue, map, selected, states, now);
+  const dsa = derivePatterns(progress, registry, states, date);
+  const planning = planningView(progress, states, now, registry, dsa);
+  const next = selectPlannedTask(progress, registry, queue, map, selected, states, now, dsa);
   const recent = progress.events.filter(event => event.date >= addDays(date, -29) && event.date <= date);
   const weekly = progress.events.filter(event => event.date >= addDays(date, -6) && event.date <= date);
   const recentExplanations = recent.filter(event => event.explanation !== 'unknown').slice(-10);
@@ -31,7 +33,7 @@ function buildStudyState(root = repoRoot, now = new Date()) {
   ].sort((a, b) => b.date.localeCompare(a.date) || (b.timestamp || '').localeCompare(a.timestamp || '')).slice(0, 20);
   const speaking = due.find(item => item.channel === 'speaking' && item.itemId === selected[0]?.itemId) || due.find(item => item.channel === 'speaking') || null;
   return { date, timezone: progress.studyTimezone, schemaVersion: 2, legacyCount: progress.entries.length, planning,
-    legacy: legacyEvidence(progress), events: progress.events, latest, reviewStates: states,
+    dsa, legacy: legacyEvidence(progress), events: progress.events, latest, reviewStates: states,
     review: { date, due: selected, dueCount: due.length, deferredCount: Math.max(0, due.length - selected.length), baseline, planning },
     today: { date, timezone: progress.studyTimezone, main: next, planning,
       revision: selected, baseline, speaking, speakingFocus: planning.state?.weeklyFocus.speaking || null, carryForward: planning.state?.carryForward || [], firstTask: planning.state?.firstTask || '', weakPoint: weaknesses[0] || null },

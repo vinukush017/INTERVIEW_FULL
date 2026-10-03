@@ -41,3 +41,7 @@ Open a question, write the solution, add test cases, and record time and space c
 - [Find All Numbers Disappeared in an Array](./find-all-numbers-disappeared-in-an-array.js)
 - [Pascal's Triangle](./pascals-triangle.js)
 - [Third Maximum Number](./third-maximum-number.js)
+
+- [Range Sum Query - Immutable](./range-sum-query-immutable.js)
+
+- [Subarray Sum Equals K](./subarray-sum-equals-k.js)

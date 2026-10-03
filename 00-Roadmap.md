@@ -22,16 +22,19 @@ span several calendar weeks.
 
 | Phase | Baseline weeks | Purpose / main outputs | DSA focus | Communication / practical / mock focus |
 | --- | --- | --- | --- | --- |
-| 1 — Baseline & Foundations | 4 (positions 1–4) | JS foundations and a sustainable baseline | Arrays, strings, hashing, two pointers, sliding window | Definition → example → tradeoff; factual introduction; small JS exercises; short answers and weekly communication practice |
-| 2 — Core Patterns & Full-Stack Practice | 6 (positions 5–10) | Core patterns and React/API/SQL practical evidence | Binary search, linked lists, trees/BST, heaps, backtracking, graphs, basic DP, intervals | Think aloud and explain decisions; one UI/API/SQL slice; timed coding/technical round every 1–2 weeks |
+| 1 — Baseline & Foundations | 4 (positions 1–4) | JS foundations and a sustainable baseline | Arrays, strings, hashing, two pointers, sliding window, stack/queue, binary search and linked-list basics | Definition → example → tradeoff; factual introduction; small JS exercises; short answers and weekly communication practice |
+| 2 — Core Patterns & Full-Stack Practice | 6 (positions 5–10) | Core patterns and React/API/SQL practical evidence | Trees/BST, heaps, backtracking, graphs, basic DP, greedy and intervals; earlier patterns as needed | Think aloud and explain decisions; one UI/API/SQL slice; timed coding/technical round every 1–2 weeks |
 | 3 — Applied Backend & System Design | 4 (positions 11–14) | Database/cache/queue/API decisions and structured designs | Mixed weak-pattern recall | Request flow, alternatives and project explanations; backend/database/design slice; design/backend round every 1–2 weeks |
 | 4 — Interview Simulation | 4 (positions 15–18) | Repeated timed rounds and repair of recurring blockers | Timed mixed rounds and targeted repairs | Coding, machine coding, design and behavioral follow-ups; 1–2 technical rounds weekly within capacity; occasional full loop |
 | 5 — Revision & Applications | 2 (positions 19–20) | Targeted revision, verified resume claims, readiness-based applications | Maintain strengths and repair demonstrated gaps | Natural project/behavioral answers; focused mocks around real interviews; adjust to actual feedback |
 
 Retain a weekly 30–45 minute communication session when possible: introduction,
 project, technical questions, debugging and behavioral. It replaces other study
-time. The full 206-problem library stays available; finishing every file is not
-a gate. Select existing notes through Topics. TypeScript is role-relevant, but
+time. The full DSA library stays available; finishing every file is not a gate.
+Use [the curated core/pattern system](./01-DSA-Questions.md): independent core
+solving, delayed recall, clear English explanation and transfer/variation matter
+more than file counts. Supporting practice responds to weakness; optional depth
+is manual. Select existing notes through Topics. TypeScript is role-relevant, but
 there is no dedicated TS track yet; this PR adds no curriculum or claim of proof.
 
 ## Phase exit evidence

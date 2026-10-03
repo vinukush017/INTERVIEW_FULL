@@ -7,14 +7,14 @@ const { atomicWrite, withProgressLock } = require('./atomic');
 const { aggregate } = require('./study-summary');
 const { itemRegistry } = require('./items');
 const { deriveReviewStates, dueReviews, addDays } = require('./revision');
-const { selectNext } = require('./study');
+const { derivePatterns, patternWeeklySummary, selectDSA } = require('./dsa-patterns');
 
 // Executable metadata mirrors the policy in 00-Roadmap.md; no new curriculum.
 const PHASES = [
   { id: 'phase-1', name: 'Baseline & Foundations', weeks: 4, startWeek: 1,
     purpose: 'Establish a baseline and a sustainable solve/explain/review habit.',
     outputs: 'Core JavaScript retrieval, linear-pattern solutions and an honest introduction.',
-    dsa: 'Arrays + HashMap + Two Pointers + Sliding Window',
+    dsa: 'Arrays + HashMap + Two Pointers + Sliding Window + Stack/Queue + Binary Search + LinkedList basics',
     communication: 'Start with a definition, then an example; introduce yourself naturally.',
     practical: 'Small JavaScript exercises and one real-work explanation.',
     mocks: 'Short spoken answers; one weekly 30–45 minute communication session.',
@@ -23,12 +23,12 @@ const PHASES = [
   { id: 'phase-2', name: 'Core Patterns & Full-Stack Practice', weeks: 6, startWeek: 5,
     purpose: 'Apply core patterns and demonstrate existing full-stack skills.',
     outputs: 'React/API/SQL practical slices and delayed independent retrieval.',
-    dsa: 'Binary Search, LinkedList, Trees, Heap, Backtracking, Graph, basic Dynamic Programming, Intervals',
+    dsa: 'Trees/BST, Heap, Backtracking, Graph, basic Dynamic Programming, Greedy, Intervals; earlier patterns as needed',
     communication: 'Explain invariants, component/API decisions and tradeoffs while working.',
     practical: 'One focused UI, API or SQL task at a time.',
     mocks: 'Weekly communication session plus a timed coding or technical round every 1–2 weeks.',
     exit: ['Independent and delayed recall across core patterns', 'Working React/API/SQL examples', 'Notes-free explanations integrated with practical work'],
-    defaults: { technical: 'React rendering + effects', dsa: 'Binary Search + LinkedList', speaking: 'Explain tradeoffs before implementation details', practical: 'One focused UI or API slice', mock: 'Timed DSA or technical discussion' }, requiresPractical: true },
+    defaults: { technical: 'React rendering + effects', dsa: 'Trees + Heap', speaking: 'Explain tradeoffs before implementation details', practical: 'One focused UI or API slice', mock: 'Timed DSA or technical discussion' }, requiresPractical: true },
   { id: 'phase-3', name: 'Applied Backend & System Design', weeks: 4, startWeek: 11,
     purpose: 'Connect backend fundamentals to real designs and engineering experience.',
     outputs: 'API/database/cache/queue decisions, structured designs and project explanations.',
@@ -116,10 +116,13 @@ function loadBudget(p) {
   return { reduced, maxNewProblems: reduced ? (p.availableHours <= 6 || p.status === 'consolidate' ? 0 : 2) : p.availableHours < 12 ? 3 : 4,
     message: reduced ? 'Reduced scope: review and speaking first; no catch-up work. New problems are optional.' : 'One primary focus, alongside review and speaking. The new-problem ceiling is not a quota.' };
 }
-function planningView(progress, states, now) {
+function planningView(progress, states, now, registry, patternView) {
   const p = progress.planning || null; const date = todayISO(now, progress.studyTimezone);
   if (!p) return { initialized: false, state: null, phases: PHASES, summary: null, suggestions: [], warnings: [] };
   const events = weekEvents(progress, now); const summary = aggregate(events);
+  registry ||= itemRegistry(require("./progress").repoRoot);
+  patternView ||= derivePatterns(progress, registry, states, date);
+  summary.dsaPatterns = patternWeeklySummary(events, registry, patternView.patterns);
   summary.practical = events.filter(event => event.track === 'technical' && event.attemptType === 'practical_task').length;
   summary.successfulPractical = events.filter(event => event.track === 'technical' && event.attemptType === 'practical_task' && event.outcome === 'independent').length;
   summary.mocks = events.filter(event => event.attemptType === 'mock').length;
@@ -188,7 +191,7 @@ function saveWeeklyReview(root, body, { now = new Date(), io = fs } = {}) {
     if (existing) { if (JSON.stringify(existing.submission) !== JSON.stringify(submission)) reject('Review ID already saved with different decisions', 409); return existing; }
     if (p.revision !== body.expectedRevision) reject('Planning changed in another session. Refresh before saving your decisions.', 409);
     const date = todayISO(now, progress.studyTimezone); if (date < p.weekStartedOn) reject('Review date cannot precede the current study week');
-    const states = deriveReviewStates(progress.events.filter(event => event.date <= date), itemRegistry(root)); const view = planningView(progress, states, now);
+    const states = deriveReviewStates(progress.events.filter(event => event.date <= date), itemRegistry(root)); const view = planningView(progress, states, now, itemRegistry(root));
     if (body.decision === 'advance' && p.phaseId === 'phase-5') reject('Already in the final phase. Continue or consolidate.');
     if (body.decision === 'advance' && view.warnings.length && !submission.confirmAdvance) reject('Review the evidence warnings and confirm manual phase advance.', 409, { warnings: view.warnings, needsConfirmation: true });
     const nextWeek = p.learningWeek + (body.decision === 'consolidate' ? 0 : 1);
@@ -208,35 +211,31 @@ function matchingTopics(focusText, candidates) {
   const parts = focusText.split(/\+|,|\/|\band\b/i).map(normalized).filter(Boolean);
   return candidates.filter(item => parts.some(part => part.includes(normalized(item.topic)) || normalized(item.topic).includes(part)));
 }
-function selectPlannedTask(progress, registry, queue, checklist, review, states, now) {
+function selectPlannedTask(progress, registry, queue, checklist, review, states, now, dsaView) {
   const p = progress.planning;
-  const enrich = (item, reason) => item ? { ...item, ...(item.kind === 'dsa' ? { relPath: item.itemId, checked: !!checklist.get(item.itemId)?.checked } : {}), reason } : null;
-  const fallback = () => { const next = selectNext(queue, checklist); return next ? enrich({ ...next, ...registry.get(next.relPath) }, 'Next unfinished item in the existing dependency queue.') : null; };
-  if (!p) return fallback();
-  const essential = p.carryForward.find(item => item.role === 'essential');
-  if (essential) {
-    const registered = essential.itemId && registry.get(essential.itemId);
-    return enrich(registered || { kind: 'manual', title: essential.text, question: `Explain the key idea and tradeoff in: ${essential.text}` }, 'Your one essential carry-forward item. It stays here until you intentionally replace/drop it at review.');
-  }
+  const enrich = (item, reason) => item ? { ...item, ...(item.kind === 'dsa' ? { relPath: item.itemId, checked: !!checklist.get(item.itemId)?.checked } : {}), reason: reason || item.reason } : null;
+  const date = todayISO(now, progress.studyTimezone);
+  dsaView ||= derivePatterns(progress, registry, states, date);
+  const chooseDSA = (focus = '') => enrich(selectDSA(progress, registry, queue, checklist, dsaView.patterns, dsaView.evidence, focus, p?.phaseId));
+  const essential = p?.carryForward.find(item => item.role === 'essential');
+  if (essential) return enrich(essential.itemId && registry.get(essential.itemId) || { kind: 'manual', title: essential.text, question: `Explain the key idea and tradeoff in: ${essential.text}` }, 'Your one essential carry-forward item. It stays here until you intentionally replace/drop it at review.');
+  const due = review.find(item => item.role !== 'OPTIONAL');
+  const dueTask = () => enrich(registry.get(due.itemId) || due, `Selected because ${due.channel} revision is due ${due.nextDue}.`);
+  if (due && due.role !== 'OPTIONAL') return dueTask();
+  if (!p) return chooseDSA() || (due ? dueTask() : enrich(registry.get('js:question:what-is-a-closure'), 'Maintain retrieval; optional depth stays available manually.'));
   const budget = loadBudget(p);
-  const due = review[0];
-  const dueTask = () => due && enrich(registry.get(due.itemId) || due, `Selected because ${due.channel} revision is due ${due.nextDue}.`);
   const newCount = new Set(weekEvents(progress, now).filter(event => event.track === 'dsa' && event.attemptType === 'first_attempt').map(event => event.itemId)).size;
+  const technical = matchingTopics(p.weeklyFocus.technical, [...registry.values()].filter(item => item.kind === 'topic'))[0];
   if (budget.reduced || newCount >= budget.maxNewProblems) {
     if (due) return dueTask();
-    const weak = states.find(item => item.weak); if (weak) return enrich(registry.get(weak.itemId) || weak, 'Reduced scope: retrieve one recent weak point, then explain it.');
-    const technical = matchingTopics(p.weeklyFocus.technical, [...registry.values()].filter(item => item.kind === 'topic'))[0];
+    const weak = states.find(item => item.weak && item.role !== 'OPTIONAL');
+    if (weak) return enrich(registry.get(weak.itemId) || weak, 'Reduced scope: retrieve one recent weak point, then explain it.');
     return enrich(technical || registry.get('js:question:what-is-a-closure'), 'Reduced scope/new-problem ceiling: one short retrieval and speaking loop; no new coding quota.');
   }
-  const unchecked = queue.filter(item => !checklist.get(item.relPath)?.checked && !item.challenge).map(item => ({ ...item, ...registry.get(item.relPath) }));
-  const focused = matchingTopics(p.weeklyFocus.dsa, unchecked)[0];
-  if (focused) return enrich(focused, 'Selected because this is your current DSA focus; original order is retained within that focus.');
-  const technical = matchingTopics(p.weeklyFocus.technical, [...registry.values()].filter(item => item.kind === 'topic'))[0];
+  const focused = p.weeklyFocus.dsa && chooseDSA(p.weeklyFocus.dsa);
+  if (focused) return focused;
   if (technical) return enrich(technical, 'Selected because this matches your primary technical focus.');
-  if (due) return dueTask();
-  const weak = states.find(item => item.weak);
-  if (weak) return enrich(registry.get(weak.itemId) || weak, 'Selected because this is a recent weakness and no unfinished focus item matched.');
-  return fallback();
+  return chooseDSA() || (due ? dueTask() : enrich(registry.get('js:question:what-is-a-closure'), 'Maintain retrieval; choose optional depth manually.'));
 }
 function planningLabel(view) {
   return view?.initialized ? `${view.phase.name} (${view.phase.id}) · Learning week ${view.state.learningWeek} · This week: ${view.state.weeklyFocus.technical}\nDSA: ${view.state.weeklyFocus.dsa || 'No new DSA focus'} · Speaking: ${view.state.weeklyFocus.speaking}\n${view.summary.minutes} recorded minutes / ${view.state.availableHours} available hours${view.reviewRecommended ? '\nWeekly review recommended (no automatic advancement).' : ''}` : 'Learning phase/week not configured yet. Initialize planning in the dashboard.';
