@@ -17,7 +17,7 @@ function inside(root, file) {
 
 function documentPaths(root, checklist) {
   const result = new Set(['README.md', 'TODAY.md', '00-Roadmap.md', '01-DSA-Questions.md',
-    '13-Daily-Study-Plan.md', '14-Job-Search-and-Negotiation.md', 'Mock-Interviews/README.md',
+    '13-Daily-Study-Plan.md', 'archive/LEGACY_16_WEEK_STUDY_PLAN.md', '14-Job-Search-and-Negotiation.md', 'Mock-Interviews/README.md',
     'english/README.md', 'english/TECHNICAL_PHRASES.md', 'english/INTERVIEW_ANSWER_BANK.md',
     ...GUIDES.map(([, file]) => file)]);
   const jsFolder = path.join(root, 'JavaScript');

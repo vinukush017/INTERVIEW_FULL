@@ -4,15 +4,19 @@ const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
 const { execFile } = require('node:child_process');
-const { repoRoot, todayISO, parseQueue, parseChecklist, computeStreak } = require('./lib/progress');
-const { selectNext, selectReview, parseTopics, repCounts } = require('./lib/study');
+const { repoRoot, loadProgress, parseQueue, parseChecklist } = require('./lib/progress');
+const { parseTopics, repCounts } = require('./lib/study');
 const { inside, renderMarkdown, documentPaths, loadEnglish, topicIndex } = require('./lib/content');
+const { buildStudyState } = require('./lib/study-state');
+const { itemRegistry } = require('./lib/items');
+const { validateAttempt, existingSubmission, recordAttempt, completeProblem } = require('./lib/evidence');
+const { initializePlanning, saveWeeklyReview } = require('./lib/planning');
 
 function repository(root) {
   const text = fs.readFileSync(path.join(root, '01-DSA-Questions.md'), 'utf8');
   const { map } = parseChecklist(text);
   const logFile = path.join(root, '.progress', 'log.json');
-  const progress = fs.existsSync(logFile) ? JSON.parse(fs.readFileSync(logFile, 'utf8')) : { startDate: todayISO(), entries: [] };
+  const progress = loadProgress(root);
   return { text, map, progress, logFile };
 }
 
@@ -37,7 +41,7 @@ function testPath(root, relPath) {
   return fs.existsSync(file) && inside(root, file) ? file : null;
 }
 
-function buildData(root) {
+function buildData(root, now = new Date()) {
   const { text, map, progress } = repository(root);
   const allowed = documentPaths(root, map);
   const counts = repCounts(progress.entries);
@@ -50,12 +54,13 @@ function buildData(root) {
         leetcodeUrl: `https://leetcode.com/search/?q=${encodeURIComponent(item.title)}` })) };
   });
   const queue = parseQueue(text);
-  const next = selectNext(queue, map);
-  return { generatedAt: new Date().toISOString(), phase: null, learningWeek: null,
+  const evidence = buildStudyState(root, now);
+  const next = evidence.today.main;
+  return { generatedAt: new Date().toISOString(), phase: evidence.planning.state?.phaseId || null, learningWeek: evidence.planning.state?.learningWeek || null,
     totalCount: map.size, solvedCount: [...map.values()].filter(item => item.checked).length,
-    streak: computeStreak(progress.entries.map(entry => entry.date)), startDate: progress.startDate,
-    next: next ? { ...next, checked: !!map.get(next.relPath)?.checked, topic: topics.find(topic => topic.items.some(item => item.path === next.relPath))?.name || next.relPath.split('/')[0] } : null,
-    topics, recentActivity: progress.entries.slice(-20).reverse(),
+    streak: evidence.streak, startDate: progress.startDate, evidence,
+    next,
+    topics, recentActivity: evidence.recentActivity,
     flatQueue: queue.map(item => ({ ...item, checked: !!map.get(item.relPath)?.checked, topic: topics.find(topic => topic.items.some(problem => problem.path === item.relPath))?.name || item.relPath.split('/')[0] })) };
 }
 
@@ -93,28 +98,7 @@ function runTest(root, relPath, timeout) {
     }));
 }
 
-function complete(root, relPath) {
-  // Re-read after testing. Keep the legacy shape and same-day deduplication.
-  const { text, map, progress, logFile } = repository(root);
-  const item = map.get(relPath);
-  if (!item) throw new Error('Problem no longer registered');
-  const originalLog = fs.existsSync(logFile) ? fs.readFileSync(logFile, 'utf8') : null;
-  const lines = text.split(/\r?\n/); const eol = text.includes('\r\n') ? '\r\n' : '\n';
-  lines[item.line] = lines[item.line].replace('- [ ]', '- [x]');
-  const problem = relPath.replace(/\.js$/, ''); const date = todayISO();
-  if (!progress.entries.some(entry => entry.problem === problem && entry.date === date)) progress.entries.push({ date, problem });
-  fs.mkdirSync(path.dirname(logFile), { recursive: true });
-  try {
-    fs.writeFileSync(logFile, JSON.stringify(progress, null, 2) + '\n');
-    fs.writeFileSync(path.join(root, '01-DSA-Questions.md'), lines.join(eol));
-  } catch (error) {
-    // Best effort rollback of the first write; never report successful completion.
-    try { if (originalLog === null) fs.unlinkSync(logFile); else fs.writeFileSync(logFile, originalLog); } catch { /* Original error remains visible. */ }
-    throw error;
-  }
-}
-
-function createDashboardServer({ root = repoRoot, testTimeoutMs = 10_000 } = {}) {
+function createDashboardServer({ root = repoRoot, testTimeoutMs = 10_000, clock = () => new Date(), progressIO = fs } = {}) {
   const assets = new Set(['index.html', 'app.js', 'styles.css', 'js-core-data.js']);
   const server = http.createServer(async (req, res) => {
     res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -127,16 +111,53 @@ function createDashboardServer({ root = repoRoot, testTimeoutMs = 10_000 } = {})
       if (req.headers.origin && !localHosts.some(host => req.headers.origin === `http://${host}`)) return sendJson(res, 403, { error: 'Cross-origin request rejected' });
       const url = new URL(req.url, `http://127.0.0.1:${port}`);
       if (req.method === 'GET' && url.pathname === '/favicon.ico') { res.writeHead(204); return res.end(); }
-      if (req.method === 'GET' && url.pathname === '/api/data') return sendJson(res, 200, buildData(root));
+      if (req.method === 'GET' && url.pathname === '/api/data') return sendJson(res, 200, buildData(root, clock()));
+      if (req.method === 'GET' && ['/api/planning', '/api/weekly-review'].includes(url.pathname)) return sendJson(res, 200, buildStudyState(root, clock()).planning);
+      if (req.method === 'POST' && ['/api/planning', '/api/weekly-reviews'].includes(url.pathname)) {
+        if (!/^application\/json(?:;|$)/i.test(req.headers['content-type'] || '')) return sendJson(res, 415, { error: 'JSON content type required' });
+        const body = await readJson(req);
+        const saved = url.pathname === '/api/planning' ? initializePlanning(root, body, { now: clock(), io: progressIO }) : saveWeeklyReview(root, body, { now: clock(), io: progressIO });
+        return sendJson(res, 201, { ok: true, saved });
+      }
       if (req.method === 'GET' && url.pathname === '/api/random-review') {
         const { map, progress } = repository(root);
-        const pick = selectReview(map, progress.entries);
-        return sendJson(res, 200, pick ? { ...pick, history: progress.entries.filter(entry => entry.problem === pick.relPath.replace(/\.js$/, '')) } : { none: true });
+        const evidence = buildStudyState(root, clock());
+        const due = evidence.review.due[0];
+        if (due) return sendJson(res, 200, { ...due, relPath: due.problem, label: 'Due revision', history: progress.events.filter(event => event.itemId === due.itemId) });
+        const pick = evidence.review.baseline;
+        return sendJson(res, 200, pick ? { ...pick, label: 'Optional baseline retrieval (evidence unknown)', history: progress.entries.filter(entry => entry.problem === pick.relPath.replace(/\.js$/, '')) } : { none: true });
+      }
+      if (req.method === 'GET' && ['/api/progress', '/api/review', '/api/today'].includes(url.pathname)) {
+        const evidence = buildStudyState(root, clock());
+        return sendJson(res, 200, url.pathname === '/api/review' ? evidence.review : url.pathname === '/api/today' ? evidence.today : evidence);
+      }
+      if (req.method === 'POST' && url.pathname === '/api/attempts') {
+        if (!/^application\/json(?:;|$)/i.test(req.headers['content-type'] || '')) return sendJson(res, 415, { error: 'JSON content type required' });
+        const body = await readJson(req);
+        if (body.confirmed !== undefined && typeof body.confirmed !== 'boolean') return sendJson(res, 400, { error: 'Confirmation must be boolean' });
+        const { confirmed, ...input } = body;
+        const values = validateAttempt(input, itemRegistry(root));
+        // Retrying a lost acknowledgement returns the saved evidence, even if the
+        // working file has since changed. It cannot manufacture a second attempt.
+        const existing = existingSubmission(loadProgress(root), values);
+        if (existing) return sendJson(res, 200, { ok: true, event: existing });
+        let verification = 'unknown';
+        if (values.track === 'dsa') {
+          if (!registeredSolution(root, values.itemId)) return sendJson(res, 400, { error: 'Practice file unsafe or missing' });
+          if (['independent', 'hinted'].includes(values.outcome)) {
+            const tested = await runTest(root, values.itemId, testTimeoutMs);
+            if (tested.hasTest && !tested.pass) return sendJson(res, 409, { error: 'Tests failed. Record a failed/studied attempt or fix the solution first.', output: tested.output });
+            if (!tested.hasTest && confirmed !== true) return sendJson(res, 409, { error: 'Self-certify the working solution before recording independent/hinted success.' });
+            verification = tested.hasTest ? 'tests_passed' : 'self_certified';
+          }
+        }
+        const event = recordAttempt(root, values, { now: clock(), verification, io: progressIO });
+        return sendJson(res, 201, { ok: true, event });
       }
       if (req.method === 'GET' && ['/api/english', '/api/topics', '/api/content'].includes(url.pathname)) {
         const { map } = repository(root); const allowed = documentPaths(root, map);
         if (url.pathname === '/api/english') return sendJson(res, 200, loadEnglish(root, allowed, map));
-        if (url.pathname === '/api/topics') return sendJson(res, 200, topicIndex(root, allowed));
+        if (url.pathname === '/api/topics') { const registry = itemRegistry(root); return sendJson(res, 200, topicIndex(root, allowed).map(topic => ({ ...topic, practice: registry.get(`topic:${topic.path}`) }))); }
         const file = url.searchParams.get('path');
         if (!allowed.has(file)) return sendJson(res, 404, { error: 'Document not registered' });
         const markdown = fs.readFileSync(path.join(root, file), 'utf8');
@@ -164,7 +185,7 @@ function createDashboardServer({ root = repoRoot, testTimeoutMs = 10_000 } = {})
         if (result.hasTest && !result.pass) return sendJson(res, 200, { ok: false, reason: 'tests_failed', output: result.output });
         if (!result.hasTest && body.confirmed !== true) return sendJson(res, 200, { ok: false, reason: 'not_confirmed' });
         if (!registeredSolution(root, solution.relPath)) return sendJson(res, 404, { error: 'Practice file changed during testing' });
-        complete(root, solution.relPath);
+        completeProblem(root, solution.relPath, { eventId: body.eventId, now: clock(), io: progressIO });
         return sendJson(res, 200, { ok: true, output: result.output });
       }
       if (req.method !== 'GET') return sendJson(res, 405, { error: 'Method not allowed' });
@@ -173,7 +194,7 @@ function createDashboardServer({ root = repoRoot, testTimeoutMs = 10_000 } = {})
       if (!assets.has(asset) || !fs.existsSync(file) || !inside(path.join(root, 'dashboard'), file)) return sendJson(res, 404, { error: 'Not found' });
       res.writeHead(200, { 'Content-Type': { '.html': 'text/html', '.css': 'text/css', '.js': 'application/javascript' }[path.extname(file)] + '; charset=utf-8' });
       res.end(fs.readFileSync(file));
-    } catch (error) { sendJson(res, error.status || 500, { error: error.message }); }
+    } catch (error) { sendJson(res, error.status || 500, { error: error.message, ...(error.needsConfirmation ? { needsConfirmation: true, warnings: error.warnings } : {}) }); }
   });
   return server;
 }
@@ -191,4 +212,4 @@ if (require.main === module) {
     }
   });
 }
-module.exports = { createDashboardServer, buildData, registeredSolution };
+module.exports = { createDashboardServer, buildData, registeredSolution, runTest };

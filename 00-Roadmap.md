@@ -1,87 +1,109 @@
-# Full-Stack Interview Preparation Roadmap
+# Adaptive Interview Preparation Roadmap
 
-This plan combines DSA, JavaScript, frontend, backend, SQL, system design, projects, and communication. Adjust the number of problems to your available time, but keep the order and revision cycle.
+The goal is full-stack interview readiness **and clear English explanation**.
+Communication is P0. Study, solve/build, then explain without notes. A checkbox
+is completion, not proof of readiness. This is the canonical planning policy;
+the dashboard is the daily interface.
 
-## Before starting
+## 16–24 week architecture
 
-- [ ] Choose a target role and collect 10 relevant job descriptions.
-- [ ] List repeated skills and identify your three largest gaps.
-- [ ] Prepare a 60-90 second introduction.
-- [ ] Select two projects you can explain deeply.
-- [ ] Schedule a realistic daily study block.
+Use **20 study weeks as a baseline**, alongside a full-time job. A 16-week path
+requires demonstrated existing strength: independent attempts, delayed recall,
+practical work and clear explanations. Extend toward 24 weeks with consolidation
+and buffer weeks when capacity or evidence calls for it. These are planning
+ranges, not deadlines or promises of an offer.
 
-## Eight-week plan
+Setup recommends Phase 1 / Learning Week 1; choose another position explicitly
+if appropriate. Old `startDate` and completion dates are historical context only.
+Calendar time never advances the learning week. Repeating a learning week can
+span several calendar weeks.
 
-| Week | DSA focus | Full-stack focus | Interview output |
-| --- | --- | --- | --- |
-| 1 | Arrays and HashMap | JavaScript fundamentals | Introduction and resume review |
-| 2 | Two pointers, sliding window, stack, queue | Async JavaScript and React basics | Explain one project in five minutes |
-| 3 | Binary search and linked lists | React hooks, rendering, and testing | First timed DSA mock |
-| 4 | Trees and heap | Next.js and frontend performance | Project deep-dive mock |
-| 5 | Graphs and backtracking | Node.js, Express, APIs, and security | Backend/API mock |
-| 6 | Dynamic programming and greedy | SQL and database design | SQL and DSA mock |
-| 7 | Intervals, strings, math, and bit manipulation | System design | Design two common systems |
-| 8 | Weak areas and mixed sets | Resume, HR, and behavioral review | Two complete mock interviews |
+## 20-week baseline
 
-This 8-week block builds the skill. From Week 9 the same
-[Daily Study Plan](./13-Daily-Study-Plan.md) continues into an 8-week
-job-search phase — applications, referrals, live interview loops, and
-negotiation — using [Job Search and Negotiation](./14-Job-Search-and-Negotiation.md).
-Total span is roughly 3-4 months; weeks 9-16 repeat with a wider net if an
-offer hasn't landed yet.
+| Phase | Baseline weeks | Purpose / main outputs | DSA focus | Communication / practical / mock focus |
+| --- | --- | --- | --- | --- |
+| 1 — Baseline & Foundations | 4 (positions 1–4) | JS foundations and a sustainable baseline | Arrays, strings, hashing, two pointers, sliding window | Definition → example → tradeoff; factual introduction; small JS exercises; short answers and weekly communication practice |
+| 2 — Core Patterns & Full-Stack Practice | 6 (positions 5–10) | Core patterns and React/API/SQL practical evidence | Binary search, linked lists, trees/BST, heaps, backtracking, graphs, basic DP, intervals | Think aloud and explain decisions; one UI/API/SQL slice; timed coding/technical round every 1–2 weeks |
+| 3 — Applied Backend & System Design | 4 (positions 11–14) | Database/cache/queue/API decisions and structured designs | Mixed weak-pattern recall | Request flow, alternatives and project explanations; backend/database/design slice; design/backend round every 1–2 weeks |
+| 4 — Interview Simulation | 4 (positions 15–18) | Repeated timed rounds and repair of recurring blockers | Timed mixed rounds and targeted repairs | Coding, machine coding, design and behavioral follow-ups; 1–2 technical rounds weekly within capacity; occasional full loop |
+| 5 — Revision & Applications | 2 (positions 19–20) | Targeted revision, verified resume claims, readiness-based applications | Maintain strengths and repair demonstrated gaps | Natural project/behavioral answers; focused mocks around real interviews; adjust to actual feedback |
 
-## Daily plan
+Retain a weekly 30–45 minute communication session when possible: introduction,
+project, technical questions, debugging and behavioral. It replaces other study
+time. The full 206-problem library stays available; finishing every file is not
+a gate. Select existing notes through Topics. TypeScript is role-relevant, but
+there is no dedicated TS track yet; this PR adds no curriculum or claim of proof.
 
-The plan below assumes you're mid-stride. If you're just starting, the first
-two weeks run lighter — about 60 minutes/day — specifically to rebuild the
-habit before adding load. Run `npm run today` each day rather than tracking
-this manually; see the [README](./README.md#daily-commands) for the full
-command list.
+## Phase exit evidence
 
-### If you have 90 minutes
+- **Phase 1:** core JS explained without notes; independent linear-pattern
+  attempts and delayed recall; factual self-introduction practised.
+- **Phase 2:** independent/delayed core-pattern recall; working React/API/SQL
+  examples; explain invariants, decisions and tradeoffs while working.
+- **Phase 3:** backend/database practical evidence; structured requirements,
+  APIs, data, request flow, failure/scaling tradeoffs; own projects explained
+  at several depths.
+- **Phase 4:** repeated timed rounds with follow-ups and recurring blockers
+  repaired; practical, behavioral and notes-free explanations demonstrated.
+- **Phase 5:** sustain technical and communication evidence during applications;
+  explain every resume claim honestly; keep targeted revision as needed.
 
-- 45 minutes: one new DSA problem
-- 20 minutes: repeat one older problem
-- 20 minutes: full-stack topic
-- 5 minutes: record mistakes and the next review date
+Dashboard warnings use recent help/failure, delayed retrieval, explanations and
+practical evidence. They are partial signals: breadth, project depth, TypeScript
+and non-DSA mock quality still need human judgment. No readiness score or
+automatic promotion.
 
-### If you have 3 hours
+## Weekly review and advancement
 
-- 90 minutes: two DSA problems
-- 30 minutes: spaced revision
-- 45 minutes: full-stack study or a build exercise
-- 15 minutes: explain a project, behavioral story, or design aloud
+Open **Weekly Review** when your study week ends; no fixed weekday. After seven
+study-calendar days the tool recommends a review but keeps phase/week unchanged.
+Counts, recorded minutes, gaps, weaknesses and due work are generated from
+actual evidence. Supply decisions rather than duplicate logs.
 
-## How to solve each DSA problem
+Choose next capacity, one primary technical focus, a DSA focus and a speaking
+focus. Practical/mock focus is optional. Choose a concrete first session step.
 
-1. Clarify inputs, outputs, constraints, and edge cases.
-2. Describe a brute-force approach before optimizing.
-3. Choose the pattern and explain why it applies.
-4. Code without looking at a solution for 25-35 minutes.
-5. Test normal, empty, duplicate, and boundary cases.
-6. Write time and space complexity in the JavaScript file.
-7. If stuck, study the idea, close it, then code again from memory.
-8. Repeat the problem after 1 day, 3 days, 7 days, and 14 days.
+- **Continue:** next learning week, same phase. Passing the baseline duration
+  does not automatically promote you.
+- **Consolidate:** retain phase/week, reduce new scope and retrieve weak material.
+  Start a fresh review window; keep or intentionally adjust the focus.
+- **Advance:** next phase and next learning week. Read exit evidence and warnings;
+  explicit confirmation permits a manual advance when evidence is missing.
+  In the final phase choose Continue or Consolidate.
 
-Mark a question complete in [01-DSA-Questions.md](./01-DSA-Questions.md) only after you can explain and code it without copying.
+Learning-week numbers count intentional advances, not calendar weeks. Position
+since phase entry is displayed separately. Baseline positions above are reference
+positions; compression/extension changes actual phase-entry weeks.
 
-## Weekly review
+## Carry-forward and capacity
 
-- [ ] Re-solve at least four older problems without notes.
-- [ ] Review every problem where the wrong pattern was chosen.
-- [ ] Explain one project or system design aloud.
-- [ ] Practise one behavioral story using STAR.
-- [ ] Complete one timed mock and record feedback.
-- [ ] Plan the next week around weaknesses, not only new topics.
+Carry **at most one essential main item**, optionally **one small secondary**.
+Reschedule intentionally, move to revision, deprioritize or drop other work.
+A review replaces carry-forward; it never accumulates missed work. Carry stays
+until intentionally replaced/dropped at review, rather than becoming fake evidence.
 
-## Readiness checklist
+Start around 10–14 available hours when realistic, leaving slack within the
+possible 13.5–22.5 hours/week. Enter your estimate (1–40 hours); no hourly calendar.
+New-problem suggestion ceilings: at most four/week at 12+ hours, three at 9–11,
+two at 7–8 hours or a busy week; at 6 hours or less, or during consolidation,
+new DSA is optional with no new-problem suggestion budget. Ceilings are not quotas.
 
-- [ ] I can solve common easy problems in 15-20 minutes.
-- [ ] I can solve common medium problems in 30-40 minutes.
-- [ ] I explain my reasoning while coding.
-- [ ] I test edge cases before saying I am finished.
-- [ ] I can explain JavaScript, React, Node.js, APIs, and SQL fundamentals.
-- [ ] I can explain two projects, including trade-offs and failures.
-- [ ] I have at least six reusable STAR stories.
-- [ ] I have completed at least three realistic mock interviews.
-- [ ] I have thoughtful questions for the interviewer.
+Production incidents, illness, travel, low energy and rest days are allowed.
+Reduce new scope; preserve one bounded revision and a short speaking loop when
+feasible. Resume without catch-up cramming or doubling workload. Recorded minutes
+are a lower bound; missing time remains unknown.
+
+## English integration and readiness
+
+Use [the 15-minute loop](./english/README.md#daily-15-minute-speaking-loop) inside
+the study budget: speak before reading, identify one technical and one
+communication gap, answer again, then save evidence. Reuse the day's DSA, JS,
+frontend, backend, database, design or project topic. No separate grammar syllabus.
+Record twice weekly when useful; keep media out of Git.
+
+Prioritize independent solving, delayed retrieval, practical correctness and
+understandable English over volume or confidence ratings. Start selective
+interviews when representative timed rounds and project/behavioral follow-ups
+show both strengths, not automatically at Week 9. Use actual interview feedback.
+See [day modes](./13-Daily-Study-Plan.md), [mock instructions](./Mock-Interviews/README.md)
+and [job-search guidance](./14-Job-Search-and-Negotiation.md).

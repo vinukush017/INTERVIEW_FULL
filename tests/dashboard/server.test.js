@@ -6,7 +6,7 @@ const path = require('node:path');
 const http = require('node:http');
 const { execFileSync } = require('node:child_process');
 const { createDashboardServer, buildData } = require('../../scripts/serve-dashboard');
-const { repoRoot, parseChecklist, parseQueue } = require('../../scripts/lib/progress');
+const { repoRoot, parseChecklist, parseQueue, todayISO } = require('../../scripts/lib/progress');
 const { selectNext, selectReview, reviewCandidates } = require('../../scripts/lib/study');
 const { documentPaths, renderMarkdown } = require('../../scripts/lib/content');
 
@@ -22,6 +22,9 @@ before(async () => {
   for (const file of files) {
     fs.mkdirSync(path.dirname(path.join(root, file)), { recursive: true }); fs.copyFileSync(path.join(repoRoot, file), path.join(root, file));
   }
+  // Exercise the backwards-compatible completion-only workflow even after daily use adds events.
+  const history = JSON.parse(sourceLog);
+  fs.writeFileSync(path.join(root, '.progress/log.json'), JSON.stringify({ startDate: history.startDate, entries: history.entries }));
   server = createDashboardServer({ root, testTimeoutMs: 400 });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve)); base = `http://127.0.0.1:${server.address().port}`;
 });
@@ -60,7 +63,7 @@ test('shared selector skips challenges without changing dependency order', () =>
   assert.equal(selectNext(queue, new Map()).relPath, 'b');
   assert.equal(selectNext(queue, new Map([['b', { checked: true }], ['c', { checked: true }]])).relPath, 'a');
 });
-test('review uses same least-recorded-solves pool as CLI, not due dates', async () => {
+test('without attempt evidence, optional baseline uses shared least-recorded completion pool without invented due dates', async () => {
   const { map } = parseChecklist(sourceChecklist); const progress = JSON.parse(sourceLog);
   const pick = await json(await get('/api/random-review'));
   assert.ok(reviewCandidates(map, progress.entries).some(item => item.relPath === pick.relPath));
@@ -159,7 +162,7 @@ test('completion works in fixture, requires untested confirmation and retains le
   assert.equal((await json(await post('/api/done', { path: file, confirmed: true }))).ok, true);
   const after = JSON.parse(fs.readFileSync(path.join(root, '.progress/log.json'), 'utf8'));
   assert.deepEqual(after.entries.slice(0, before.entries.length), before.entries);
-  const added = before.entries.some(entry => entry.problem === 'Arrays/move-zeroes' && entry.date === new Date().toISOString().slice(0, 10)) ? 0 : 1;
+  const added = before.entries.some(entry => entry.problem === 'Arrays/move-zeroes' && entry.date === todayISO()) ? 0 : 1;
   assert.equal(after.entries.length, before.entries.length + added); assert.deepEqual(Object.keys(after.entries.at(-1)).sort(), ['date', 'problem']);
   assert.equal(buildData(root).solvedCount, [...parseChecklist(sourceChecklist).map.values()].filter(item => item.checked).length + (parseChecklist(sourceChecklist).map.get('Arrays/move-zeroes.js').checked ? 0 : 1));
 });
@@ -169,7 +172,7 @@ test('a tested re-solve logs completion only after passing and preserves prior e
   assert.equal(result.ok, true); assert.match(result.output, /All 6 tests passed/);
   const after = JSON.parse(fs.readFileSync(path.join(root, '.progress/log.json'), 'utf8'));
   assert.deepEqual(after.entries.slice(0, before.entries.length), before.entries);
-  const added = before.entries.some(entry => entry.problem === 'HashMap/two-sum' && entry.date === new Date().toISOString().slice(0, 10)) ? 0 : 1;
+  const added = before.entries.some(entry => entry.problem === 'HashMap/two-sum' && entry.date === todayISO()) ? 0 : 1;
   assert.equal(after.entries.length, before.entries.length + added);
   assert.equal(buildData(root).solvedCount, [...parseChecklist(sourceChecklist).map.values()].filter(item => item.checked).length + (parseChecklist(sourceChecklist).map.get('Arrays/move-zeroes.js').checked ? 0 : 1));
 });

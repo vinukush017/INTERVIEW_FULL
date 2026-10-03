@@ -1,0 +1,37 @@
+{
+  "startDate": "2026-09-07",
+  "entries": [
+    {
+      "date": "2026-08-10",
+      "problem": "HashMap/two-sum"
+    },
+    {
+      "date": "2026-08-10",
+      "problem": "HashMap/top-k-frequent-elements"
+    },
+    {
+      "date": "2026-08-11",
+      "problem": "HashMap/contains-duplicate"
+    },
+    {
+      "date": "2026-08-11",
+      "problem": "HashMap/valid-anagram"
+    },
+    {
+      "date": "2026-08-11",
+      "problem": "HashMap/group-anagrams"
+    },
+    {
+      "date": "2026-08-12",
+      "problem": "Two-Pointers/valid-palindrome"
+    },
+    {
+      "date": "2026-08-12",
+      "problem": "Two-Pointers/two-sum-ii-input-array-is-sorted"
+    },
+    {
+      "date": "2026-08-31",
+      "problem": "Arrays/product-of-array-except-self"
+    }
+  ]
+}

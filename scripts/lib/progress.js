@@ -5,20 +5,54 @@ const repoRoot = path.resolve(__dirname, "..", "..");
 const progressPath = path.join(repoRoot, ".progress", "log.json");
 const questionsPath = path.join(repoRoot, "01-DSA-Questions.md");
 
-function todayISO() {
-  return new Date().toISOString().slice(0, 10);
+const { atomicWrite, withProgressLock } = require("./atomic");
+const DEFAULT_TIMEZONE = "Asia/Kolkata";
+function studyTimezone(stored) {
+  const zone = process.env.STUDY_TIMEZONE || stored || DEFAULT_TIMEZONE;
+  try { new Intl.DateTimeFormat("en", { timeZone: zone }).format(); }
+  catch { throw new Error(`Invalid study timezone: ${zone}`); }
+  return zone;
 }
-
-function loadProgress() {
-  if (!fs.existsSync(progressPath)) {
-    return { startDate: todayISO(), entries: [] };
-  }
-  return JSON.parse(fs.readFileSync(progressPath, "utf8"));
+function todayISO(now = new Date(), timeZone = studyTimezone()) {
+  const parts = new Intl.DateTimeFormat("en", { timeZone, year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now);
+  const get = type => parts.find(part => part.type === type).value;
+  return `${get("year")}-${get("month")}-${get("day")}`;
 }
-
-function saveProgress(data) {
-  fs.mkdirSync(path.dirname(progressPath), { recursive: true });
-  fs.writeFileSync(progressPath, JSON.stringify(data, null, 2) + "\n");
+function validDate(value) {
+  if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const parsed = new Date(`${value}T00:00:00Z`);
+  return !Number.isNaN(parsed.valueOf()) && parsed.toISOString().slice(0, 10) === value;
+}
+function normalizeProgress(raw) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw) || !validDate(raw.startDate) || !Array.isArray(raw.entries) ||
+      raw.entries.some(entry => !entry || !validDate(entry.date) || typeof entry.problem !== "string")) throw new Error("Invalid progress format; original file has not been changed.");
+  if (raw.version !== undefined && ![1, 2].includes(raw.version)) throw new Error("Unsupported progress version; original file has not been changed.");
+  if (raw.version === 2 && !Array.isArray(raw.events)) throw new Error("Missing v2 events array; original file has not been changed.");
+  const events = raw.events ?? [];
+  if (!Array.isArray(events)) throw new Error("Invalid events array; original file has not been changed.");
+  require('./planning').validatePlanningData(raw);
+  return { ...raw, version: 2, studyTimezone: studyTimezone(raw.studyTimezone), events };
+}
+function loadProgress(root = repoRoot) {
+  const file = path.join(root, ".progress", "log.json");
+  if (!fs.existsSync(file)) return normalizeProgress({ startDate: todayISO(), entries: [] });
+  let raw;
+  try { raw = JSON.parse(fs.readFileSync(file, "utf8")); }
+  catch (error) { throw new Error(`Cannot read progress JSON; original file has not been changed: ${error.message}`); }
+  const result = normalizeProgress(raw);
+  // Stored events are validated as well: corruption must never become empty history.
+  const { validateStoredEvents } = require("./evidence");
+  validateStoredEvents(result.events);
+  return result;
+}
+function saveProgress(data, root = repoRoot) {
+  return withProgressLock(root, () => {
+    const current = loadProgress(root); // Refuse to overwrite malformed existing history.
+    const normalized = normalizeProgress(data);
+    require("./evidence").validateStoredEvents(normalized.events);
+    if (!current.entries.every((entry, i) => JSON.stringify(entry) === JSON.stringify(normalized.entries[i])) || !current.events.every((event, i) => JSON.stringify(event) === JSON.stringify(normalized.events[i])) || !(current.weeklyReviews || []).every((review, i) => JSON.stringify(review) === JSON.stringify(normalized.weeklyReviews?.[i]))) throw new Error("Refusing to overwrite existing completion/attempt/review history");
+    atomicWrite(path.join(root, ".progress", "log.json"), JSON.stringify(normalized, null, 2) + "\n");
+  });
 }
 
 // Parses the "Dependency-ordered practice queue" section: numbered links in
@@ -61,15 +95,15 @@ function markDone(relPath) {
   if (!entry) return false;
   if (!entry.checked) {
     lines[entry.line] = lines[entry.line].replace("- [ ]", "- [x]");
-    fs.writeFileSync(questionsPath, lines.join(eol));
+    atomicWrite(questionsPath, lines.join(eol));
   }
   return true;
 }
 
-// Streak over distinct solve-dates, with a one-day grace period so the
-// streak still displays as "alive" before today's problem is done.
-function computeStreak(dates) {
-  const uniqueDays = [...new Set(dates)].sort();
+// Streak over distinct study dates, with a one-day grace period.
+// Completion and study events use the same local calendar date.
+function computeStreak(dates, referenceDate = todayISO()) {
+  const uniqueDays = [...new Set(dates)].filter(date => validDate(date) && date <= referenceDate).sort();
   if (uniqueDays.length === 0) return { current: 0, longest: 0, lastDate: null };
 
   const dayMs = 86400000;
@@ -82,7 +116,7 @@ function computeStreak(dates) {
   }
 
   const last = uniqueDays[uniqueDays.length - 1];
-  const diffFromToday = Math.round((new Date(todayISO()) - new Date(last)) / dayMs);
+  const diffFromToday = Math.round((new Date(referenceDate) - new Date(last)) / dayMs);
   const current = diffFromToday <= 1 ? run : 0;
 
   return { current, longest, lastDate: last };
@@ -93,6 +127,9 @@ module.exports = {
   progressPath,
   questionsPath,
   todayISO,
+  studyTimezone,
+  validDate,
+  normalizeProgress,
   loadProgress,
   saveProgress,
   parseQueue,

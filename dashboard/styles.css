@@ -10,7 +10,7 @@ p { margin: 10px 0; } .muted, small { color: var(--muted); }
 nav { display: flex; flex-wrap: wrap; gap: 6px; border-block: 1px solid var(--border); padding: 12px 0; margin-top: 16px; }
 button, select, input, textarea { font: inherit; }
 button { background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: 5px; padding: 7px 12px; cursor: pointer; }
-button:hover { border-color: var(--accent); } button:disabled { cursor: wait; opacity: .6; }
+button:hover { border-color: var(--accent); } button:disabled { cursor: default; opacity: .6; }
 button.primary, button[aria-current="page"], button[aria-pressed="true"] { background: var(--tint); color: var(--accent); border-color: var(--accent); }
 a { color: var(--accent); overflow-wrap: anywhere; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
@@ -42,3 +42,11 @@ dialog::backdrop { background: #0008; }.reader-header { position: sticky; top: -
 footer { color: var(--muted); border-top: 1px solid var(--border); margin-top: 30px; padding: 16px 0; font-size: .85rem; }
 .skip-link { position: absolute; left: -9999px; }.skip-link:focus { left: 12px; top: 8px; z-index: 5; background: var(--surface); padding: 10px; }
 @media (max-width: 760px) { .start-grid { grid-template-columns: 1fr; }.wrap { padding: 16px; }.fields { grid-template-columns: 1fr; } nav { flex-wrap: nowrap; overflow-x: auto; } nav button { flex: 0 0 auto; white-space: nowrap; font-size: .9rem; } #today .main-task { order: -1; }.app-header h1 { font-size: 1.25rem; }.topic-progress { grid-template-columns: 1fr auto; }.topic-progress progress { grid-column: 1 / -1; grid-row: 2; } }
+
+.attempt { border-top: 1px solid var(--border); padding-top: 16px; margin-top: 20px; }
+.saved-evidence, .js-saved, .technical-saved, #speakingSaved { font-size: .9rem; overflow-wrap: anywhere; }
+input[readonly] { color: var(--muted); }
+form.card { border-color: var(--accent); }
+#planningHeader { font-weight: 600; color: var(--text); }
+#reviewEvidence, #planningSuggestions { margin-block: 24px; }
+#weeklyReviewForm h3 { margin-top: 0; }

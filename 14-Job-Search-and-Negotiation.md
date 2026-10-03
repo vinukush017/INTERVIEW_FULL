@@ -1,113 +1,90 @@
 # Job Search and Negotiation
 
-Skill gets you through interviews; pipeline volume and negotiation get you the
-12-15 LPA outcome instead of a lateral 9-10 LPA offer. Both matter equally
-from Week 9 onward. See [13-Daily-Study-Plan.md](./13-Daily-Study-Plan.md) for
-when each piece below fits into the week.
+Start selective applications when representative technical rounds, clear English
+explanations and verified resume/project claims support them. Use
+[the roadmap](./00-Roadmap.md), not a fixed Week 9 or Day 63 gate. Keep preparation
+and the pipeline within available capacity. No compensation target, current
+salary, notice period or employer type is assumed about you here.
 
 ## Application tracker
 
-Copy this table into a notes app, spreadsheet, or keep it right here — update
-it during the "weekly review" step of every week from Day 63 onward.
+This optional manual table can live here or in your preferred notes tool. It is
+not a dashboard application-tracking feature. Review it when applications are active.
 
 | Company | Role | Source (referral/job board/LinkedIn) | Applied | Screen | Round 1 | Round 2 | Round 3 | Offer | Comp offered | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 |  |  |  |  |  |  |  |  |  |  |  |
 
-Track weekly conversion, not just totals:
+Use actual feedback and sample sizes rather than fixed funnel percentages:
 
-- Applications -> screens: below ~10% for 3+ weeks means the resume or the
-  roles you're targeting need to change, not that you need to apply more.
-- Screens -> technical rounds: below ~50% points at the intro/screen pitch,
-  not DSA skill.
-- Technical rounds -> offer: this is where DSA, system design, and behavioral
-  prep from the study plan actually pays off.
+- Few screens: inspect role fit, resume clarity, channel and hiring conditions;
+  a small sample cannot prove the cause.
+- Difficulty at screens: review the actual questions, introduction and role fit.
+- Difficulty in technical/final rounds: use interview feedback to select the
+  next technical, design, project or communication weakness.
+
+Choose an application/outreach cadence that leaves capacity for interviews and
+revision. There is no mandatory daily quota or promise of offers by a set week.
 
 ## Referral message template
 
-Keep it short. A long message asking a former colleague to "review your
-resume" gets ignored; a specific, low-effort ask gets answered.
+Make a specific, respectful request; use only true information.
 
 > Hi [Name], hope you're doing well. I'm exploring opportunities and saw
 > [Company] is hiring for [Role] — would you be open to referring me if it's
 > not too much trouble? Happy to send my resume and a short note on why I'm a
 > fit. No worries at all if now isn't a good time.
 
-Send it to 2 people a week minimum from Week 9 through Week 12. Referrals
-convert to screens at a far higher rate than cold applications — prioritize
-them over volume-applying on job boards.
+Adapt to the relationship. No referral quota or guaranteed conversion advantage
+is assumed; review what actually works for your target roles.
 
-## Where to focus applications (product-based target)
+## Where to focus applications
 
-- Company engineering blogs and careers pages first — direct applications to
-  product companies often skip the noisiest part of the board-application
-  funnel.
-- LinkedIn "Easy Apply" is high-volume, low-conversion — use it to fill gaps,
-  not as the primary channel.
-- Company-hosted referral programs (many product companies pay employees for
-  successful referrals, which means employees are often willing to refer).
-- Recruiters on LinkedIn who specialize in your stack — respond to inbound
-  messages even from smaller firms; they often have access to unlisted roles.
+Use role requirements and your evidence to choose suitable openings. Company
+careers pages, relevant contacts/referrals, job boards and recruiters are options.
+Check role fit and follow-up quality rather than treating a channel as universally
+better. Research the company/role before a scheduled interview.
 
-## Negotiation, for an 8 -> 12-15 LPA move
+## Negotiation
 
-The jump you're targeting (roughly 1.5-1.9x) is realistic for a
-service-to-product or mid-tier-to-strong-product move with solid DSA and
-system-design performance, but it is won at the offer stage, not just the
-interview stage. A candidate who interviews identically but negotiates
-poorly can leave 1-2 LPA on the table.
+Personal compensation targets and market ranges are **not configured**. Research
+current comparable roles before setting your own range; the previous salary
+figures and multiplier assumptions were unverified and have been removed.
 
-1. **Never give a number first if you can avoid it.** If asked expected CTC
-   early, say: "I'm focused on finding the right fit first — could we revisit
-   compensation once we're both sure this is a match?" If pressed, give a
-   range anchored slightly above your target (e.g. "15-18 LPA" if your real
-   target is 13-15), not a single number.
-2. **Never negotiate on the offer call itself.** Say thank you, ask for the
-   offer in writing with a full breakdown (fixed, variable, ESOPs, joining
-   bonus), and ask for 2-3 business days to respond.
-3. **Get competing leverage before you need it.** This is why Weeks 9-14 keep
-   you interviewing at multiple companies even after one offer appears — a
-   single offer with no alternative is the weakest negotiating position you
-   can be in.
-4. **Negotiate the whole package, not just base.** Joining bonus, variable
-   pay clarity, ESOP vesting schedule, and start-date flexibility (for
-   notice-period-driven bonuses at your current company) are all real levers.
-5. **Use a real competing number if you have one**, phrased factually: "I
-   have another offer at X — is there flexibility to bring this closer to
-   that?" Never bluff a number you can't produce if asked to share the offer
-   letter.
-6. **A resignation-driven retention counter from your current company is
-   usually not the move** unless you actually want to stay — companies rarely
-   forget you tried to leave, and it doesn't fix the ceiling that made you
-   look in the first place.
+1. Clarify scope and compensation structure. Ask about the employer's range if
+   useful; share your own researched expectations when appropriate.
+2. Ask for the written offer and full breakdown: fixed, variable, equity,
+   joining bonus, benefits and relevant conditions. Request time to review
+   based on the actual deadline rather than a universal number of days.
+3. If comparing real opportunities, discuss them factually. Do not bluff numbers
+   or fabricate another offer. Protect confidential information.
+4. Discuss the full package and start-date flexibility, not only the headline.
+   Ask which terms are flexible instead of assuming all can change.
+5. Evaluate any retention counteroffer against your actual reasons for leaving
+   and the written terms; no universal claim about employer reactions is made.
 
-## Notice-period math
+## Notice-period planning
 
-If your current notice period is 60-90 days (common at 8 LPA service/product
-roles in India), factor this into every negotiation:
-
-- Tell interviewers your real notice period early — it filters out companies
-  needing an immediate start before you invest more rounds.
-- Ask if a reduced/bought-out notice period is possible once you have a
-  written offer; many companies will cover the buyout cost for a strong
-  candidate.
-- Don't resign until you have the offer letter in hand, not just a verbal
-  offer or an email saying "we'd like to proceed."
+Check your actual employment terms and confirmed release date. State your real
+availability; do not invent an immediate start or a 60–90 day notice period.
+If discussing a shorter release/buyout, confirm what both employers actually
+agree to. Do not assume costs will be covered. Assess written offer conditions
+and your own circumstances before making irreversible employment decisions.
 
 ## Comparing multiple offers
 
-Build a simple table when more than one offer is live:
+Use a simple comparison when more than one real offer exists:
 
 | Factor | Offer A | Offer B |
 | --- | --- | --- |
 | Fixed CTC |  |  |
 | Variable / bonus structure |  |  |
-| ESOP value and vesting |  |  |
-| Role scope / growth ceiling |  |  |
+| Equity terms and vesting |  |  |
+| Role scope / growth opportunities |  |  |
 | Tech stack fit with your goals |  |  |
 | Team/manager signal from interviews |  |  |
 | Commute / remote policy |  |  |
+| Start date / written conditions |  |  |
 
-Fixed CTC matters most for an immediate 8->12-15 LPA jump, but role scope and
-manager quality are what determine whether your *next* jump (to 20+ LPA) is
-realistic from that seat.
+Choose the tradeoffs that matter to you. Compensation growth and timing of
+future offers are unknown, not conclusions from this preparation schedule.

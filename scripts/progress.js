@@ -1,45 +1,21 @@
 #!/usr/bin/env node
-// Full progress dashboard. Run: npm run progress
-const fs = require("node:fs");
-const { questionsPath, loadProgress, computeStreak } = require("./lib/progress");
-
-const { parseTopics } = require("./lib/study");
-
-function main() {
-  const text = fs.readFileSync(questionsPath, "utf8");
-  const topics = parseTopics(text).map(topic => ({
-    name: topic.name, total: topic.items.length,
-    solved: topic.items.filter(item => item.checked).length,
-  }));
-
-  const totalCount = topics.reduce((sum, t) => sum + t.total, 0);
-  const solvedCount = topics.reduce((sum, t) => sum + t.solved, 0);
-
-  const progress = loadProgress();
-  const dates = progress.entries.map((e) => e.date);
-  const streak = computeStreak(dates);
-
-  console.log("");
-  console.log("=== Progress Dashboard ===");
-  console.log(`Solved: ${solvedCount}/${totalCount} (${Math.round((solvedCount / totalCount) * 100)}%)`);
-  console.log(`Current streak: ${streak.current} day(s)   Longest streak: ${streak.longest} day(s)`);
-  console.log(`Started: ${progress.startDate}   Last solved: ${streak.lastDate || "never"}`);
-  console.log("");
-  console.log("By topic:");
-  topics
-    .filter((t) => t.total > 0)
-    .forEach((t) => {
-      const filled = Math.round((t.solved / t.total) * 10);
-      const bar = "#".repeat(filled) + "-".repeat(10 - filled);
-      console.log(`  ${t.name.padEnd(30)} [${bar}] ${t.solved}/${t.total}`);
-    });
-
-  const notStarted = topics.filter((t) => t.total > 0 && t.solved === 0).map((t) => t.name);
-  if (notStarted.length) {
-    console.log("");
-    console.log(`Not started yet: ${notStarted.join(", ")}`);
-  }
-  console.log("");
-}
-
-main();
+const { buildStudyState } = require('./lib/study-state');
+const { planningLabel } = require('./lib/planning');
+try {
+  const state = buildStudyState(); const { completion, summary, readiness } = state;
+  console.log(planningLabel(state.planning));
+  console.log(`\nCompletion\nSolved: ${completion.solved}/${completion.total}`);
+  console.log(`Current streak: ${state.streak.current} day(s)   Longest streak: ${state.streak.longest} day(s)`);
+  for (const topic of completion.topics) console.log(`  ${topic.name.padEnd(30)} ${topic.solved}/${topic.total}`);
+  console.log(`\nEvidence (schema v${state.schemaVersion})\nCompletion-only records (missing evidence stays unknown): ${state.legacyCount}`);
+  for (const [outcome, count] of Object.entries(summary.attempts)) console.log(`  ${outcome}: ${count}`);
+  console.log(`Reviews recorded: ${summary.reviewsCompleted}; independent reviews: ${summary.reviewSuccesses}`);
+  console.log(`Explanations without notes: ${summary.explanations.yes}/${summary.explanations.total}; approximate recorded minutes: ${summary.minutes}`);
+  console.log('\nCurrent weaknesses');
+  for (const item of state.weaknesses.slice(0, 5)) console.log(`  ${item.title} (${item.channel}): ${item.reason}; next review ${item.nextDue}`);
+  if (!state.weaknesses.length) console.log('  No weakness evidence recorded; this does not prove readiness.');
+  console.log(`\nReadiness evidence, last 30 study dates\n${readiness.recentIndependent} validated independent DSA attempts recorded.`);
+  console.log(`${readiness.explanationSample.yes}/${readiness.explanationSample.total} of the latest up to 10 explanations were notes-free.`);
+  for (const track of readiness.tracks) console.log(`${track.topic}: ${track.practicalAttempts ? track.practicalAttempts + ' self-reported practical attempts' : 'No demonstrated practical evidence yet'}.`);
+  console.log('No readiness score; difficulty, coverage and external interview evaluation remain unknown.\n');
+} catch (error) { console.error(error.message); process.exitCode = 1; }

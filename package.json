@@ -12,6 +12,7 @@
     "review": "node scripts/review.js",
     "test": "node scripts/test-solution.js",
     "add": "node scripts/add-problem.mjs",
-    "test:dashboard": "node --test tests/dashboard/*.test.js"
+    "test:dashboard": "node --test tests/dashboard/*.test.js",
+    "test:progress": "node --test tests/progress/*.test.js"
   }
 }
